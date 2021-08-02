@@ -1,0 +1,79 @@
+<div class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <!-- HEADER -->
+        <div fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" class="list-max-height h-160">
+            <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start" style="min-height:100%;">
+                <div fxLayout="column" fxLayoutAlign="space-around start" fxLayout.gt-xs="row wrap"
+                    fxLayoutAlign.gt-xs="start center" style="min-width:100%;">
+                    <div fxLayout="row" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-sm="35" fxFlex.gt-xs="40" fxFlex.gt-lg="20">
+                        <div class=" filter-padding" fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-icon class="logo-icon s-32 mr-16"
+                                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                                payment
+                            </mat-icon>
+                            <span class="logo-text h1"
+                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'INVOICE-PAYMENT.GENERAL.INVOICE-PAYMENTS' | translate}}</span>
+                        </div>
+                        <!-- / APP TITLE -->
+                        <!-- SEARCH -->
+                        <div class="filter-padding">
+                            <div fxLayout="row">
+                                <div class="logo my-4 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                                    <button class="mr-0 mr-sm-16" mat-icon-button (click)="refresh()"
+                                        title="{{'WITHDRAWAL.GENERAL.REFRESH' | translate }}">
+                                        <mat-icon>refresh</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="owners && isProviderAdmin" class="filter-padding" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-sm="30" fxFlex.gt-xs="20" fxFlex.gt-lg="20">
+                        <mat-form-field floatPlaceholder="never">
+                            <mat-select (selectionChange)="refresh()" [(ngModel)]="args.ownerGuid"
+                                placeholder="{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}">
+                                <mat-option value=""></mat-option>
+                                <mat-option *ngFor="let owner of owners" [value]="owner.accountId">{{owner.username}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="filter-padding" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-sm="35" fxFlex.gt-xs="40" fxFlex.gt-lg="20">
+                        <mat-form-field floatPlaceholder="never">
+                            <mat-select #transactionDateRangeSelected (selectionChange)="setTimeZone()"
+                                [(ngModel)]="selectedZoneId" placeholder="{{'TIMEZONE.PLACE_HOLDER' | translate}}">
+                                <mat-option *ngFor="let zone of zones" [value]="zone.timeZoneId">
+                                    {{zone.translate | translate}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="allowAddInvoicePayment" class="filter-padding" fxFlex="100" fxFlex.gt-md="25" fxFlex.gt-sm="35" fxFlex.gt-xs="40" fxFlex.gt-lg="20">
+                        <button mat-raised-button [routerLink]="'/invoicepayment'"
+                            class="mat-white-bg my-12 mt-sm-0">
+                            <span>{{ 'INVOICE-PAYMENT.GENERAL.ADD'  | translate}}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <mat-progress-bar *ngIf="(loading$ | async) || (ownersLoading$ | async)" color="primary" mode="query">
+        </mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT -->
+        <div *ngIf="owners" class="content-card mat-white-bg" fxFlex>
+
+
+            <ag-grid-angular #agGrid style="width: 100%; height: 100%;" id="myGrid" class="ag-theme-balham"
+                [columnDefs]="columnDefs" [defaultColDef]="defaultColumnDefs" [pagination]="true"
+                [paginationPageSize]="args.pageSize" [cacheBlockSize]="args.pageSize" [cacheOverflowSize]="2"
+                [maxBlocksInCache]="1" [rowModelType]="'infinite'" [rowClassRules]="rowClassRules"
+                [enableRtl]="enableRtl" [frameworkComponents]="frameworkComponents"
+                (cellClicked)="onCellClicked($event)" (columnMoved)="onColumnMoved($event)"
+                (gridReady)="onGridReady($event)"></ag-grid-angular>
+        </div>
+    </div>
+</div>

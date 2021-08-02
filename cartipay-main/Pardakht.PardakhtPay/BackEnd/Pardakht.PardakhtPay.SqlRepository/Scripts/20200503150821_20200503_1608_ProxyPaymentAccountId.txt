@@ -1,0 +1,9 @@
+﻿ALTER TABLE [Transactions] ADD [ProxyPaymentAccountId] int NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20200503150821_20200503_1608_ProxyPaymentAccountId', N'2.2.6-servicing-10079');
+
+GO
+

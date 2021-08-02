@@ -1,0 +1,74 @@
+<div class="page-layout carded fullwidth">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+
+    <!-- HEADER -->
+    <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+      fxLayoutAlign.gt-sm="start center">
+
+      <!-- APP TITLE -->
+      <div class="logo mb-16 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+        <ng-container *ngIf="isCreating">
+          <button class="mr-0 mr-sm-16" mat-icon-button (click)="onCloseEvent()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </ng-container>
+        <ng-container>
+          <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            assessment
+          </mat-icon>
+          <span *ngIf="!isCreating" class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            {{ 'NAV-MENU.ROLES' | translate }}
+          </span>
+          <span *ngIf="isCreating" class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            {{ 'STAFF-USER.CREATE-ROLE' | translate }}
+          </span>
+        </ng-container>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- ADD BUTTON -->
+      <button *ngIf="!isCreating" mat-raised-button class="add-product-button fuse-white mt-24 mt-md-0"
+        (click)="onCreateRoleClick()" ngClass.gt-sm="mx-48">
+        <mat-icon *ngIf="!isCreating">add</mat-icon>
+        <span>{{ isCreating ? ('FORM-CONTROLS.CANCEL' | translate) : ('FORM-CONTROLS.CREATE' | translate) }}</span>
+      </button>
+      <!-- / ADD BUTTON -->
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div class="fuse-card auto-width role-edit-container">
+
+      <ng-container *ngIf="isCreating">
+        <tcam-role-create (cancel)="onCloseCreateEdit()"></tcam-role-create>
+      </ng-container>
+
+      <ng-container *ngIf="!isCreating">
+        <mat-tab-group #tabgroup backgroundColor="accent" (selectedTabChange)="onSelectedTabChange($event)">
+
+          <mat-tab *ngIf="canDisplay(permissions.RoleEditProvider)" label="{{ 'ROLE.TABS.PROVIDER' | translate }}">
+            <tcam-role-list [roles]="providerRoles" [isActive]="isTabActive(0)" [isTenantRole]="false"
+              [showRestrictedPermissions]="true">
+            </tcam-role-list>
+          </mat-tab>
+
+          <mat-tab *ngIf="canDisplay(permissions.RoleEditTenant)" label="{{ 'ROLE.TABS.TENANT' | translate }}">
+            <tcam-role-list [roles]="tenantRoles" [isActive]="isTabActive(1)" [isTenantRole]="true"
+              [showRestrictedPermissions]="false">
+            </tcam-role-list>
+          </mat-tab>
+
+        </mat-tab-group>
+      </ng-container>
+
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>

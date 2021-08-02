@@ -1,0 +1,65 @@
+<div id="withdrawals" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/withdrawals'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'WITHDRAWAL.GENERAL.WITHDRAWALS' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new'" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="withdrawalForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'WITHDRAWAL.GENERAL.ADD_WITHDRAWAL' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="withdrawalForm" [formGroup]="withdrawalForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <!--<mat-form-field *ngIf="!tenantGuid" appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'WITHDRAWAL.LIST-COLUMNS.TENANT' | translate}}</mat-label>
+                                    <mat-select name="tenantGuid" formControlName="tenantGuid"  required>
+                                        <mat-option *ngFor="let tenant of tenants$ | async" [value]="tenant.tenantGuid"> {{tenant.name}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>-->
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'WITHDRAWAL.LIST-COLUMNS.TRANSFER_ACCOUNT' | translate}}</mat-label>
+                                    <mat-select name="transferAccountId" formControlName="transferAccountId" required>
+                                        <mat-option *ngFor="let account of getTransferAccounts()" [value]="account.id"> {{account.accountNo}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'WITHDRAWAL.LIST-COLUMNS.AMOUNT' | translate}}</mat-label>
+                                    <input type="number" matInput style="direction:LTR;" placeholder="{{'WITHDRAWAL.LIST-COLUMNS.AMOUNT' | translate}}" formControlName="amount" required>
+                                </mat-form-field>
+                                <div fxFlex fxLayout="row">
+                                    <span *ngIf="error" class="mat-body danger">{{ error}}</span>
+                                </div>
+                            </div>
+                        
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

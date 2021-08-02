@@ -1,0 +1,121 @@
+<div id="cardToCardAccount" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/usersegmentgroups'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="userSegmentGroupForm">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">category</mat-icon>
+                        {{userSegmentGroupForm.get('name').value}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && userSegmentGroupForm && allowAddUserSegmentGroup" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="userSegmentGroupForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'USER-SEGMENT.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && userSegmentGroupForm && allowAddUserSegmentGroup" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="userSegmentGroupForm.invalid || isLoading()"
+                    (click)="onUpdateSubmit()">
+                <span>{{'USER-SEGMENT.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading()" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="userSegmentGroupForm" [formGroup]="userSegmentGroupForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field *ngIf="(isProviderAdmin || isTenantAdmin) && pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                            <mat-select [disabled]="!allowAddUserSegmentGroup" name="ownerGuid" formControlName="ownerGuid" required>
+                                <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER-SEGMENT.LIST-COLUMNS.NAME' | translate}}</mat-label>
+                            <input [disabled]="!allowAddUserSegmentGroup" matInput placeholder="{{'USER-SEGMENT.LIST-COLUMNS.NAME' | translate}}"
+                                   name="name"
+                                   formControlName="name" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER-SEGMENT.LIST-COLUMNS.PRIORITY' | translate}}</mat-label>
+                            <input [disabled]="!allowAddUserSegmentGroup" matInput placeholder="{{'USER-SEGMENT.LIST-COLUMNS.PRIORITY' | translate}}"
+                                   name="order"
+                                   type="number"
+                                   formControlName="order" required>
+                        </mat-form-field>
+                        <mat-checkbox [disabled]="!allowAddUserSegmentGroup" class="w-100-p" name="isActive"
+                                      formControlName="isActive">
+                            {{'CARD-TO-CARD.LIST-COLUMNS.IS-ACTIVE' | translate}}
+                        </mat-checkbox>
+                        <!--<mat-checkbox class="w-100-p" name="isDefault"
+                                      formControlName="isDefault">
+                            {{'USER-SEGMENT.LIST-COLUMNS.IS-DEFAULT' | translate}}
+                        </mat-checkbox>-->
+                    </div>
+                    <div class="tab-content p-24" fxLayout="column" fxLayoutAlign="space-around stretch">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER-SEGMENT.GENERAL.SELECT-TYPE' | translate}}</mat-label>
+                            <mat-select [disabled]="!allowAddUserSegmentGroup">
+                                <mat-option *ngFor="let type of getTypes()" (click)="addSegment(type)">{{type.translate | translate}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'USER-SEGMENT.GENERAL.RULES' | translate }}</span>
+                        <div *ngFor="let segment of userSegmentGroupForm.get('items').controls; let i = index">
+                            <div fxLayout="row wrap" fxLayoutAlign="start center"  [formGroup]="segment">
+                                <div class="p-r-4" fxFlex="20" fxFlex.gt-md="5" fxFlex.gt-xs="5">
+                                    <button [disabled]="!allowAddUserSegmentGroup" mat-icon-button title="{{'BANK-LOGIN.LIST-COLUMNS.DELETE' | translate}}" (click)="deleteSegment(segment)">
+                                        <mat-icon class="warn">delete_forever</mat-icon>
+                                    </button>
+                                </div>
+                                <span class="p-r-4" fxFlex="80" fxFlex.gt-md="35" fxFlex.gt-xs="35">{{getTypeName(segment.get('userSegmentTypeId').value)}}</span>
+                                <mat-form-field fxFlex="50" fxFlex.gt-md="20" fxFlex.gt-xs="20" appearance="outline" floatLabel="always" class="w-100-p p-r-4">
+                                    <mat-label>{{'USER-SEGMENT.LIST-COLUMNS.COMPARE-TYPE' | translate}}</mat-label>
+                                    <mat-select [disabled]="!allowAddUserSegmentGroup" formControlName="userSegmentCompareTypeId" required>
+                                        <mat-option *ngFor="let compareType of compareTypes" [value]="compareType.id">{{compareType.translate | translate}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div class="p-r-4" fxFlex="50" fxFlex.gt-md="40" fxFlex.gt-xs="40">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>{{'USER-SEGMENT.LIST-COLUMNS.VALUE' | translate}}</mat-label>
+                                        <input [disabled]="!allowAddUserSegmentGroup" *ngIf="getTypeVariableType(segment.get('userSegmentTypeId').value) == 'number' || getTypeVariableType(segment.get('userSegmentTypeId').value) == 'date'" matInput placeholder="{{'USER-SEGMENT.LIST-COLUMNS.VALUE' | translate}}"
+                                               [name]="'value' + i"
+                                               type="number"
+                                               formControlName="value" required>
+
+                                        <input [disabled]="!allowAddUserSegmentGroup" *ngIf="getTypeVariableType(segment.get('userSegmentTypeId').value) == 'text'" matInput placeholder="{{'USER-SEGMENT.LIST-COLUMNS.VALUE' | translate}}"
+                                               [name]="'value' + i"
+                                               type="text"
+                                               formControlName="value" required>
+
+                                        <!--<input *ngIf="getTypeVariableType(segment.get('userSegmentTypeId').value) == 'number'" matInput placeholder="{{'USER-SEGMENT.LIST-COLUMNS.VALUE' | translate}}"
+                                               [name]="'value' + i"
+                                               type="date"
+                                               formControlName="value" required>-->
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

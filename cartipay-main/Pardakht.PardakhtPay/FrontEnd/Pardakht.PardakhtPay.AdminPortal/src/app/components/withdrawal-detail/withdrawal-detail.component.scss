@@ -1,0 +1,90 @@
+#merchantcustomers {
+    height: 100%;
+
+    .header {
+
+        .subtitle {
+            margin: 6px 0 0 0;
+        }
+    }
+
+    .content {
+
+        .mat-tab-group,
+        .mat-tab-body-wrapper,
+        .tab-content {
+            flex: 1 1;
+            max-width: 100%;
+            /*height: 100% !important;*/
+        }
+
+        .mat-tab-group {
+            max-height: 100%;
+            height: 100%;
+        }
+
+        .tab-content {
+            max-height: 100%;
+            height: 100%;
+        }
+
+        .mat-tab-body-content {
+            display: flex;
+            max-height: 100%;
+            /*height: 100% !important;*/
+        }
+
+        .mat-tab-label {
+            height: 64px;
+        }
+        // Temporary prefix alignment fix
+        .mat-form-field-appearance-outline .mat-form-field-prefix,
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: 0;
+        }
+    }
+}
+
+/*/deep/ content {
+    max-height: calc(100% - 64px) !important;
+}
+
+.content-card {
+    max-height: calc(100% - 160px);
+}*/
+
+.content-card {
+    max-height: calc(100% - 160px);
+}
+
+/deep/ .mat-tab-body-wrapper {
+    height: 100%;
+}
+
+.tran {
+    max-height: 100% !important;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    max-height: 100%;
+    height: 100%;
+}
+
+/deep/ .center {
+    flex-direction: column !important;
+}
+
+/deep/ .page-layout.carded.fullwidth > .center > .header {
+    height: 86px !important;
+    max-height: 86px !important;
+    min-height: 86px !important;
+}
+
+.cc-80 {
+    max-height: calc(100% - 90px) !important;
+}

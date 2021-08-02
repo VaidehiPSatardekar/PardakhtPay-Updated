@@ -1,0 +1,194 @@
+<div id="bankLogin" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start">
+            <!-- APP TITLE -->
+            <div fxLayout="column" fxFill fxLayoutAlign="space-evenly stretch">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/banklogins'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <div fxLayout="column" fxLayoutAlign="start start"
+                             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            <div *ngIf="accountForm" class="h2">
+                                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance_wallet</mat-icon>
+                                {{accountForm.get('friendlyName').value}}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button *ngIf="accountForm && loginSuccess() && !bankAccountsLoading && allowAddBankLogin" mat-raised-button
+                                class="save-product-button"
+                                [disabled]="accountForm.invalid"
+                                (click)="onSubmit()">
+                            <span>{{'CARD-TO-CARD.GENERAL.ADD-CARD-TO-CARD' | translate}}</span>
+                        </button>
+                        <button *ngIf="createLoginForm && waitingApprove() && !bankAccountsLoading && allowAddBankLogin" mat-raised-button
+                                class="save-product-button"
+                                [disabled]="createLoginForm.invalid"
+                                (click)="onCreateLoginSubmit()">
+                            <span>{{'BANK-LOGIN.GENERAL.CREATE-BANK-LOGIN' | translate}}</span>
+                        </button>
+                        <button *ngIf="awaitingRegistration()" mat-raised-button
+                                class="save-product-button"
+                                (click)="onRegisterLoginSubmit()">
+                            <span>{{'CARD-TO-CARD.GENERAL.REGISTER-DEVICE' | translate}}</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- / APP TITLE -->
+                <div *ngIf="waitingInformations()">
+                    {{'BANK-LOGIN.STATUS.INFORMATION-WAITING-FROM-SERVER' | translate}}
+                </div>
+                <div *ngIf="waitingApprove()">
+                    {{'BANK-LOGIN.STATUS.WAITING-APPROVE' | translate}}
+                </div>
+                <div *ngIf="loginError()" class="login-error">
+                    {{'BANK-LOGIN.STATUS.FAILED' | translate}}
+                </div>
+                <div *ngIf="awaitingRegistration()">
+                    {{'Enter OTP' | translate}}
+                </div>
+            </div>
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-progress-bar *ngIf="waitingInformations()" color="primary" mode="query"></mat-progress-bar>
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="accountForm" [formGroup]="accountForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.BANK' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.BANK' | translate}}" formControlName="bankName" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}" formControlName="friendlyName" autocomplete="off" required>
+                        </mat-form-field>                     
+                        <mat-form-field *ngIf="waitingApprove() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.ACCOUNT-NUMBER' | translate}}</mat-label>
+                            <mat-select name="accountNumber" formControlName="accountNumber" required>
+                                <mat-option *ngFor="let account of accounts" [value]="account">{{account}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="loginSuccess() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.ACCOUNT-NUMBER' | translate}}</mat-label>
+                            <mat-select name="accountGuid" formControlName="accountGuid" required>
+                                <mat-option *ngFor="let account of bankAccounts$ | async" [value]="account.accountGuid">{{account.accountNo}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="loginSuccess() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}"
+                                   name="cardNumber"
+                                   formControlName="cardNumber" required>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="loginSuccess() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.CARD-HOLDER-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.CARD-HOLDER-NAME' | translate}}" formControlName="cardHolderName" required>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="loginSuccess() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.SAFE-ACCOUNT-NUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.SAFE-ACCOUNT-NUMBER' | translate}}" formControlName="safeAccountNumber">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="loginSuccess() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER-THRESHOLD-AMOUNT' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER-THRESHOLD-AMOUNT' | translate}}" formControlName="transferThreshold">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="loginSuccess() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER_THRESHOLD_LIMIT' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER_THRESHOLD_LIMIT' | translate}}" formControlName="transferThresholdLimit">
+                        </mat-form-field>
+                        <mat-checkbox *ngIf="loginSuccess() && !bankAccountsLoading" class="w-100-p" name="isActive"
+                                      formControlName="isActive">
+                            {{'CARD-TO-CARD.LIST-COLUMNS.IS-ACTIVE' | translate}}
+                        </mat-checkbox>
+                        <mat-checkbox *ngIf="loginSuccess() && !bankAccountsLoading" class="w-100-p" name="isTransferThresholdActive"
+                                      formControlName="isTransferThresholdActive">
+                            {{'CARD-TO-CARD.LIST-COLUMNS.IS_TRANSFER_THRESHOLD_ACTIVE' | translate}}
+                        </mat-checkbox>
+                    </div>
+                </form>
+                <form *ngIf="createLoginForm" [formGroup]="createLoginForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.BANK' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.BANK' | translate}}" formControlName="bankName" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}" formControlName="friendlyName" autocomplete="off" required>
+                        </mat-form-field>
+                        
+                        <mat-form-field *ngIf="waitingApprove() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.ACCOUNT-NUMBER' | translate}}</mat-label>
+                            <mat-select name="accountNumber" formControlName="accountNumber" required>
+                                <mat-option *ngFor="let account of accounts" [value]="account">{{account}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="waitingApprove() && !bankAccountsLoading && showSecondPassword == true" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.SECOND-PASSWORD' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.SECOND-PASSWORD' | translate}}" formControlName="secondPassword" autocomplete="off">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="waitingApprove() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.MOBILENUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.MOBILENUMBER' | translate}}" formControlName="mobileNumber" autocomplete="off">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="waitingApprove() && !bankAccountsLoading && allowSelectLoginType" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.LOGIN-TYPE' | translate}}</mat-label>
+                            <mat-select name="loginType" formControlName="loginType" required>
+                                <mat-option *ngFor="let type of loginTypes" [value]="type.id">{{type.translate | translate}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="isEmailAddressNeeded" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.EMAIL-ADDRESS' | translate}}</mat-label>
+                            <input matInput type="email" placeholder="{{'BANK-LOGIN.LIST-COLUMNS.EMAIL-ADDRESS' | translate}}" formControlName="emailAddress" required>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="isEmailAddressNeeded" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.EMAIL-PASSWORD' | translate}}</mat-label>
+                            <input matInput type="password" placeholder="{{'BANK-LOGIN.LIST-COLUMNS.EMAIL-PASSWORD' | translate}}" formControlName="emailPassword" autocomplete="new-password" required>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="waitingApprove() && !bankAccountsLoading" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.PROCESSCOUNT-IN-24HRS' | translate}}</mat-label>
+                            <input matInput type="number" placeholder="{{'BANK-LOGIN.LIST-COLUMNS.PROCESSCOUNT-IN-24HRS' | translate}}" formControlName="processCountIn24Hrs">
+                        </mat-form-field>
+                        <mat-checkbox *ngIf="waitingApprove() && !bankAccountsLoading" class="w-100-p" name="loadPreviousStatements"
+                                      formControlName="loadPreviousStatements">
+                            {{'BANK-LOGIN.LIST-COLUMNS.LOAD_PREVIOUS_STATEMENTS' | translate}}
+                        </mat-checkbox>
+                        <mat-checkbox *ngIf="waitingApprove() && !bankAccountsLoading" class="w-100-p" name="isBlockCard"
+                                      formControlName="isBlockCard">
+                            {{'BANK-LOGIN.LIST-COLUMNS.BLOCK-CARDS' | translate}}
+                        </mat-checkbox>
+                    </div>
+                </form>
+                <form *ngIf="loginRegistrationForm" [formGroup]="loginRegistrationForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.BANK' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.BANK' | translate}}" formControlName="bankName" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}" formControlName="friendlyName" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-form-field  appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.OTP' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.OTP' | translate}}" formControlName="otp" autocomplete="off" required>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

@@ -1,0 +1,131 @@
+<div class="m-12">
+
+  <mat-tab-group #tabgroup dynamicHeight="true">
+
+    <mat-tab label="{{'ROLE.DETAILS' | translate}}">
+      <form *ngIf="roleForm" [formGroup]="roleForm" (ngSubmit)="onSubmit()" novalidate>
+        <fieldset class="control-wrapper" [disabled]="loading">
+          <div class="row">
+            <div class="col s12 m6">
+              <mat-form-field appearance="legacy" floatLabel="always" class="w-100-p">
+                <mat-label>{{'ROLE.ROLE-NAME' | translate}}</mat-label>
+                <input matInput placeholder="{{'ROLE.ROLE-NAME' | translate}}" formControlName="name" class="w-100-p">
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="!scopeRestricted" class="row">
+            <div class="col s12 m6">
+              <mat-form-field>
+                <mat-select #tenantList (change)="onTenantSelection($event)" placeholder="{{'ROLE-TENANT' | translate}}"
+                  formControlName="tenantId">
+                  <mat-option *ngFor="let item of tenants" [value]="item.id">
+                    {{ item.tenancyName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="!scopeRestricted" class="row">
+            <div class="col s12 m6">
+              <mat-checkbox formControlName="isFixed" (change)="onGlobalChanged($event)">
+                {{'ROLE.GLOBAL-ROLE-QUESTION' | translate}}</mat-checkbox>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </mat-tab>
+
+    <mat-tab label="{{'ROLE.PERMISSIONS' | translate}}">
+
+      <mat-expansion-panel *ngFor="let group of permissionGroups" aria-disabled="false" [expanded]="false"
+        class="role-row my-12">
+
+        <mat-expansion-panel-header class="p-2 px-3" aria-disabled="false" (click)="onToggleGroupDisplay(group)"
+          expandedHeight="48px" collapsedHeight="48px">
+          <div class="text-center my-auto pr-8">
+            <mat-icon matListIcon>account_circle</mat-icon>
+          </div>
+          <div class="col-10 col-sm-11 no-gutters row p-0">
+            <div class="col-12 my-auto mx-8">
+              <span>{{ group.name | translate}}</span>
+              <!-- <span>{{ group.name }}</span> -->
+            </div>
+          </div>
+        </mat-expansion-panel-header>
+
+        <mat-selection-list class="tenant-tab-content p-2">
+          <div *ngFor="let p of group.permissions">
+            <mat-list-option *ngIf="canShowPermission(p)" class="tenant-tab-content" [selected]="p.isSelected"
+              (click)="p.isSelected = ! p.isSelected">
+              <h4 matLine>
+                {{ p.code | translate }}
+                <!-- {{ p.name }} -->
+              </h4>
+            </mat-list-option>
+          </div>
+        </mat-selection-list>
+      </mat-expansion-panel>
+
+    </mat-tab>
+
+    <!-- 
+    <mat-tab label="{{'Users' | translate}}">
+      <mat-list class="tenant-tab-content p-2">
+        <mat-list-item class="tenant-tab-content" *ngFor="let user of role.users">
+          <mat-icon matListIcon>person pin</mat-icon>
+          <h4 matLine>
+            {{user.firstName}} {{user.lastName}}
+          </h4>
+          <p matLine>
+            <span> {{user.username}} </span>
+            <span> {{user.email}} </span>
+          </p>
+        </mat-list-item>
+      </mat-list>
+    </mat-tab> -->
+
+    <!-- <mat-tab *ngIf="cloneEnabled" label="{{'Clone' | translate}}">
+      <form *ngIf="cloneForm" [formGroup]="cloneForm" (ngSubmit)="onCloneRole()" novalidate>
+        <mat-card class="standard-card">
+          <mat-card-content>
+            <mat-form-field *ngIf="otherTenants && otherTenants.length > 0">
+              <mat-select placeholder="{{'Tenant' | translate}}" formControlName="tenantId">
+                <mat-option *ngFor="let item of otherTenants" [value]="item.id">
+                  {{ item.tenancyName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="row">
+              <div class="col s12 m6">
+                <mat-checkbox formControlName="moveUsersToNewRole">{{'Move users to new role' | translate}}
+                </mat-checkbox>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button type="submit" class="mt-10" color="primary">{{"Submit" | translate}}</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </mat-tab> -->
+
+  </mat-tab-group>
+
+  <div class="row" *ngIf="!readOnly">
+    <div class="col s12 my-8">
+      <button mat-raised-button [disabled]="loading" type="button" class="mx-8" (click)="onSubmit()"
+        color="accent">{{'FORM-CONTROLS.SAVE' | translate}}</button>
+      <button mat-raised-button [disabled]="loading" type="button" class="mx-8"
+        (click)="onCancel()">{{'FORM-CONTROLS.CANCEL' | translate}}</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 my-8">
+      <span *ngIf="errors?.edit" class="mat-body danger">{{errors?.edit}}</span>
+    </div>
+  </div>
+
+  <!-- <mat-progress-bar *ngIf="loading" color="primary" mode="query"></mat-progress-bar> -->
+
+</div>

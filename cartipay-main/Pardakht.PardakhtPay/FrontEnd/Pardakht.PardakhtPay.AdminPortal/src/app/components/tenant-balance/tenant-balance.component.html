@@ -1,0 +1,72 @@
+<div id="usersegmentgroups" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" class="list-max-height h-160">
+            <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start" fxLayout.gt-xs="row"
+                 fxLayoutAlign.gt-xs="start center" style="min-height:100%;">
+                <div class="logo mb-24 mb-sm-0 filter-padding"
+                     fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/reports'">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                        money
+                    </mat-icon>
+                    <span class="logo-text h1 mr-16" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'REPORTS.CURRENT-BALANCE' | translate}}</span>
+                </div>
+                <div class="logo my-4 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                    <button class="mr-0 mr-sm-16" mat-icon-button (click)="refresh()" title="{{'BANK-STATEMENT.GENERAL.REFRESH' | translate }}">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+                </div>
+                
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <mat-select [(ngModel)]="args.accountGuids" multiple placeholder="{{'BANK-STATEMENT.GENERAL.ACCOUNT-PLACE-HOLDER' | translate}}"
+                                    [compareWith]="equals" #accountsSelect="ngModel">
+                            <mat-select-trigger *ngIf="args.accountGuids?.length > 1">
+                                <span class="example-additional-selection">
+                                    ({{args.accountGuids.length }} {{'GENERAL.CRITERIA_SELECTED' | translate}})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option>
+                                <ngx-mat-select-search ngModel (ngModelChange)="filterBankAccounts($event)" [placeholderLabel]="translateService.instant('GENERAL.FILTER')"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option disabled="disabled"
+                                        class="filter-option">
+                                <button mat-raised-button
+                                        class="mat-primary fill text-sm"
+                                        (click)="selectAll(accountsSelect, bankAccounts)">
+                                    Select All
+                                </button>
+                                <button mat-raised-button
+                                        class="mat-accent fill text-sm"
+                                        (click)="deselectAll(accountsSelect)">
+                                    Deselect All
+                                </button>
+                            </mat-option>
+                            <mat-option *ngFor="let account of getAccounts()" [value]="account.accountGuid">{{ getLoginName(account.loginGuid) + '-' + account.accountNo }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <mat-progress-bar *ngIf="reportLoading || ownersLoading" color="primary" mode="query"></mat-progress-bar>
+        <div *ngIf="reportItems && owners" class="content-card mat-white-bg" fxFlex>
+            <ag-grid-angular #agGrid
+                             style="width: 100%; height: 100%; min-height:150px;"
+                             id="myGrid"
+                             class="ag-theme-balham"
+                             [columnDefs]="columnDefs"
+                             [pagination]="true"
+                             [paginationPageSize]="20"
+                             [rowData]="reportItems"
+                             [rowSelection]="'single'"          
+                             [getRowStyle]="getRowStyle"
+                             [enableRtl]="enableRtl"
+                             (gridReady)="onGridReady($event)"
+                             [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+        </div>
+    </div>
+</div>

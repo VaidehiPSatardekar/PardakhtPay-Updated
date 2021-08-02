@@ -1,0 +1,16 @@
+﻿ALTER TABLE [RiskyKeyword] DROP CONSTRAINT [PK_RiskyKeyword];
+
+GO
+
+EXEC sp_rename N'[RiskyKeyword]', N'RiskyKeywords';
+
+GO
+
+ALTER TABLE [RiskyKeywords] ADD CONSTRAINT [PK_RiskyKeywords] PRIMARY KEY ([Id]);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190503145521_20190503_1555_RiskyKeywordsRenameTable', N'2.1.4-rtm-31024');
+
+GO

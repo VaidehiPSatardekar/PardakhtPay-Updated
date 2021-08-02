@@ -1,0 +1,117 @@
+﻿@model Pardakht.PardakhtPay.Shared.Models.WebService.CompletePaymentResponse
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پرداخت الکترونیک البرز پرداخت</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.png" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
+    <!-- Bootstrap, styles -->
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap-rtl.min.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/common.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/states.css" rel="stylesheet" media="screen">
+</head>
+<body class="bg-img states-page">
+    <form method="post" action="@Model.ReturnUrl" id="cpform">
+        <header>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center align-items-start">
+                        <a href="#" class="secondary-logo d-block ml-md-3 ml-2">
+                            <img src="/img/shaparak-logo.png" alt="Shaparak logo">
+                        </a>
+                        <a href="index.html" class="main-logo d-flex align-items-center justify-content-center">
+                            <img src="/img/logo.png" alt="PardakhtPay logo" width="212">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        @if (Model.ResultCode == Pardakht.PardakhtPay.Shared.Models.WebService.TransactionResultEnum.Success)
+        {
+            <main>
+                <div class="container-fluid wrapper">
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <div class="boxer success-box d-flex flex-column justify-content-center align-items-center">
+                                <img src="/img/success.png" width="152" alt="Success result">
+                                <p class="f_bold text-center">مشتری گرامی پرداخت شما با موفقیت انجام شد .</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+        else
+        {
+            <main>
+                <div class="container-fluid wrapper">
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <div class="boxer warning-box d-flex flex-column justify-content-center align-items-center">
+                                <img src="/img/warning.png" width="152" alt="Success result">
+                                <p class="f_bold text-center">
+                                    @if (string.IsNullOrEmpty(Model.Message)
+                                    || Model.Message.Contains("محدودیت استفاده از 10 کارت متفاوت در روز در تراکنش کارت به کارت موفق")
+                                    || Model.Message.Contains(Pardakht.PardakhtPay.Shared.Models.Helper.UserNotFound)
+                                    || Model.Message.Contains(Pardakht.PardakhtPay.Shared.Models.Helper.MobileDeviceLimit2)
+                                    || Model.Message.Contains(Pardakht.PardakhtPay.Shared.Models.Helper.MobileDeviceLimit3))
+                                    {
+                                        @:پرداخت شما ناموفق بود
+                                    }
+                                    else
+                                    {
+                                        @:@string.Format("پرداخت شما ناموفق بود. {0}", Model.Message)
+                                    }
+                                    <br />
+                                    شما به سایت فروشنده هدایت خواهید شد
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+
+        <input type="hidden" id="invoice_key" name="invoice_key" value="@Model.Token" />
+        <input type="hidden" name="bank_code" value="@Model.BankNumber" />
+        <input type="hidden" name="card_number" value="@Model.CardNumber" />
+        <input type="hidden" name="amount" value="@Model.Amount" />
+        <input type="hidden" name="payment_type" value="@Model.PaymentType" />
+        <input type="hidden" name="inProcess" value="@Model.InProcess" />
+        <input type="hidden" name="status" value="@(Model.ResultCode == Pardakht.PardakhtPay.Shared.Models.WebService.TransactionResultEnum.Success ? 1 : 0)" />
+        @if (Model.ResultCode != Pardakht.PardakhtPay.Shared.Models.WebService.TransactionResultEnum.Success)
+        {
+            <input type="hidden" name="errorCode" value="@((int)Model.ResultCode)" />
+            <input type="hidden" name="errorDescription" value="@Model.ResultDescription" />
+            <input type="hidden" name="error_message" value="@Model.Message" />
+        }
+    </form>
+
+    <script src="~/components/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var timer = setTimeout(() => {
+                var form = $('#cpform');
+                form.submit();
+                clearTimeout(timer);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

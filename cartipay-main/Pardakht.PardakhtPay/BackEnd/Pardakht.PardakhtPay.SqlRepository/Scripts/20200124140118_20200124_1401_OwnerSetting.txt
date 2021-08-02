@@ -1,0 +1,22 @@
+﻿CREATE TABLE [OwnerSettings] (
+    [Id] int NOT NULL IDENTITY,
+    [OwnerGuid] nvarchar(70) NULL,
+    [CreateDate] datetime2 NOT NULL,
+    [CreateUserId] nvarchar(70) NULL,
+    [UpdateDate] datetime2 NOT NULL,
+    [UpdateUserId] nvarchar(70) NULL,
+    [WaitAmountForCurrentWithdrawal] bit NOT NULL DEFAULT 1,
+    CONSTRAINT [PK_OwnerSettings] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE UNIQUE INDEX [UIX_OwnerSettingGuid] ON [OwnerSettings] ([OwnerGuid]) WHERE [OwnerGuid] IS NOT NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20200124140118_20200124_1401_OwnerSetting', N'2.2.6-servicing-10079');
+
+GO
+

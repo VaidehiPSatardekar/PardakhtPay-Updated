@@ -1,0 +1,16 @@
+/* hack to prevent 16px padding appearing even though panel is not expanded */
+// ::ng-deep .role-row .mat-expansion-panel-body {
+//   padding-bottom: 0 !important;
+// }
+
+// ::ng-deep .mat-tab-label-active {
+//   opacity: 1 !important;
+// }
+
+// .role-row-header{
+//   min-height: 48px;
+// }
+
+// .role-edit-container {
+//   max-width: 1000px;
+// }

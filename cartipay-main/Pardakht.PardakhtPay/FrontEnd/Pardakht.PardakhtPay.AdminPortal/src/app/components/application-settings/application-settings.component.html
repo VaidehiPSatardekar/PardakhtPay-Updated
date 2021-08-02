@@ -1,0 +1,331 @@
+<mat-progress-bar *ngIf="getDetailLoading" color="primary" mode="query"></mat-progress-bar>
+<div id="merchantcustomers" class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <!-- / APP TITLE -->
+        </div>
+        <!--<app-transaction-list [merchantCustomer]="merchantCustomer"></app-transaction-list>-->
+        <div class="content-card cc-80">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="settingsForm" [formGroup]="settingsForm" class="product w-100-p" novalidate>
+                    <div class="w-100-p" style="padding:5px;" fxLayout="row" fxLayoutAlign="end center">
+                        <button *ngIf="settingsForm" mat-raised-button
+                                class="accent"
+                                [disabled]="settingsForm.invalid"
+                                (click)="onSubmit()">
+                            <span>{{'APPLICATION-SETTINGS.GENERAL.SAVE' | translate}}</span>
+                        </button>
+                    </div>
+                    <mat-tab-group class="fullwidth">
+                        <mat-tab label="{{'APPLICATION-SETTINGS.GENERAL.SMS-CONFIGURATION' | translate}}">
+
+                            <div class="tab-content p-24" style="display:flex" fusePerfectScrollbar fxLayout="column" formGroupName="smsConfiguration">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.URL' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.URL' | translate}}" formControlName="url" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.API-KEY' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.API-KEY' | translate}}" formControlName="apiKey" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SMS-API-KEY' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SMS-API-KEY' | translate}}" formControlName="smsApiKey" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SMS-SECRET-KEY' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SMS-SECRET-KEY' | translate}}" formControlName="smsSecretKey" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.TEMPLATE-ID' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.TEMPLATE-ID' | translate}}" formControlName="templateId" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.EXPIRE-SECONDS' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.EXPIRE-SECONDS' | translate}}" formControlName="seconds" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.MAXIMUM-TRY-COUNT-TO-REGISTER-DEVICE' | translate}}</mat-label>
+                                    <input matInput type="number" placeholder="{{'APPLICATION-SETTINGS.GENERAL.MAXIMUM-TRY-COUNT-TO-REGISTER-DEVICE' | translate}}" formControlName="maximumTryCountForRegisteringDevice" required>
+                                </mat-form-field>
+                                <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="saveDevices"
+                                                  formControlName="saveDevices">
+                                        {{'APPLICATION-SETTINGS.GENERAL.SAVE-DEVICE' | translate}}
+                                    </mat-checkbox>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSmsConfirmation"
+                                                  formControlName="useSmsConfirmation">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SMS-CONFIRMATION' | translate}}
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+                        <mat-tab label="{{'APPLICATION-SETTINGS.GENERAL.MALICIOUS-CUSTOMERS' | translate}}">
+
+                            <div class="tab-content p-24" style="display:flex" fusePerfectScrollbar fxLayout="column" formGroupName="maliciousCustomerSettings">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.FAKE-CARD-NUMBER' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.FAKE-CARD-NUMBER' | translate}}" formControlName="fakeCardNumber" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.FAKE-CARD-HOLDER-NAME' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.FAKE-CARD-HOLDER-NAME' | translate}}" formControlName="fakeCardHolderName" required>
+                                </mat-form-field>
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="{{'APPLICATION-SETTINGS.GENERAL.BANK-ACCOUNTS' | translate}}">
+
+                            <div class="tab-content p-24" style="display:flex" fusePerfectScrollbar fxLayout="column" formGroupName="bankAccountConfiguration">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.ACCOUNT-BLOCK-LIMIT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.ACCOUNT-BLOCK-LIMIT' | translate}}" formControlName="blockAccountLimit" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.TEST-ACCOUNTS' | translate}}</mat-label>
+                                    <input matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.TEST-ACCOUNTS' | translate}}" formControlName="testingAccounts" required>
+                                </mat-form-field>
+
+                                <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSameWithdrawalAccountForCustomer"
+                                                  formControlName="useSameWithdrawalAccountForCustomer">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SAME-ACCOUNT-NUMBER-FOR-CUSTOMER' | translate}}
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="{{'APPLICATION-SETTINGS.GENERAL.PARDAKHTPAL' | translate}}">
+                            <div class="tab-content p-24" style="display:flex" fusePerfectScrollbar fxLayout="column" formGroupName="mobileApiConfiguration">
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useAsanPardakhtApi"
+                                                  formControlName="useAsanPardakhtApi">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-ASANPARDAKHT-API' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.ASANPARDAKHT-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.ASANPARDAKHT-ORDER' | translate}}" formControlName="asandPardakhtApiOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.ASANPARDAKHT-WITHDRAW-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.ASANPARDAKHT-WITHDRAW-ORDER' | translate}}" formControlName="asanpardakhtWithdrawalOrder" required>
+                                </mat-form-field>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useAsanpardahkhtForWithdrawals"
+                                                  formControlName="useAsanpardahkhtForWithdrawals">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-ASANPARDAKHT-API-FOR-WITHDRAWALS' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useHamrahCardApi"
+                                                  formControlName="useHamrahCardApi">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-HAMRAH-CARD-API' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.HAMRAH-CARD-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.HAMRAH-CARD-ORDER' | translate}}" formControlName="hamrahCardApiOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.HAMRAH-CARD-WITHDRAW-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.HAMRAH-CARD-WITHDRAW-ORDER' | translate}}" formControlName="hamrahCardWithdrawalOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.HAMRAH-CARD-TRY-COUNT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.HAMRAH-CARD-TRY-COUNT' | translate}}" formControlName="hamrahMaximumTryCount" required>
+                                </mat-form-field>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useHamrahCardForWithdrawals"
+                                                  formControlName="useHamrahCardForWithdrawals">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-HAMRAH-CARD-API-FOR-WITHDRAWALS' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSekeh"
+                                                  formControlName="useSekeh">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SEKEH-API' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SEKEH-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SEKEH-ORDER' | translate}}" formControlName="sekehApiOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SEKEH-WITHDRAW-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SEKEH-WITHDRAW-ORDER' | translate}}" formControlName="sekehWithdrawalOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SEKEH-TRY-COUNT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SEKEH-TRY-COUNT' | translate}}" formControlName="sekehMaximumTryCount" required>
+                                </mat-form-field>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSekehForWithdrawals"
+                                                  formControlName="useSekehForWithdrawals">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SEKEH-API-FOR-WITHDRAWALS' | translate}}
+                                    </mat-checkbox>
+                                </div>
+                                
+                                
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSes"
+                                                  formControlName="useSes">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SES-API' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SES-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SES-ORDER' | translate}}" formControlName="sesApiOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SES-WITHDRAW-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SES-WITHDRAW-ORDER' | translate}}" formControlName="sesWithdrawalOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SES-TRY-COUNT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SES-TRY-COUNT' | translate}}" formControlName="sesMaximumTryCount" required>
+                                </mat-form-field>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSesForWithdrawals"
+                                                  formControlName="useSesForWithdrawals">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SES-API-FOR-WITHDRAWALS' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SES-LIMIT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SES-LIMIT' | translate}}" formControlName="sesLimit" required>
+                                </mat-form-field>
+                                
+                                
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSadadPsp"
+                                                  formControlName="useSadadPsp">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SADAT-PSP-API' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SADAT-PSP-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SADAT-PSP-ORDER' | translate}}" formControlName="sadadPspOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SADAT-PSP-WITHDRAW-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SADAT-PSP-WITHDRAW-ORDER' | translate}}" formControlName="sadadPspWithdrawalOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.SADAT-PSP-TRY-COUNT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.SADAT-PSP-TRY-COUNT' | translate}}" formControlName="sadadPspMaxTryCount" required>
+                                </mat-form-field>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useSadadPspForWithdrawals"
+                                                  formControlName="useSadadPspForWithdrawals">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-SADAT-PSP-API-FOR-WITHDRAWALS' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useMydigi"
+                                                  formControlName="useMydigi">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-MY-DIGI-API' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.MY-DIGI-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.MY-DIGI-ORDER' | translate}}" formControlName="mydigiOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.MY-DIGI-WITHDRAW-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.MY-DIGI-WITHDRAW-ORDER' | translate}}" formControlName="mydigiWithdrawalOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.MY-DIGI-TRY-COUNT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.MY-DIGI-TRY-COUNT' | translate}}" formControlName="mydigiMaxTryCount" required>
+                                </mat-form-field>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="useMydigiForWithdrawals"
+                                                  formControlName="useMydigiForWithdrawals">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-MY-DIGI-API-FOR-WITHDRAWALS' | translate}}
+                                    </mat-checkbox>
+                                </div>
+                                
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="usePayment780"
+                                                  formControlName="usePayment780">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-PAYMENT780-API' | translate}}
+                                    </mat-checkbox>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.PAYMENT780-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.PAYMENT780-ORDER' | translate}}" formControlName="payment780ApiOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.PAYMENT780-WITHDRAW-ORDER' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.PAYMENT780-WITHDRAW-ORDER' | translate}}" formControlName="payment780WithdrawalOrder" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.PAYMENT780-TRY-COUNT' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.PAYMENT780-TRY-COUNT' | translate}}" formControlName="payment780MaximumTryCount" required>
+                                </mat-form-field>
+
+                                <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+                                    <mat-checkbox class="padding-10" [name]="usePayment780ForWithdrawals"
+                                                  formControlName="usePayment780ForWithdrawals">
+                                        {{'APPLICATION-SETTINGS.GENERAL.USE-PAYMENT780-API-FOR-WITHDRAWALS' | translate}}
+                                    </mat-checkbox>
+                                </div>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'APPLICATION-SETTINGS.GENERAL.DEFAULT-REGISTRATION' | translate}}</mat-label>
+                                    <input type="number" matInput placeholder="{{'APPLICATION-SETTINGS.GENERAL.DEFAULT-REGISTRATION' | translate}}" formControlName="deviceRegistrationApi" required>
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Pardakht.PardakhtPay.ExternalServices.Queue</AssemblyName>
+    <RootNamespace>Pardakht.PardakhtPay.ExternalServices.Queue</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0" />
+    <PackageReference Include="Azure.Storage.Common" Version="12.6.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Host.Storage" Version="4.0.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BackEnd\Pardakht.PardakhtPay.Shared.Models\Pardakht.PardakhtPay.Shared.Models.csproj" />
+    <ProjectReference Include="..\BackEnd\Pardakht.PardakhtPay.Shared\Pardakht.PardakhtPay.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

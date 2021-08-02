@@ -1,0 +1,77 @@
+<div class="page-layout carded fullwidth">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center">
+    <div class="list-max-height h-160">
+
+      <!-- HEADER -->
+      <div class="header accent" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="space-between center" fxFlex>
+
+        <!-- APP TITLE -->
+        <div class="logo mb-16 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+          <button *ngIf="isarrowBack" class="mr-0 mr-sm-16" mat-icon-button (click)="onCancel()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <ng-container>
+            <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+              assessment
+            </mat-icon>
+            <!-- <span  class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            {{ 'TENANT-STAFF-USERS.TITLE' | translate }}
+          </span> -->
+            <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+              {{title}}
+            </span>
+          </ng-container>
+
+          <!-- / APP TITLE -->
+
+          <!-- <div *ngIf="!isTenantUser " class="filter-padding">
+            <tenant-select (selectionChanged)="tenantSelectionChanged($event)" [tenants$]="tenants$"></tenant-select>
+          </div> -->
+        </div>
+      </div>
+      <!-- / HEADER -->
+    </div>
+
+    <!-- CONTENT CARD -->
+    <div class="fuse-card auto-width tenant-edit-container p-8">
+      <!-- <mat-progress-bar *ngIf="(loadingTenants$ | async)" color="primary" mode="query">
+      </mat-progress-bar> -->
+
+      <ng-container *ngIf="selectedTenant && isCreate ">
+        <tcam-staff-list (isCreatingInfo)="isCreating(true)" (cancel)="onCancel()" (onarrowback)="onArrowBack()"
+          [tenantGuid]="selectedTenant.tenantPlatformMapGuid" [tenantPlatformMap]="selectedTenant"
+          [tenantGuid$]="selectedTenant$" [roleFilter]="'T'" [autoResize]="false">
+        </tcam-staff-list>
+      </ng-container>
+
+      <ng-container *ngIf="selectedTenant && !isCreate ">
+        <tcam-staff-list (isCreatingInfo)="isCreating(true)" (cancel)="onCancel()" (onarrowback)="onArrowBack()"
+          [tenantGuid]="selectedTenant.tenantPlatformMapGuid" [tenantPlatformMap]="selectedTenant"
+          [tenantGuid$]="selectedTenant$" [roleFilter]="'T'" [autoResize]="false">
+        </tcam-staff-list>
+
+      </ng-container>
+      <ng-container *ngIf="!selectedTenant && isCreate">
+        <tcam-staff-list (isCreatingInfo)="isCreating(true)" (cancel)="onCancel()" (onarrowback)="onArrowBack()"
+          [roleFilter]="'T'" [autoResize]="false" [tenantStaffUser]="true">
+        </tcam-staff-list>
+      </ng-container>
+
+      <ng-container *ngIf="!selectedTenant && !isCreate">
+        <tcam-staff-list (isCreatingInfo)="isCreating(true)" (cancel)="onCancel()" (onarrowback)="onArrowBack()"
+          [roleFilter]="'T'" [autoResize]="false" [tenantStaffUser]="true">
+        </tcam-staff-list>
+      </ng-container>
+    </div>
+
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>

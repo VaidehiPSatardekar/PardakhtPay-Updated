@@ -1,0 +1,941 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TotalCoding.Cartipay.RestApi</name>
+    </assembly>
+    <members>
+        <member name="T:TotalCoding.Cartipay.RestApi.ActionLogAttribute">
+            <summary>
+            Represents a class which manages log operations for operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.ActionLogAttribute.#ctor">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.ActionLogAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Log operation
+            </summary>
+            <param name="context">Execution context</param>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.ApiCallAttribute">
+            <summary>
+            Represents an attribute to define the operation is an API call
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.ApiCallAttribute.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            Sets current request is and api call
+            </summary>
+            <param name="context">Execution context</param>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.AutoMapperConfig">
+            <summary>
+            Represents a class to manage auto mapper configuration
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.AutoMapperConfig.Initialize">
+            <summary>
+            Initialize mappers
+            </summary>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.CartipayAuthentication">
+            <summary>
+            Represents a class to manage cartipay authentication
+            </summary>
+        </member>
+        <member name="P:TotalCoding.Cartipay.RestApi.CartipayAuthentication.CurrentConnectionString">
+            <summary>
+            Gets or sets default connection string of the application
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.CartipayAuthentication.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.CartipayAuthentication.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Handles invoking the current operation
+            </summary>
+            <param name="context">Current http context</param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.CartipayAuthentication.SetConnectionString(TotalCoding.Cartipay.Shared.Models.WebService.CurrentUser,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Sets connection string to the current user
+            </summary>
+            <param name="user">CurrentUser instance</param>
+            <param name="context">Current http context instance</param>
+            <returns></returns>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.CartipayExceptionFilter">
+            <summary>
+            Represents a filter to handle exceptions
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.CartipayExceptionFilter.#ctor(Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.CartipayExceptionFilter})">
+            <summary>
+            Initialize a new instance of this filter
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.CartipayExceptionFilter.OnException(Microsoft.AspNetCore.Mvc.Filters.ExceptionContext)">
+            <summary>
+            Handles exception
+            </summary>
+            <param name="context">Current <see cref="T:Microsoft.AspNetCore.Mvc.Filters.ExceptionContext"/> instance</param>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.ConfigurationExtensions">
+            <summary>
+            Manages configurations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.ConfigurationExtensions.SetupConfigurations(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Configures settings
+            </summary>
+            <param name="services">Service collection</param>
+            <param name="configuration">Configuration instance</param>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.AccountController">
+            <summary>
+            Manages account operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountController.#ctor(TotalCoding.Cartipay.Application.Interfaces.IAccountService)">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="accountService"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountController.Login(TotalCoding.Cartipay.Shared.Models.WebService.LoginModel)">
+            <summary>
+            Logins to the system.
+            </summary>
+            <description>
+            Logins to the system
+            </description>
+            <remarks>
+            Sample request
+            
+            POST /api/account/login
+            {
+                "username": "username",
+                "password": "password"
+            }
+            </remarks>
+            <param name="model"></param>
+            <returns>Token</returns>
+            <response code="200">Returns access token</response>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountController.ChangePassword(TotalCoding.Cartipay.Shared.Models.WebService.ChangePasswordModel)">
+            <summary>
+            Changes password of a user
+            </summary>
+            <description>
+            Changes password of a user
+            </description>
+            <remarks>
+            Sample Request
+            
+                POST/api/account/change-password
+                {
+                    "oldPassword" : "abcd",
+                    "newPassword" : "1234"
+                }
+            </remarks>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">Returns success message if the operation is success</response>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountController.GetUsers">
+            <summary>
+            Gets users for current tenant
+            </summary>
+            <description>
+            Gets users for current tenant
+            </description>
+            <returns>Users</returns>
+            <response code="200">Returns user list</response>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountController.GetUser(System.Int32)">
+            <summary>
+            Returns a user with given id
+            </summary>
+            <description>
+            Returns a user with given id
+            </description>
+            <param name="id"></param>
+            <returns>User</returns>
+            <response code="200">Returns user</response>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountController.Post(TotalCoding.Cartipay.Shared.Models.WebService.UserCreateDTO)">
+            <summary>
+            Creates a new user
+            </summary>
+            <description>
+            Creates a new user
+            </description>
+            <remarks>
+            Sample Request
+            
+                POST /api/account
+                {
+                    "username": "username",
+                    "password": "password",
+                    "firstName": "firsatName",
+                    "lastName": "lastName",
+                    "email": "Email",
+                    "isApiKey": false,
+                    "tenantDomainPlatformMapGuid": "guid"
+                }
+            </remarks>
+            <param name="model"></param>
+            <returns>Returns created user</returns>
+            <response code="200">Returns the user which is created</response>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountController.Put(System.Int32,TotalCoding.Cartipay.Shared.Models.WebService.UserUpdateDTO)">
+            <summary>
+            Updates current user
+            </summary>
+            <description>
+            Updates current user
+            </description>
+            <remarks>
+                PUT /api/account/id
+                {
+                    "id": 1,
+                    "username": "total",
+                    "firstName": "firsatName",
+                    "lastName": "lastName",
+                    "email": "email",
+                    "isApiKey": false,
+                    "tenantDomainPlatformMapGuid": "guid"
+                }
+            </remarks>
+            <param name="id">Id of the user</param>
+            <param name="model"></param>
+            <returns>Returns updated user</returns>
+            <response code="200">Returns the user which is created</response>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.AccountingController">
+            <summary>
+            Manages accounting operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountingController.#ctor(TotalCoding.Cartipay.Application.Interfaces.ITransactionService,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.AccountingController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="transactionService"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccountingController.Search(TotalCoding.Cartipay.Shared.Models.WebService.TransactionSearchArgs)">
+            <summary>
+            Search accounting values
+            </summary>
+            <description>
+            Search accounting values
+            </description>
+            <remarks>
+             Sample Request
+                POST /api/accounting/search
+                {
+                    "pageSize":20,
+                    "pageNumber":0,
+                    "dateRange":"dt",
+                    "statuses":["1","2","3","4","5","6"],
+                    "tenants":["308ed0c8-3c7a-470f-8180-f80722dc5490"],
+                    "timeZoneInfoId":"UTC"
+                }
+            
+            </remarks>
+            <param name="args">Search parameters. See <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TransactionSearchArgs"/></param>
+            <returns>List of accounting values. See <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.DailyAccountingDTO"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController">
+            <summary>
+            Manages bank login operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.#ctor(TotalCoding.Cartipay.Application.Interfaces.IOwnerBankLoginService,TotalCoding.Cartipay.Shared.Models.WebService.CurrentUser,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.BankLoginController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="ownerBankLoginService"></param>
+            <param name="currentUser"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.GetLoginList">
+            <summary>
+            Returns login list
+            </summary>
+            <description>
+            Returns login list
+            </description>
+            <remarks>
+            
+                Sample Request
+                
+                    GET /api/banklogin/getloginlist
+            </remarks>
+            <returns>Login list. List of <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginSelect"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.GetOwnerLoginList">
+            <summary>
+            Returns login list (Including login requests)
+            </summary>
+            <description>
+            Returns login list (Including login requests)
+            </description>
+            <remarks>
+            
+                Sample Request
+                
+                    GET /api/banklogin/getownerloginlist
+            </remarks>
+            <returns>Login list. List of <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginSelect"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.GetAccountListByUsername(System.String)">
+            <summary>
+            Returns account list with given username
+            </summary>
+            <description>
+            Returns account list with given username
+            </description>
+            <remarks>
+             Sample Request
+                GET /api/banklogin/getaccountlistbyusername
+                {
+                    "username": "total"
+                }
+            </remarks>
+            <param name="username">Username of a spesific login information</param>
+            <returns>List of <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotAccountInformation"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.GetAccountList">
+            <summary>
+            Returns all of the acccounts
+            </summary>
+            <description>
+            Returns all of the accounts
+            </description>
+            <remarks>
+            Sample Request
+                GET /api/banklogin/getaccountlist
+            </remarks>
+            <returns></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.GetAccountsByLoginGuid(System.String)">
+            <summary>
+            Returns accounts by the login guid
+            </summary>
+            <description>
+            Returns accounts by the login guid
+            </description>
+            <param name="loginGuid">Guid of the login</param>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+            <returns>List of bank accounts. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotAccountInformation"/></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.GetUnusedAccountsByLoginGuid(System.String)">
+            <summary>
+            Returns unused accounts by the login guid
+            </summary>
+            <description>
+            Returns unused accounts by the login guid
+            </description>
+            <param name="loginGuid">Guid of the login</param>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+            <returns>List of bank accounts. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotAccountInformation"/></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.Post(TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginCreateDTO)">
+            <summary>
+            Creates new bank login request
+            </summary>
+            <description>
+            Creates new bank login request
+            </description>
+            <remarks>
+                Sample Request
+                
+                POST /api/banklogin
+                {
+                    "bankId": 1,
+                    "username": "total",
+                    "password": "pass",
+                    "ownerGuid": "guid".
+                    "friendlyName" :"my live login",
+                    "tenantGuid": "guid of my tenant"
+                }
+            </remarks>
+            <param name="item">Login request parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginCreateDTO"/></param>
+            <returns>Created bank bot login. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginSelect"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.Get(System.Int32)">
+            <summary>
+            Returns the bank login with given id
+            </summary>
+            <description>
+            Returns the bank login with given id
+            </description>
+            <param name="id"></param>
+            <returns>Login with parmeter. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginSelect"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.Put(System.Int32,TotalCoding.Cartipay.Shared.Models.WebService.OwnerBankLoginUpdateDTO)">
+            <summary>
+            Updates login record
+            </summary>
+            <description>
+            Updates login record
+            </description>
+            <remarks>
+                Sample Request
+                PUT /api/banklogin/1
+                {
+                    "friendlyName": "My Live Login"
+                }
+            </remarks>
+            <param name="id">Id of login</param>
+            <param name="item">Login update parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.OwnerBankLoginUpdateDTO"/></param>
+            <returns>Updated login info</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.GetBanks">
+            <summary>
+            Returns bank informations
+            </summary>
+            <description>
+            Returns bank informations
+            </description>
+            <returns>List of <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotBankInformation"/></returns>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.UpdateLoginStatus(TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginStatus)">
+            <summary>
+            Called from bank bot when the bank login information is changed.
+            </summary>
+            <param name="request">Login informations. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginStatus"/></param>
+            <returns>Returns http status code only</returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.UpdateLoginInformation(System.Int32,TotalCoding.Cartipay.Shared.Models.WebService.BankBotUpdateLoginDTO)">
+            <summary>
+            Updates a login information
+            </summary>
+            <description>
+            Updates a login information
+            </description>
+            <param name="id">Id of the login</param>
+            <param name="login">Parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotUpdateLoginDTO"/></param>
+            <returns>True if the operation is success</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.LoginRequestChanged(TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginRequestChangedDTO)">
+            <summary>
+            It is called from the bank bot when a login request status is changed.
+            </summary>
+            <description>
+            It is called from the bank bot when a login reqeust status is chagned.
+            </description>
+            <param name="model">Request model. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankBotLoginRequestChangedDTO"/></param>
+            <returns>Status Code</returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankLoginController.CreateLoginFromLoginRequest(TotalCoding.Cartipay.Shared.Models.WebService.CreateLoginFromLoginRequestDTO)">
+            <summary>
+            Creates new bank login from login request
+            </summary>
+            <description>
+            Creates new bank login from login request
+            </description>
+            <param name="model">Request model. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.CreateLoginFromLoginRequestDTO"/></param>
+            <returns>Status code</returns>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.BankStatementItemController">
+            <summary>
+            Manages bank statement items
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankStatementItemController.#ctor(TotalCoding.Cartipay.Application.Interfaces.IBankStatementItemService,TotalCoding.Cartipay.Shared.Models.WebService.CurrentUser,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.BankStatementItemController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="service"></param>
+            <param name="currentUser"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankStatementItemController.Get(System.Int32)">
+            <summary>
+            Returns a bank statement item with the given id
+            </summary>
+            <description>
+            Returns a bank statement item with the given id
+            </description>
+            <param name="id">Id of the bank statement</param>
+            <returns>Bank Statement Item. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankStatementItemDTO"/></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankStatementItemController.Post(TotalCoding.Cartipay.Shared.Models.WebService.BankStatementItemDTO)">
+            <summary>
+            It is called from bank bot when a statement report item is created. Creates a new record to database
+            </summary>
+            <description>
+            It is called from bank bot when a statement report item is created. Creates a new record to database
+            </description>
+            <param name="item"></param>
+            <returns>Created statement item. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankStatementItemDTO"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankStatementItemController.Post(System.Collections.Generic.List{TotalCoding.Cartipay.Shared.Models.WebService.BankStatementItemDTO})">
+            <summary>
+            It is called from bank bot when a statement report items are created. Creates new records to database
+            </summary>
+            <description>
+            It is called from bank bot when a statement report items are created. Creates new records to database
+            </description>
+            <param name="item"></param>
+            <returns>Status code</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.BankStatementItemController.Search(TotalCoding.Cartipay.Shared.Models.WebService.BankStatementSearchArgs)">
+            <summary>
+            Search bank statement items
+            </summary>
+            <param name="args">Search arguments. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.BankStatementSearchArgs"/></param>
+            <returns></returns>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.CardToCardAccountController">
+            <summary>
+            Manages card to card operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CardToCardAccountController.#ctor(TotalCoding.Cartipay.Application.Interfaces.ICardToCardAccountService,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.CardToCardAccountController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="service"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CardToCardAccountController.Get">
+            <summary>
+            Returns all card to card accounts
+            </summary>
+            <description>
+            Returns all card to card accounts
+            </description>
+            <returns>List of <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.CardToCardAccountDTO"/></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CardToCardAccountController.Get(System.Int32)">
+            <summary>
+            Returns a card to card account with the given id
+            </summary>
+            <description>
+            Returns a card to card account with the given id
+            </description>
+            <param name="id">id of the card to card account</param>
+            <returns>Card to card account with given id. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.CardToCardAccountDTO"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CardToCardAccountController.Post(TotalCoding.Cartipay.Shared.Models.WebService.CardToCardAccountDTO)">
+            <summary>
+            Creates a new card to card account
+            </summary>
+            <description>
+            Creates a new card to card account
+            </description>
+            <param name="item">Card to card account parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.CardToCardAccountDTO"/></param>
+            <returns>Created card to card accounts</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CardToCardAccountController.Put(System.Int32,TotalCoding.Cartipay.Shared.Models.WebService.CardToCardAccountDTO)">
+            <summary>
+            Updates a card to card account
+            </summary>
+            <description>
+            Updates a card to card account
+            </description>
+            <param name="id">Id of the card to card account</param>
+            <param name="item">Card to card account dto. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.CardToCardAccountDTO"/></param>
+            <returns>Updated card to card account. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.CardToCardAccountDTO"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.CartipayBaseController">
+            <summary>
+            Base controller for api calls
+            </summary>
+        </member>
+        <member name="F:TotalCoding.Cartipay.RestApi.Controllers.CartipayBaseController.Logger">
+            <summary>
+            Logger instance
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CartipayBaseController.#ctor(Microsoft.Extensions.Logging.ILogger)">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CartipayBaseController.ReturnWebResponse``1(TotalCoding.Cartipay.Shared.Models.WebService.WebResponse{``0})">
+            <summary>
+            Returns response depends on the web response
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="response"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.CartipayBaseController.WebResponseAction(TotalCoding.Cartipay.Shared.Models.WebService.WebResponse)">
+            <summary>
+            Returns response depends on the web response
+            </summary>
+            <param name="response"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.DashboardController">
+            <summary>
+            Manages dashboard operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.DashboardController.#ctor(TotalCoding.Cartipay.Application.Interfaces.IDashboardService,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.DashboardController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="service"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.DashboardController.GetTransactionChartReport(TotalCoding.Cartipay.Domain.Dashboard.DashboardQuery)">
+            <summary>
+            Returns transaction chart report
+            </summary>
+            <param name="query">Parameters</param>
+            <returns>Chart report of transactions</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.DashboardController.GetAccountingChartReport(TotalCoding.Cartipay.Domain.Dashboard.DashboardQuery)">
+            <summary>
+            Returns accounting chart report
+            </summary>
+            <param name="query">Parameters</param>
+            <returns>Chart report of accounting</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.DashboardController.GetTransactionReport(TotalCoding.Cartipay.Domain.Dashboard.DashboardQuery)">
+            <summary>
+            Returns transaction report values
+            </summary>
+            <param name="query">Parameters</param>
+            <returns>Transaction report values</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.DashboardController.GetMerchantTransactionReport(TotalCoding.Cartipay.Domain.Dashboard.DashboardQuery)">
+            <summary>
+            Reports transaction reports by merchants
+            </summary>
+            <param name="query">Parameters</param>
+            <returns>Merchant transaction reports</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.DashboardController.GetAccountStatusReport(TotalCoding.Cartipay.Domain.Dashboard.DashboardQuery)">
+            <summary>
+            Returns account status report
+            </summary>
+            <param name="query">Parameters</param>
+            <returns>Account status report values</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController">
+            <summary>
+            Manages transaction craete and check operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController.#ctor(TotalCoding.Cartipay.Application.Interfaces.ITransactionService,TotalCoding.Cartipay.Shared.Models.WebService.CurrentUser,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.TransactionController})">
+            <summary>
+            Creates a new instance of this class
+            </summary>
+            <param name="transactionService"></param>
+            <param name="currentUser"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController.Create(TotalCoding.Cartipay.Shared.Models.Invoice.InvoiceRequest)">
+             <summary>
+             Creates a new transaction and generates a token.
+             We excpect the api key, amount and the callback url
+             We save the transaction and set token and the callback url
+             </summary>
+              <remarks>
+             Sample request:
+            
+                 
+                 api_key = daddfefefefefe9089034fdsfds
+                 amount = 50000
+                 return_url = http://returnurl.com
+             </remarks>
+            
+             <param name="invoiceRequest">Parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.Invoice.InvoiceRequest"/></param>
+             <returns>Generated token of the transaction. <see cref="T:TotalCoding.Cartipay.Shared.Models.Invoice.InvoiceCreateResponse"/></returns>
+             <response code="400">If parameters are invalid</response>
+             <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController.Check(System.String,System.String)">
+            <summary>
+            Returns the status of the transaction with the requested token
+            We don't call the bank bot in this request, we only check from our database.
+            Bank bot web job service checks the status and updates the database
+            </summary>
+            <param name="invoice_key">Invoice key</param>
+            <param name="api_key">Api key</param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController.Pay(System.String)">
+            <summary>
+            Redirection page of the payment
+            </summary>
+            <param name="invoice_key">Invoice key which is generated by the system</param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController.Complete(TotalCoding.Cartipay.Shared.Models.WebService.CompletePaymentRequest)">
+            <summary>
+            Completes operation
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController.Cancel(TotalCoding.Cartipay.Shared.Models.WebService.CancelPaymentRequest)">
+            <summary>
+            Cancel operation
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.InvoiceController.Error">
+            <summary>
+            Shows error page
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.MerchantController">
+            <summary>
+            Manages merchant operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.MerchantController.#ctor(TotalCoding.Cartipay.Application.Interfaces.IMerchantService,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.MerchantController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="service"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.MerchantController.Get">
+            <summary>
+            Returns all merchants
+            </summary>
+            <returns>List of merchants. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.MerchantDTO"/></returns>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.MerchantController.Get(System.Int32)">
+            <summary>
+            Returns the merchant with given id
+            </summary>
+            <param name="id">Id of the merchant</param>
+            <returns>Merchant. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.MerchantUpdateDTO"/></returns>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.MerchantController.Post(TotalCoding.Cartipay.Shared.Models.WebService.MerchantCreateDTO)">
+            <summary>
+            Creates a new merchant
+            </summary>
+            <param name="item">Parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.MerchantCreateDTO"/></param>
+            <returns>Created merchant. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.MerchantCreateDTO"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.MerchantController.Put(System.Int32,TotalCoding.Cartipay.Shared.Models.WebService.MerchantUpdateDTO)">
+            <summary>
+            Updates the merchant.
+            </summary>
+            <param name="id">Id of merchant record</param>
+            <param name="item">Parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.MerchantUpdateDTO"/></param>
+            <returns>Updated merchant</returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.MerchantController.Search(System.String)">
+            <summary>
+            Returns all merchants
+            </summary>
+            <param name="term"></param>
+            <returns>List of merchants. <see cref="T:TotalCoding.Cartipay.Shared.Models.Entities.Merchant"/></returns>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.TenantConfigurationController">
+            <summary>
+            Manages tenant configurations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TenantConfigurationController.#ctor(Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.TenantConfigurationController},TotalCoding.Cartipay.Application.Interfaces.ITenantApiService)">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="logger"></param>
+            <param name="service"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TenantConfigurationController.Get">
+            <summary>
+            Returns all tenant configuration
+            </summary>
+            <returns>List of tenant configurations.</returns>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TenantConfigurationController.Get(System.Int32)">
+            <summary>
+            Returns the configuration with given id
+            </summary>
+            <param name="id">Id of the configuration</param>
+            <returns>Tenant url configuration. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TenantApiDTO"/></returns>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TenantConfigurationController.Post(TotalCoding.Cartipay.Shared.Models.WebService.TenantApiDTO)">
+            <summary>
+            Creates new tenant url configuration
+            </summary>
+            <param name="item">Parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TenantApiDTO"/></param>
+            <returns>Created confugiration entity. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TenantApiDTO"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TenantConfigurationController.Put(System.Int32,TotalCoding.Cartipay.Shared.Models.WebService.TenantApiDTO)">
+            <summary>
+            Updates a new tenant url configuration
+            </summary>
+            <param name="id">Id of the configuration</param>
+            <param name="item">Parameters. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TenantApiDTO"/></param>
+            <returns>Updated configuration entity. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TenantApiDTO"/></returns>
+            <response code="400">If parameters are invalid</response>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.TenantController">
+            <summary>
+            Manages tenant operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TenantController.#ctor(TotalCoding.Cartipay.Application.Interfaces.ITenantService,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.TenantController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="service"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TenantController.Search">
+            <summary>
+            Returns tenants
+            </summary>
+            <returns>List of <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TenantSearchDTO"/></returns>
+            <response code="500">if there is an internal server error</response>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.LoginRequest">
+            <summary>
+            Encapsulates fields for login request.
+            </summary>
+            <remarks>
+            See: https://www.oauth.com/oauth2-servers/access-tokens/
+            </remarks>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.AccessTokensResponse">
+            <summary>
+            JWT successful response.
+            </summary>
+            <remarks>
+            See: https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
+            </remarks>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.AccessTokensResponse.#ctor(System.IdentityModel.Tokens.Jwt.JwtSecurityToken)">
+            <summary>
+            Initializes a new instance of <seealso cref="T:TotalCoding.Cartipay.RestApi.Controllers.AccessTokensResponse"/>.
+            </summary>
+            <param name="securityToken"></param>
+        </member>
+        <member name="T:TotalCoding.Cartipay.RestApi.Controllers.TransactionController">
+            <summary>
+            Manages transaction operations
+            </summary>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TransactionController.#ctor(TotalCoding.Cartipay.Application.Interfaces.ITransactionService,TotalCoding.Cartipay.Shared.Models.WebService.CurrentUser,Microsoft.Extensions.Logging.ILogger{TotalCoding.Cartipay.RestApi.Controllers.TransactionController})">
+            <summary>
+            Initialize a new instance of this class
+            </summary>
+            <param name="transactionService"></param>
+            <param name="currentUser"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TransactionController.PaymentCheckCompleted(TotalCoding.Cartipay.Shared.Models.WebService.CheckTransactionRequest)">
+            <summary>
+            Calls from the Bank Bot web job service when the checking paymnet has completed.
+            Bank bot web job service doesn't send the status of the transaction. We check from our database.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TransactionController.Search(TotalCoding.Cartipay.Shared.Models.WebService.TransactionSearchArgs)">
+            <summary>
+            Returns transaction informations
+            </summary>
+            <param name="args">Search arguments. <see cref="T:TotalCoding.Cartipay.Shared.Models.WebService.TransactionSearchArgs"/></param>
+            <response code="500">if there is an internal server error</response>
+            <returns>List of transactions</returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.Controllers.TransactionController.SendCallback(TotalCoding.Cartipay.Shared.Models.WebService.TransactionCheckResult,System.String)">
+            <summary>
+            Sends callback to payment gateway to inform the status of the transaction
+            </summary>
+            <param name="result"></param>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TotalCoding.Cartipay.RestApi.HttpExtensions.GetIpAddress(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Gets ip address of the request with checking to CF-Connecting-IP, X-Forwarded-For and RemoteIpAddress
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

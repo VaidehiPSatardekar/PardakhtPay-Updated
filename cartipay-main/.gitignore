@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+bin/
+obj/
+Debug/
+Release/
+.vs/
+*.suo
+*.user
+*/**/bin/Debug
+*/**/bin/Release
+*/**/obj/Debug
+*/**/obj/Release
+/TotalCoding.Cartipay/FrontEnd/TotalCoding.Cartipay.CustomerUI/node_modules
+/TotalCoding.Cartipay/FrontEnd/TotalCoding.Cartipay.AdminPortal/node_modules

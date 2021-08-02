@@ -1,0 +1,27 @@
+
+/* hack to prevent 16px padding appearing even though panel is not expanded */
+::ng-deep .staff-row .mat-expansion-panel-body {
+  padding-bottom: 0 !important;
+}
+
+:host {
+  padding: 24px;
+  width: 100%;
+}
+
+.staff-row-header{
+  min-height: 48px;
+}
+
+.danger {
+  color: red;
+}
+
+.grid-container {
+  height: 100%;
+  min-height: 200px;
+}
+
+.mat-form-field {
+  width: 200px;
+}

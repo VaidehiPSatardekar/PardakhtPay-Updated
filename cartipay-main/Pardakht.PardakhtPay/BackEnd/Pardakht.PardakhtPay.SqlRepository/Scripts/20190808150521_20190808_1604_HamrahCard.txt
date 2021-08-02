@@ -1,0 +1,28 @@
+﻿ALTER TABLE [Transactions] ADD [ApiType] int NOT NULL DEFAULT 0;
+
+GO
+
+ALTER TABLE [TransactionQueryHistories] ADD [UpdateDate] datetime2 NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [HamrahCardTryCount] int NOT NULL DEFAULT 0;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [HamrahCardVerifiedPhoneNumber] nvarchar(20) NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [IsHamrahCardPhoneVerified] bit NOT NULL DEFAULT 0;
+
+GO
+
+UPDATE Transactions SET ApiType = 1 WHERE PaymentType = 2
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190808150521_20190808_1604_HamrahCard', N'2.1.4-rtm-31024');
+
+GO

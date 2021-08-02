@@ -1,0 +1,103 @@
+<div class="mat-elevation-z6 mb-12 p-24">
+  <p class="mat-title m-0 py-2 pt-3">{{ "STAFF-USER.CREATE-HEADING" | translate }}</p>
+  <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+    <fieldset fxLayout="column" class="m-0 mt-3 p-0" [disabled]="loading$ | async">
+
+      <div *ngIf="tenantPlatformMapBrands" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start center" fxFlex="auto">
+        <div fxFlex="50" fxFlex.lt-sm="100" class="form-field-container">
+            <mat-form-field appearance="legacy" floatLabel="always" class="inline-select">
+              <mat-label>{{ 'PLACEHOLDERS.BRANDS' | translate }}</mat-label>
+              <mat-select required formControlName="brandId"
+                (selectionChange)="brandSelectionChanged($event.value)">
+                <mat-option [value]="staffUser">{{'STAFF-USER.STAFFUSER' | translate}}</mat-option>
+                <mat-option *ngFor="let brand of tenantPlatformMapBrands" [value]="brand.id">
+                  {{ brand.brandName | translate }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="userForm.controls?.brandId.invalid">
+                {{getErrorMessage(userForm.controls?.brandId)}}
+              </mat-error>
+            </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start center" fxFlex="auto">
+        <div fxFlex="50" fxFlex.lt-sm="100" class="form-field-container">
+          <mat-form-field>
+            <input matInput placeholder="{{'COMMON.USERNAME' | translate}}" formControlName="username">
+            <mat-error *ngIf="userForm.controls?.username.invalid">{{getErrorMessage(userForm.controls?.username)}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100" class="form-field-container">
+          <mat-form-field>
+            <input matInput placeholder="{{'COMMON.EMAIL' | translate}}" formControlName="email">
+            <mat-error *ngIf="userForm.controls?.email.invalid">{{getErrorMessage(userForm.controls?.email) | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start center" fxFlex="auto">
+        <div fxFlex="50" fxFlex.lt-sm="100" class="form-field-container">
+          <mat-form-field>
+            <input matInput placeholder="{{'COMMON.FIRSTNAME' | translate}}" formControlName="firstName">
+            <mat-error *ngIf="userForm.controls?.firstName.invalid">{{getErrorMessage(userForm.controls?.firstName) | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" fxFlex.lt-sm="100" class="form-field-container">
+          <mat-form-field>
+            <input matInput placeholder="{{'COMMON.LASTNAME' | translate}}" formControlName="lastName">
+            <mat-error *ngIf="userForm.controls?.lastName.invalid">{{getErrorMessage(userForm.controls?.lastName) | translate}}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div *ngIf="parentAccountEnabled && !loginGuid" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start center" fxFlex="auto">
+        <div fxFlex="50" fxFlex.lt-sm="100" fxFill class="form-field-container">
+          <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>{{'STAFF-USER.OWNER' | translate}}</mat-label>
+            <mat-select name="parentAccountId" formControlName="parentAccountId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let user of users" [value]="user.accountId">{{user.username}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start center" fxFlex="auto" *ngIf="editRolesEnabled">
+        <div fxFlex="50" fxFlex.sm="100" fxFlex.xs="100">
+          <p class="mat-title m-0 py-4 pt-8">{{ 'STAFF-USER.ROLES' | translate }}</p>
+          <mat-selection-list class="tenant-tab-content p-0">
+            <mat-list-option class="tenant-tab-content p-0" *ngFor="let element of dataSourceRoles.data" [selected]="element.isSelected"
+              (click)="element.isSelected = ! element.isSelected">
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="auto">
+                <mat-icon *ngIf="element.isFixed" matListIcon>language</mat-icon>
+                <mat-icon *ngIf="!element.isFixed" matListIcon>copyright</mat-icon>
+                {{element.name}}
+              </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+      </div>
+
+      <mat-divider class="mt-12"></mat-divider>
+
+      <ng-container *ngIf="createUserResponse$ | async as createdUserResponse">
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="auto" class="password mt-12">New user created with password {{ createdUserResponse.password }}</div>
+        <mat-divider class="mt-12"></mat-divider>
+      </ng-container>
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="auto" class="mt-12">
+        <div fxFlex>
+          <button mat-raised-button [disabled]="loading$ | async" type="button" class="mr-16" (click)="onCancel()">{{"FORM-CONTROLS.CANCEL" | translate}}</button>
+          <button mat-raised-button [disabled]="loading$ | async" type="submit" class="mr-16" color="accent">{{"FORM-CONTROLS.SAVE" | translate}}</button>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="auto" class="mt-8">
+        <div fxFlex>
+          <span *ngIf="errors$" class="mat-body danger">{{errors$ | async}}</span>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>

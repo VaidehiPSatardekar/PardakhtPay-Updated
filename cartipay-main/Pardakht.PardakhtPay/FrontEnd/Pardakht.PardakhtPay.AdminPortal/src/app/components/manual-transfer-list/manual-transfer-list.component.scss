@@ -1,0 +1,34 @@
+.list-max-height {
+    /*max-height:160px;*/
+    padding: 24px;
+    overflow: scroll;
+}
+
+.header {
+    overflow: auto !important;
+}
+
+.table-min-width {
+    min-width: 1950px
+}
+
+.danger {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+/deep/ .filter-option > .mat-pseudo-checkbox {
+    display: none !important;
+}
+
+.filter-sidenav .mat-list-item-content {
+    padding: 0 10px !important;
+    font-size: 0.875rem !important;
+}
+
+.filter-sidenav .mat-select-trigger {
+    font-size: 1rem !important;
+}

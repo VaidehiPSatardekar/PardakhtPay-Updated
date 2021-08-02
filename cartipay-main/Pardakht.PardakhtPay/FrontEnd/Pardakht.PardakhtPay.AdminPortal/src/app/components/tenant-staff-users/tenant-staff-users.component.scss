@@ -1,0 +1,37 @@
+
+::ng-deep .mat-list-text {
+  margin-left: 10px !important;
+}
+
+fieldset {
+  border: 0;
+}
+.list-max-height {
+  /*max-height:160px;*/
+  padding: 24px;
+  overflow: auto;
+}
+.list-container {
+  height: 100%;
+  border: none;
+}
+
+.grid-container {
+  height: 100%;
+  min-height: 200px;
+}
+
+.filter-padding {
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+.item-list-container {
+border: none;
+height: 80%;
+}
+
+.tenant-edit-container {
+  //max-width: 1000px;
+  height: calc(100% - 160px);
+}

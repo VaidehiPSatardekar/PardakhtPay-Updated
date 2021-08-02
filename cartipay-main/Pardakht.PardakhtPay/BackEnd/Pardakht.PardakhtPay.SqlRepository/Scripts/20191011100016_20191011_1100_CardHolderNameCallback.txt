@@ -1,0 +1,8 @@
+﻿ALTER TABLE [CardHolderNames] ADD [CallbackUrl] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20191011100016_20191011_1100_CardHolderNameCallback', N'2.2.6-servicing-10079');
+
+GO

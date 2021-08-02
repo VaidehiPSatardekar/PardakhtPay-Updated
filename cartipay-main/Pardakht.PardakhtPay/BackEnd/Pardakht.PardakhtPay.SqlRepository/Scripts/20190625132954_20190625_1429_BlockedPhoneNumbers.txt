@@ -1,0 +1,22 @@
+﻿ALTER TABLE [Transactions] ADD [IsPhoneNumberBlocked] bit NOT NULL DEFAULT 0;
+
+GO
+
+CREATE TABLE [BlockedPhoneNumbers] (
+    [Id] int NOT NULL IDENTITY,
+    [PhoneNumber] nvarchar(20) NULL,
+    [BlockedDate] datetime2 NOT NULL,
+    [InsertUserId] nvarchar(max) NULL,
+    CONSTRAINT [PK_BlockedPhoneNumbers] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE UNIQUE INDEX [UIX_BlockedPhoneNumber_PhoneNumber] ON [BlockedPhoneNumbers] ([PhoneNumber]) WHERE [PhoneNumber] IS NOT NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190625132954_20190625_1429_BlockedPhoneNumbers', N'2.1.4-rtm-31024');
+
+GO

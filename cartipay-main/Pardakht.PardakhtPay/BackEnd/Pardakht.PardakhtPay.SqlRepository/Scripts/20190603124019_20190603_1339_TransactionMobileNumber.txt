@@ -1,0 +1,8 @@
+﻿ALTER TABLE [Transactions] ADD [MobileDeviceNumber] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190603124019_20190603_1339_TransactionMobileNumber', N'2.1.4-rtm-31024');
+
+GO

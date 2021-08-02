@@ -1,0 +1,84 @@
+<div id="mobileTransferDevice" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/mobiletransferdevices'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div *ngIf="mobileTransferDeviceForm" fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">store</mat-icon>
+                        {{mobileTransferDeviceForm.get('phoneNumber').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'MOBILE-TRANSFER-DEVICE.GENERAL.NEW-DEVICE' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'MOBILE-TRANSFER-DEVICE.GENERAL.SAVE' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && mobileTransferDeviceForm && allowAddMobileTransferDevice" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="mobileTransferDeviceForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'MOBILE-TRANSFER-DEVICE.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && mobileTransferDeviceForm && allowAddMobileTransferDevice && status != statusEnum.VerifyCodeSended" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="mobileTransferDeviceForm.invalid || (isLoading() == true)"
+                    (click)="onUpdateSubmit()">
+                <span>{{'MOBILE-TRANSFER-DEVICE.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && mobileTransferDeviceForm && allowAddMobileTransferDevice && status == statusEnum.VerifyCodeSended" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="mobileTransferDeviceForm.invalid || (isLoading() == true)"
+                    (click)="onSendVerificationCode()">
+                <span>{{'MOBILE-TRANSFER-DEVICE.GENERAL.SEND-VERIFICATION-CODE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="mobileTransferDeviceForm" [formGroup]="mobileTransferDeviceForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <!--<mat-tab-group>
+                    <mat-tab label="{{ 'MOBILE-TRANSFER-DEVICE.TAB.MOBILE-TRANSFER-DEVICE-DETAIL' | translate}}">-->
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MOBILE-TRANSFER-DEVICE.LIST-COLUMNS.PHONE-NUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MOBILE-TRANSFER-DEVICE.LIST-COLUMNS.PHONE-NUMBER' | translate}}"
+                                   name="phoneNumber"
+                                   formControlName="phoneNumber">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="status == statusEnum.VerifyCodeSended" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MOBILE-TRANSFER-DEVICE.LIST-COLUMNS.VERIFICATION-CODE' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MOBILE-TRANSFER-DEVICE.LIST-COLUMNS.VERIFICATION-CODE' | translate}}"
+                                   name="verificationCode"
+                                   formControlName="verificationCode">
+                        </mat-form-field>
+                        <mat-checkbox class="w-100-p" name="isActive"
+                                      formControlName="isActive">
+                            {{'MOBILE-TRANSFER-DEVICE.LIST-COLUMNS.IS-ACTIVE' | translate}}
+                        </mat-checkbox>
+                        <div fxFlex fxLayout="row">
+                            <span *ngIf="error" class="mat-body danger">{{ error}}</span>
+                        </div>
+                    </div>
+                    <!--</mat-tab>
+                    </mat-tab-group>-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

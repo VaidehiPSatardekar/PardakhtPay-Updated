@@ -1,0 +1,81 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start">
+
+    <ng-container *ngIf="selectedUser !== undefined">
+        <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+        <tcam-staff-edit [platformGuid]="platformConfig.platformGuid" [parentAccountEnabled]="getParentAccountEnabled()"
+            [user]="selectedUser" [roles]="roles" [editRolesEnabled]="canDisplay('ROLE-USER')"
+            [blockUserEnabled]="canDisplay('STAFF-BLOCK')" [resetPasswordEnabled]="canDisplay('STAFF-RESET-PWD')"
+            [tenantGuid]="tenantGuid" [editDetailsEnabled]="canDisplay('STAFF-EDIT')" [users]="users"
+            (cancel)="onCloseUser()"></tcam-staff-edit>
+    </ng-container>
+
+    <!-- <ng-container *ngIf="isCreating && tenantPlatformMap && tenantPlatformMap.tenantPlatformMapBrands">
+        <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+        <tcam-staff-create [tenantPlatformMapBrands]="tenantPlatformMap.tenantPlatformMapBrands" [roles]="roles"
+            [users]="users" [parentAccountEnabled]="getParentAccountEnabled()"
+            [editRolesEnabled]="canDisplay('ROLE-USER')" (cancel)="onCancel()" [tenantGuid]="tenantGuid">
+        </tcam-staff-create>
+    </ng-container> -->
+
+    <ng-container *ngIf="isCreating">
+        <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+        <tcam-staff-create  [roles]="roles"
+            [users]="users" [parentAccountEnabled]="getParentAccountEnabled()"
+            [editRolesEnabled]="canDisplay('ROLE-USER')" (cancel)="onCancel()" [tenantGuid]="tenantGuid">
+        </tcam-staff-create>
+    </ng-container>
+
+    <ng-container *ngIf="selectedUser === undefined && !isCreating">
+
+        <div fxFlex="80px" fxFlex.xs="20">
+            <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between end"
+                fxLayoutAlign.lt-sm="end center" fxFill class="grey-30-bg mt-5 p-12">
+                <div *ngIf="tenantPlatformMap" fxFlex>
+                    <mat-form-field>
+                        <mat-label>{{ 'PLACEHOLDERS.BRANDS' | translate }}</mat-label>
+                        <mat-select [(ngModel)]="selectedBrandId" (selectionChange)="brandSelectionChanged()">
+                            <mat-option [value]="0">{{'STAFF-USER.STAFFUSER' | translate}}</mat-option>
+                            <mat-option *ngFor="let brand of tenantPlatformMap.tenantPlatformMapBrands"
+                                [value]="brand.id">
+                                {{ brand.brandName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex>
+                    <mat-form-field>
+                        <input matInput [(ngModel)]='filter' type='text'
+                            placeholder="{{'STAFF-USER.FILTER' | translate}}" (keyup)='updateFilter()' />
+                    </mat-form-field>
+                </div>
+                <div fxFlex fxLayoutAlign="end center">
+                    <button [disabled]="!tenantPlatformMap && tenantStaffUser" type="button" mat-raised-button
+                        class="mat-accent m-16" (click)="create()">
+                        <mat-icon>add</mat-icon>
+                        <span>{{'FORM-CONTROLS.CREATE' | translate}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <ag-grid-angular style="width: 100%; height: 600px" class="ag-theme-balham" [rowData]="filteredUsers"
+                [columnDefs]="columnDefs" [enableRtl]="enableRtl" [rowSelection]="rowSelection"
+                [gridOptions]="gridOptions" [frameworkComponents]="frameworkComponents"
+                (cellClicked)="onCellClicked($event)" [localeText]="localeText" [suppressScrollOnNewData]="true"
+                (gridReady)="onGridReady($event)">
+            </ag-grid-angular>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="auto" class="mt-8">
+            <div fxFlex>
+                <span *ngIf="errors$" class="mat-body danger">{{errors$ | async}}</span>
+                <span *ngIf="loginAsError$" class="mat-body danger">{{loginAsError$ | async}}</span>
+            </div>
+        </div>
+    </ng-container>
+
+</div>
+<simple-notifications></simple-notifications>

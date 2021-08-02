@@ -1,0 +1,98 @@
+<div id="invoiceOwnerSetting" class="page-layout carded fullwidth inner-scroll">
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+      <!-- HEADER -->
+      <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+          <!-- APP TITLE -->
+          <div fxLayout="row" fxLayoutAlign="start center">
+              <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/invoiceownersettings'">
+                  <mat-icon>arrow_back</mat-icon>
+              </button>
+              <div *ngIf="invoiceOwnerSettingForm" fxLayout="column" fxLayoutAlign="start start"
+                   [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                  <div class="h2">
+                      <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">vertical_split</mat-icon>
+                      {{getOwnerName(invoiceOwnerSettingForm.get('ownerGuid').value)}} 
+                  </div>
+                  <div class="h2" *ngIf="pageType =='new'">
+                      {{'INVOICE-OWNER-SETTINGS.GENERAL.NEW' | translate}}
+                  </div>
+                  <div class="h2" *ngIf="pageType =='edit'">
+                      {{'INVOICE-OWNER-SETTINGS.GENERAL.EDIT' | translate}}
+                  </div>
+              </div>
+          </div>
+          <button *ngIf="pageType == 'new' && invoiceOwnerSettingForm && allowAddInvoiceOwnerSetting" mat-raised-button
+                  class="save-product-button"
+                  [disabled]="invoiceOwnerSettingForm.invalid"
+                  (click)="onSubmit()">
+              <span>{{'INVOICE-OWNER-SETTINGS.GENERAL.ADD' | translate}}</span>
+          </button>
+          <button *ngIf="pageType == 'edit' && invoiceOwnerSettingForm && allowAddInvoiceOwnerSetting" mat-raised-button
+                  class="save-product-button"
+                  [disabled]="invoiceOwnerSettingForm.invalid || isLoading()"
+                  (click)="onUpdateSubmit()">
+              <span>{{'INVOICE-OWNER-SETTINGS.GENERAL.SAVE' | translate}}</span>
+          </button>
+          <!-- / APP TITLE -->
+      </div>
+      <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+      <!-- / HEADER -->
+      <!-- CONTENT CARD -->
+      <div class="content-card">
+          <!-- CONTENT -->
+          <div class="content">
+              <form *ngIf="invoiceOwnerSettingForm" [formGroup]="invoiceOwnerSettingForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                  <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                          <mat-select name="ownerGuid" formControlName="ownerGuid" required>
+                              <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <mat-label>{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.INVOICE-PERIOD' | translate}}</mat-label>
+                          <mat-select name="invoicePeriod" formControlName="invoicePeriod" required>
+                              <mat-option *ngFor="let period of invoicePeriodValues" [value]="period.value" > {{period.key | translate}} </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <input type="text" mwlFlatpickr
+                                 matInput
+                                 [enableTime]="false"
+                                 [convertModelValue]="true"
+                                         [dateFormat]="'d.m.Y'"
+                                         ariaDateFormat="d.m.Y"
+                                 placeholder="{{'DATERANGE.FROM-DATE' | translate}}" formControlName="startDate">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <mat-label>{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.PARDAKHTPAY-DEPOSIT-RATE' | translate}}</mat-label>
+                          <input matInput placeholder="{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.PARDAKHTPAY-DEPOSIT-RATE' | translate}}" type="number" formControlName="cartipayDepositRate" required>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <mat-label>{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.PARDAKHTPAL-DEPOSIT-RATE' | translate}}</mat-label>
+                          <input matInput placeholder="{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.PARDAKHTPAL-DEPOSIT-RATE' | translate}}" type="number"  formControlName="cartipalDepositRate" required>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <mat-label>{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.PARDAKHTPAL-WITHDRAWAL-RATE' | translate}}</mat-label>
+                          <input matInput placeholder="{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.PARDAKHTPAL-WITHDRAWAL-RATE' | translate}}" type="number"  formControlName="cartipalWithdrawalRate" required>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <mat-label>{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.WITHDRAWAL-RATE' | translate}}</mat-label>
+                          <input matInput placeholder="{{'INVOICE-OWNER-SETTINGS.LIST-COLUMNS.WITHDRAWAL-RATE' | translate}}" type="number"  formControlName="withdrawalRate" required>
+                      </mat-form-field>
+                      <mat-checkbox class="w-100-p" name="isActive"
+                                    formControlName="isActive">
+                          {{'TRANSFER-ACCOUNT.LIST-COLUMNS.IS-ACTIVE' | translate}}
+                      </mat-checkbox>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+<!--</div>
+</div>-->

@@ -1,0 +1,76 @@
+<div id="cardtocardaccounts" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance_wallet</mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'CARD-TO-CARD.GENERAL.CARD-TO-CARD-ACCOUNTS' | translate }}</span>
+            </div>
+
+            <!--<button mat-raised-button [routerLink]="'/cardtocardaccount'" class="mat-white-bg my-12 mt-sm-0">
+                <span>{{ 'CARD-TO-CARD.GENERAL.CREATE-CARD-TO-CARD-ACCOUNT'  | translate}}</span>
+            </button>-->
+
+        </div>
+        <mat-progress-bar *ngIf="loading || ownersLoading" color="primary" mode="query"></mat-progress-bar>
+        <div *ngIf="!loading && !ownersLoading" class="content-card mat-white-bg table-scroll">
+            <ag-grid-angular #cardToCardAccountList
+                             style="width: 100%; height: 100%; min-height:150px;"
+                             id="myGrid"
+                             class="ag-theme-balham"
+                             [columnDefs]="columnDefs"
+                             [pagination]="true"
+                             [paginationPageSize]="20"
+                             [rowData]="cardToCardAccounts"
+                             [rowSelection]="'single'"
+                             (cellClicked)="onCellClicked($event)"
+                             [enableRtl]="enableRtl"
+                             (gridReady)="onGridReady($event)"
+                             [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+
+        <!--</div>-->
+
+            <!--<ngx-datatable *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',x:'-300px'}}" class="material h-100-p table-min-width" [rows]="cardToCardAccounts$ | async"
+                           [loadingIndicator]="loading" [columnMode]="'force'" [headerHeight]="48" [rowHeight]="'auto'"
+                           [scrollbarH]="true" [externalPaging]="false" [selected]="selected" [selectionType]="'single'" (select)='onSelect($event)'
+                           [messages]="{'emptyMessage': ((loading$ | async) ? ('CARD-TO-CARD.LIST.LOADING-DATA' | translate) : ('CARD-TO-CARD.LIST.NO-DATA' | translate)),'totalMessage': 'CARD-TO-CARD.LIST.TOTAL'|translate}">
+
+                <ngx-datatable-column [width]="200" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.OWNER' | translate}}" prop="ownerGuid">
+                    <ng-template ngx-datatable-cell-template let-value="value">
+                        <span>{{getOwnerName(value)}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="200" name="{{ 'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}" prop="friendlyName">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="200" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.ACCOUNT-NUMBER' | translate}}" prop="accountNo">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}" prop="cardNumber">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.CARD-HOLDER-NAME' | translate}}" prop="cardHolderName">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.SAFE-ACCOUNT-NUMBER' | translate}}" prop="safeAccountNumber">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.TRANSFER-THRESHOLD-AMOUNT' | translate}}" prop="transferThreshold">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.IS-ACTIVE' | translate}}" prop="isActive">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.IS_TRANSFER_THRESHOLD_ACTIVE' | translate}}" prop="isTransferThresholdActive">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'CARD-TO-CARD.LIST-COLUMNS.TRANSFER_THRESHOLD_LIMIT' | translate}}" prop="transferThresholdLimit">
+                </ngx-datatable-column>
+            </ngx-datatable>-->
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<mat-progress-bar *ngIf="getDetailLoading" color="primary" mode="query"></mat-progress-bar>
+<div id="merchantcustomers" class="page-layout carded fullwidth" fusePerfectScrollbar>
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+    <!-- HEADER -->
+    <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+          confirmation_number</mat-icon>
+        <span class="logo-text h1" *fuseIfOnDom
+          [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'APPLICATION-SETTINGS.GENERAL.SETTINGS' | translate }}</span>
+      </div>
+    </div>
+    <!--<app-transaction-list [merchantCustomer]="merchantCustomer"></app-transaction-list>-->
+    <div class="content-card cc-80">
+      <!-- CONTENT -->
+      <div class="content">
+        <form *ngIf="settingsForm" [formGroup]="settingsForm" class="product w-100-p" novalidate>
+          <div fxLayout="column" class="p-10">
+            <div class="w-100-p" style="padding:5px;" fxLayout="row" fxLayoutAlign="end center">
+              <button *ngIf="settingsForm" mat-raised-button class="accent" [disabled]="settingsForm.invalid"
+                (click)="onSubmit()">
+                <span>{{'APPLICATION-SETTINGS.GENERAL.SAVE' | translate}}</span>
+              </button>
+            </div>
+            <div class="chk-margin" fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-xs="100">
+              <mat-checkbox class="padding-10" [name]="waitAmountForCurrentWithdrawal"
+                formControlName="waitAmountForCurrentWithdrawal">
+                {{'APPLICATION-SETTINGS.GENERAL.WAIT-AMOUNT' | translate}}
+              </mat-checkbox>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

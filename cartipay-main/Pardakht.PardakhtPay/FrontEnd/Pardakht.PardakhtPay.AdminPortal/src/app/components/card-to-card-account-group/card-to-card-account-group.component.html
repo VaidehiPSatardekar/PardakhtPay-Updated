@@ -1,0 +1,114 @@
+<div id="cardToCardAccount" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/cardtocardaccountgroups'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="cardToCardAccountGroupForm">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">group_work</mat-icon>
+                        {{cardToCardAccountGroupForm.get('name').value}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && cardToCardAccountGroupForm && allowAddBankAccountGroup" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="cardToCardAccountGroupForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && cardToCardAccountGroupForm && allowAddBankAccountGroup" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="cardToCardAccountGroupForm.invalid || isLoading()"
+                    (click)="onUpdateSubmit()">
+                <span>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading()" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="cardToCardAccountGroupForm" [formGroup]="cardToCardAccountGroupForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fxLayout="column">
+                        <mat-form-field *ngIf="(isProviderAdmin || isTenantAdmin) && pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                            <mat-select name="ownerGuid" formControlName="ownerGuid" required>
+                                <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD-ACCOUNT-GROUP.LIST-COLUMNS.NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD-ACCOUNT-GROUP.LIST-COLUMNS.NAME' | translate}}"
+                                   name="name"
+                                   formControlName="name" required>
+                        </mat-form-field>
+                    </div>
+                    <div class="tab-content p-24" fxLayout="column" fxLayoutAlign="space-around stretch">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.SELECT-ACCOUNT' | translate}}</mat-label>
+                            <mat-select [disabled]="!allowAddBankAccountGroup">
+                                <mat-option *ngFor="let account of getAccounts()" (click)="addAccount(account)">{{getFriendlyName(account.id) + ' - ' + account.accountNo + '-' + getCardNumber(account.id)}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'CARD-TO-CARD.GENERAL.CARD-TO-CARD-ACCOUNTS' | translate }}</span>
+                        <div *ngFor="let account of cardToCardAccountGroupForm.get('items').controls; let i = index">
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <div fxFlex="20" fxFlex.gt-md="5" fxFlex.gt-xs="20">
+                                    <button *ngIf="allowAddBankAccountGroup" mat-icon-button title="{{'BANK-LOGIN.LIST-COLUMNS.DELETE' | translate}}" (click)="deleteAccount(account)">
+                                        <mat-icon class="warn">delete_forever</mat-icon>
+                                    </button>
+                                </div>
+                                <span fxFlex="80" fxFlex.gt-md="10" fxFlex.gt-xs="80">{{getFriendlyName(account.get('cardToCardAccountId').value) + ' - ' + getCardNumber(account.get('cardToCardAccountId').value)}}</span>
+
+                                <div fxFlex="100" fxFlex.gt-md="10" fxFlex.gt-xs="100"  [formGroup]="account" fxLayout="column">
+                                    <mat-form-field floatPlaceholder="never">
+                                        <mat-select multiple placeholder="{{'USER-SEGMENT.GENERAL.USER-SEGMENT-GROUPS' | translate}}"
+                                                    formControlName="userSegmentGroups">
+                                            <mat-option *ngFor="let group of getUserSegmentGroups()" [value]="group.id">{{ group.name }}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-md="20" fxFlex.gt-xs="100" [formGroup]="account">
+                                    <mat-radio-group [name]="'status' + i"
+                                                     formControlName="status">
+                                        <mat-radio-button class="padding-10" [value]="1">{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.ACTIVE' | translate}}</mat-radio-button>
+                                        <mat-radio-button class="padding-10" [value]="2">{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.RESERVED' | translate}}</mat-radio-button>
+                                        <mat-radio-button class="padding-10" [value]="4">{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.DORMANT' | translate}}</mat-radio-button>
+                                        <mat-radio-button [disabled]="true" class="padding-10" [value]="5">{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.PAUSED' | translate}}</mat-radio-button>
+                                        <mat-radio-button [disabled]="true" class="padding-10" [value]="3">{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.BLOCKED' | translate}}</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-md="35" fxFlex.gt-xs="100" [formGroup]="account">
+                                    <mat-checkbox class="padding-10" [name]="'allowCardToCard' + i"
+                                                  formControlName="allowCardToCard">
+                                        {{'BANK-LOGIN.GENERAL.CARD-TO-CARD' | translate}}
+                                    </mat-checkbox>
+                                    <mat-checkbox class="padding-10" [name]="'allowWithdrawal' + i"
+                                                  formControlName="allowWithdrawal">
+                                        {{'BANK-LOGIN.GENERAL.WITHDRAWAL' | translate}}
+                                    </mat-checkbox>
+                                    <mat-checkbox class="padding-10" [name]="'hideCardNumber' + i"
+                                                  formControlName="hideCardNumber">
+                                        {{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.HIDE-CARD-NUMBER' | translate}}
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

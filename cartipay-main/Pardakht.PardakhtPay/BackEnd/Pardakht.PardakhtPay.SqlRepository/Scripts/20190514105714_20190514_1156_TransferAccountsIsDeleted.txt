@@ -1,0 +1,12 @@
+﻿EXEC sp_rename N'[TransferAccounts].[BankName]', N'FriendlyName', N'COLUMN';
+
+GO
+
+ALTER TABLE [TransferAccounts] ADD [IsDeleted] bit NOT NULL DEFAULT 0;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190514105714_20190514_1156_TransferAccountsIsDeleted', N'2.1.4-rtm-31024');
+
+GO

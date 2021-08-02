@@ -1,0 +1,56 @@
+<div class="m-12">
+  <div class="row">
+    <form *ngIf="roleForm" [formGroup]="roleForm" (ngSubmit)="onSubmit()" novalidate>
+      <fieldset class="control-wrapper">
+        <div class="row">
+          <div class="col s12 m6">
+            <mat-form-field appearance="legacy" floatLabel="always" class="w-100-p">
+              <mat-label>{{'ROLE.ROLE-NAME' | translate}}</mat-label>
+              <input matInput placeholder="{{'ROLE.ROLE-NAME' | translate}}" formControlName="name" class="w-100-p">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row" *ngIf="canDisplay(permissions.RoleEditProvider)">
+          <div class="col s12 m6">
+            <mat-label>
+              <h4>{{'ROLE.GLOBAL-ROLE-HOLDER-TYPE' | translate}}</h4>
+            </mat-label>
+            <mat-radio-group (change)="changeRoleHolderTypeId($event)" required>
+              <mat-radio-button class="example-radio-button padding" [checked]="roleHolderTypeId==='P'" value="true">
+                {{'ROLE.PROVIDER' | translate}}
+              </mat-radio-button>
+              <mat-radio-button class="example-radio-button padding" [checked]="roleHolderTypeId==='T'" value="false">
+                {{'ROLE.TENANT' | translate}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+        <br><br>
+        <!-- <div class="row">
+          <div class="col s12 m6">
+            <mat-checkbox formControlName="isFixed">
+              {{'ROLE.GLOBAL-ROLE-QUESTION' | translate}}
+            </mat-checkbox>
+          </div>
+        </div> -->
+      </fieldset>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col s12 my-8">
+      <button mat-raised-button type="button" class="mx-8"
+        (click)="onCancel()">{{'FORM-CONTROLS.CANCEL' | translate}}</button>
+      <button mat-raised-button type="button" class="mx-8" (click)="onSubmit()"
+        color="accent">{{'FORM-CONTROLS.SAVE' | translate}}</button>
+    </div>
+  </div>
+
+  <br><br>
+  <div class="row">
+    <div class="col s12 my-8">
+      <span *ngIf="errors?.edit" class="mat-body danger">{{errors?.edit}}</span>
+    </div>
+  </div>
+
+</div>

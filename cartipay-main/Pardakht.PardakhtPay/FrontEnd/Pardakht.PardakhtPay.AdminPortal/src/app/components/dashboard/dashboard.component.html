@@ -1,0 +1,364 @@
+<div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+    <!-- CENTER -->
+    <div class="center" fusePerfectScrollbar>
+        <!-- HEADER -->
+        <div class="header accent p-24 pb-0" fxLayout="column" fxLayoutAlign="space-between">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">dashboard</mat-icon>
+                <span class="mat-display-1 my-0 my-sm-24 welcome-message"
+                      [@animate]="{value:'*',params:{x:'50px'}}">
+                    {{'DASHBOARD.TITLE' | translate}}
+                </span>
+                <!--<button mat-icon-button class="sidebar-toggle mr-8" fxHide.gt-md
+                        (click)="toggleSidebar('project-dashboard-right-sidebar-1')">
+                    <mat-icon>menu</mat-icon>
+                </button>-->
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <div fxLayout="row">
+                    <div class="selected-project">{{selectedZone == undefined ? '' : (selectedZone?.translate | translate)}}</div>
+                    <button mat-icon-button class="project-selector" [matMenuTriggerFor]="zonesMenu"
+                            aria-label="Select project">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #zonesMenu="matMenu">
+                        <button mat-menu-item *ngFor="let zone of zones" (click)="setTimeZone(zone); loadDashboard();">
+                            <span>{{zone.translate | translate}}</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="widget-group p-12" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                 [@animateStagger]="{value:'50'}">
+
+                <fuse-widget *ngIf="allowAccountWidget" [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                             fxFlex="100" fxFlex.gt-sm="100">
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+                        <div *ngIf="!accountStatusWidget" class="p-24" fxLayout="column" fxLayoutAlign="space-between center">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                        <div *ngIf="accountStatusWidget" class="px-16 py-8 border-bottom" fxLayout="column"
+                             fxLayoutAlign="start stretch">
+                            <div class="h3">{{ 'DASHBOARD.ACCOUNT-SUMMARY' | translate }}</div>
+                        </div>
+                        <div *ngIf="accountStatusWidget">
+                            <ag-grid-angular #accoungGrid
+                                             style="width: 100%; height: 100%; min-height:150px;"
+                                             id="accountGridId"
+                                             class="ag-theme-balham"
+                                             [columnDefs]="columnDefs"
+                                             [pagination]="true"
+                                             [paginationPageSize]="20"
+                                             [rowData]="accountRows"
+                                             [enableRtl]="enableRtl"
+                                             [frameworkComponents]="frameworkComponents"
+                                             (gridReady)="onGridReady($event)"></ag-grid-angular>
+                        </div>
+                    </div>
+                </fuse-widget>
+
+                <fuse-widget *ngIf="allowTransactionWidget" [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                             fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="50">
+                    <div class="fuse-widget-front">
+                        <div *ngIf="!transactionWidget" class="p-24" fxLayout="column" fxLayoutAlign="space-between center">
+                            <mat-spinner></mat-spinner>
+
+                        </div>
+                        <div *ngIf="transactionWidget" class="px-16 py-8 border-bottom" fxLayout="column"
+                             fxLayoutAlign="start stretch">
+                            <mat-form-field>
+                                <mat-select class="simplified font-size-16"
+                                            [(ngModel)]="transactionWidget.currentRange"
+                                            (selectionChange)="getWidget($event,'transactionWidget')"
+                                            aria-label="Change range">
+                                    <mat-option *ngFor="let range of transactionWidget.ranges | keys"
+                                                [value]="range.key">
+                                        {{range.value | translate}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="transactionWidget" class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                            <div *ngFor="let data of transactionWidget.data.coreData" class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="start center">
+                                <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex>
+                                    <div class="mrg-5">                                     
+                                        <div class="green-fg h3 secondary-text font-weight-100 text-center line-height-30">{{data.count[transactionWidget.currentRange].transaction | number:'1.0-0'}}</div>
+                                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_TRANSACTION_COUNT'" data.label class="h3 secondary-text font-weight-500 text-center">Total Deposit Number</div>
+                                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_TRANSACTION_AMOUNT'" data.label class="h3 secondary-text font-weight-500 text-center">Total Deposit Amount</div>
+
+                                        <div class="red-fg h3 secondary-text font-weight-100 text-center line-height-30">{{data.count[transactionWidget.currentRange].withdrawal | number:'1.0-0'}}</div>
+                                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_TRANSACTION_COUNT'" data.label class="h3 secondary-text font-weight-500 text-center">Total Withdrawal Number</div>
+                                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_TRANSACTION_AMOUNT'" data.label class="h3 secondary-text font-weight-500 text-center">Total Withdrawal Amount</div>
+
+                                        <div class="blue-fg  h3 secondary-text font-weight-100 text-center line-height-30">{{data.count[transactionWidget.currentRange].pendingWithdrawal | number:'1.0-0'}}</div>
+                                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_TRANSACTION_COUNT'" data.label class="h3 secondary-text font-weight-500 text-center">Pending Withdrawal Number</div>
+                                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_TRANSACTION_AMOUNT'" data.label class="h3 secondary-text font-weight-500 text-center">Pending Withdrawal Amount</div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="transactionWidget" class="fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+                        <div>
+                            {{transactionWidget.detail}}
+                        </div>
+                    </div>
+                    <!-- / Back -->
+                </fuse-widget>
+
+                <!--  <fuse-widget *ngIf="allowTransactionWidget" [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+         fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="50">
+    <div class="fuse-widget-front">
+        <div *ngIf="!transactionWithdrawalWidget" class="p-24" fxLayout="column" fxLayoutAlign="space-between center">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div *ngIf="transactionWithdrawalWidget" class="px-16 py-8 border-bottom" fxLayout="column"
+             fxLayoutAlign="start stretch">
+            <mat-form-field>
+                <mat-select class="simplified font-size-16"
+                            [(ngModel)]="transactionWithdrawalWidget.currentRange"
+                            (selectionChange)="getWidget($event,'transactionWithdrawalWidget')"
+                            aria-label="Change range">
+                    <mat-option *ngFor="let range of transactionWithdrawalWidget.ranges | keys"
+                                [value]="range.key">
+                        {{range.value | translate}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div *ngIf="transactionWithdrawalWidget" class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+            <div *ngFor="let data of transactionWithdrawalWidget.data.coreData" class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="start center">
+                <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex>
+                    <div class="mrg-5">
+                        <div class="green-fg widget-font line-height-72 text-center">
+                            {{data.count[transactionWithdrawalWidget.currentRange].withdrawal | number:'1.0-0'}}
+                        </div>
+                        <div class="h3 secondary-text font-weight-500 text-center">
+                            ({{data.label | translate}})
+                        </div>
+                        <div class="h3 secondary-text font-weight-500 text-center line-height-72">({{data.count[transactionWithdrawalWidget.currentRange].pendingWithdrawal | number:'1.0-0'}})</div>
+                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_WITHDRAWAL_COUNT'" data.label class="h3 secondary-text font-weight-500 text-center">({{ 'DASHBOARD.PENDING-WITHDRAWAL-COUNT' | translate }})</div>
+                        <div *ngIf="data.label == 'DASHBOARD.TOTAL_WITHDRAWAL_AMOUNT'" data.label class="h3 secondary-text font-weight-500 text-center">({{ 'DASHBOARD.PENDING-WITHDRAWAL-AMOUNT' | translate }})</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="transactionWithdrawalWidget" class="fuse-widget-back p-16 pt-32 mat-white-bg mat-elevation-z2">
+        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button" aria-label="Flip widget">
+            <mat-icon class="s-16">close</mat-icon>
+        </button>
+        <div>
+            {{transactionWithdrawalWidget.detail}}
+        </div>
+    </div>
+      </fuse-widget>-->
+                <fuse-widget *ngIf="allowTransactionWidget" [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-md="50">
+                <div class="fuse-widget-front">
+                    <div *ngIf="!transactioByPaymentTypeWidget" class="p-24" fxLayout="column" fxLayoutAlign="space-between center">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                    <div *ngIf="transactioByPaymentTypeWidget" class="px-16 py-8 border-bottom" fxLayout="column"
+                         fxLayoutAlign="start stretch">
+                        <mat-form-field>
+                            <mat-select class="simplified"
+                                        [(ngModel)]="transactioByPaymentTypeWidgetRange"
+                                        (selectionChange)="getWidget($event,'transactioByPaymentTypeWidget')"
+                                        aria-label="Change range">
+                                <mat-option *ngFor="let range of ranges"
+                                            [value]="range.key">
+                                    {{range.value | translate}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="transactioByPaymentTypeWidget">
+                        <ag-grid-angular #merchantGrid
+                                         style="width: 100%; height: 100%; min-height:150px;"
+                                         id="transactionbyPaymentTypeDashboardGrid"
+                                         class="ag-theme-balham"
+                                         [columnDefs]="transactionByPaymentTypeColumnDefs"
+                                         [pagination]="true"
+                                         [paginationPageSize]="10"
+                                         [rowData]="transactioPaymentTypeRows"
+                                         [enableRtl]="enableRtl"
+                                         [frameworkComponents]="frameworkComponents"
+                                         (gridReady)="onTransactionByPaymentTypeGridReady($event)"></ag-grid-angular>
+                    </div>
+                </div>
+                </fuse-widget>
+                <!-- / WIDGET 6 -->
+                <!-- WIDGET 7 -->
+                <fuse-widget *ngIf="allowMerchantWidget" [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                             fxFlex="100" fxFlex.gt-sm="100">
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+                        <div *ngIf="!merchantTransactionWidget" class="p-24" fxLayout="column" fxLayoutAlign="space-between center">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                        <div *ngIf="merchantTransactionWidget" class="px-16 py-8 border-bottom" fxLayout="column"
+                             fxLayoutAlign="start stretch">
+                            <mat-form-field>
+                                <mat-select class="simplified"
+                                            [(ngModel)]="merchantTransactionWidgetRange"
+                                            (selectionChange)="getWidget($event,'merchantTransactionWidget')"
+                                            aria-label="Change range">
+                                    <mat-option *ngFor="let range of ranges"
+                                                [value]="range.key">
+                                        {{range.value | translate}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="merchantTransactionWidget">
+                            <ag-grid-angular #merchantGrid
+                                             style="width: 100%; height: 100%; min-height:150px;"
+                                             id="merchantDashboardGrid"
+                                             class="ag-theme-balham"
+                                             [columnDefs]="merchantTransactionColumnDefs"
+                                             [pagination]="true"
+                                             [paginationPageSize]="10"
+                                             [rowData]="merchantTransactionRows"
+                                             [enableRtl]="enableRtl"
+                                             [frameworkComponents]="frameworkComponents"
+                                             (gridReady)="onMerchantTransactionGridReady($event)"></ag-grid-angular>
+                        </div>
+                    </div>
+                </fuse-widget>
+                <fuse-widget *ngIf="allowDepositGraph" [@animate]="{value:'*',params:{x:'100%'}}" class="widget" fxLayout="row" fxFlex="100">
+                    <div *ngIf="!transactionGraphWidget" class="p-24 fuse-widget-front mat-white-bg mat-elevation-z2" fxLayout="column"
+                         fxLayoutAlign="space-between center">
+                        <div class="h-420">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </div>
+                    <!-- Front -->
+                    <div *ngIf="transactionGraphWidget" class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                        <div class="px-16 border-bottom" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+                            <div fxFlex class="py-8 h3">{{transactionGraphWidget.title | translate}}</div>
+                            <div fxFlex="0 1 auto" class="py-8" fxLayout="row">
+                                <button mat-button class="px-16" *ngFor="let range of transactionGraphWidget.ranges | keys" (click)="transactionGraphWidget.currentRange = range.key;getWidget(range.key,'transactionGraphWidget')"
+                                        [disabled]="transactionGraphWidget.currentRange == range.key">
+                                    {{range.value | translate}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="h-420">
+                            <ngx-charts-line-chart [scheme]="transactionGraphWidget.scheme"
+                                                   [results]="transactionGraphWidget.mainChart[transactionGraphWidget.currentRange]"
+                                                   [gradient]="transactionGraphWidget.gradient"
+                                                   [xAxis]="transactionGraphWidget.xAxis"
+                                                   [yAxis]="transactionGraphWidget.yAxis"
+                                                   [legend]="transactionGraphWidget.legend"
+                                                   [showXAxisLabel]="transactionGraphWidget.showXAxisLabel"
+                                                   [showYAxisLabel]="transactionGraphWidget.showYAxisLabel"
+                                                   [xAxisLabel]="transactionGraphWidget.xAxisLabel"
+                                                   [yAxisLabel]="transactionGraphWidget.yAxisLabel"
+                                                   [autoScale]="true"
+                                                   [customColors]="transactionGraphWidget.customColors"
+                                                   [timeline]="true">
+                                <!--<ng-template #tooltipTemplate let-model="model">
+                        {{ getTooltip(model) }}
+                    </ng-template>-->
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+                </fuse-widget>
+                <fuse-widget *ngIf="allowAccountingGraph" [@animate]="{value:'*',params:{x:'100%'}}" class="widget" fxLayout="row" fxFlex="100">
+                    <div *ngIf="!accountingGraphWidget" class="p-24 fuse-widget-front mat-white-bg mat-elevation-z2" fxLayout="column"
+                         fxLayoutAlign="space-between center">
+                        <div class="h-420">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </div>
+                    <!-- Front -->
+                    <div *ngIf="accountingGraphWidget" class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                        <div class="px-16 border-bottom" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+                            <div fxFlex class="py-8 h3">{{accountingGraphWidget.title | translate}}</div>
+                            <div fxFlex="0 1 auto" class="py-8" fxLayout="row">
+                                <button mat-button class="px-16" *ngFor="let range of accountingGraphWidget.ranges | keys" (click)="accountingGraphWidget.currentRange = range.key;getWidget(range.key,'accountingGraphWidget')"
+                                        [disabled]="accountingGraphWidget.currentRange == range.key">
+                                    {{range.value | translate}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="h-420">
+                            <ngx-charts-line-chart [scheme]="accountingGraphWidget.scheme"
+                                                   [results]="accountingGraphWidget.mainChart[accountingGraphWidget.currentRange]"
+                                                   [gradient]="accountingGraphWidget.gradient"
+                                                   [xAxis]="accountingGraphWidget.xAxis"
+                                                   [yAxis]="accountingGraphWidget.yAxis"
+                                                   [legend]="accountingGraphWidget.legend"
+                                                   [showXAxisLabel]="accountingGraphWidget.showXAxisLabel"
+                                                   [showYAxisLabel]="accountingGraphWidget.showYAxisLabel"
+                                                   [xAxisLabel]="accountingGraphWidget.xAxisLabel"
+                                                   [yAxisLabel]="accountingGraphWidget.yAxisLabel"
+                                                   [autoScale]="true"
+                                                   [customColors]="accountingGraphWidget.customColors"
+                                                   [timeline]="true">
+                                <!--<ng-template #tooltipTemplate let-model="model">
+                        {{ getTooltip(model) }}
+                    </ng-template>-->
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+                </fuse-widget>
+
+                <fuse-widget *ngIf="allowDepositBreakDownGraph" [@animate]="{value:'*',params:{x:'100%'}}" class="widget" fxLayout="row" fxFlex="100">
+                    <div *ngIf="!transactionDepositBreakDownGraphWidget" class="p-24 fuse-widget-front mat-white-bg mat-elevation-z2" fxLayout="column"
+                         fxLayoutAlign="space-between center">
+                        <div class="h-420">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    </div>
+                    <!-- Front -->
+                    <div *ngIf="transactionDepositBreakDownGraphWidget" class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                        <div class="px-16 border-bottom" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+                            <div fxFlex class="py-8 h3">{{transactionDepositBreakDownGraphWidget.title | translate}}</div>
+                            <div fxFlex="0 1 auto" class="py-8" fxLayout="row">
+                                <button mat-button class="px-16" *ngFor="let range of transactionDepositBreakDownGraphWidget.ranges | keys" (click)="transactionDepositBreakDownGraphWidget.currentRange = range.key;getWidget(range.key,'transactionDepositBreakDownGraphWidget')"
+                                        [disabled]="transactionDepositBreakDownGraphWidget.currentRange == range.key">
+                                    {{range.value | translate}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="h-420">
+                            <ngx-charts-line-chart [scheme]="transactionDepositBreakDownGraphWidget.scheme"
+                                                   [results]="transactionDepositBreakDownGraphWidget.mainChart[transactionDepositBreakDownGraphWidget.currentRange]"
+                                                   [gradient]="transactionDepositBreakDownGraphWidget.gradient"
+                                                   [xAxis]="transactionDepositBreakDownGraphWidget.xAxis"
+                                                   [yAxis]="transactionDepositBreakDownGraphWidget.yAxis"
+                                                   [legend]="transactionDepositBreakDownGraphWidget.legend"
+                                                   [showXAxisLabel]="transactionDepositBreakDownGraphWidget.showXAxisLabel"
+                                                   [showYAxisLabel]="transactionDepositBreakDownGraphWidget.showYAxisLabel"
+                                                   [xAxisLabel]="transactionDepositBreakDownGraphWidget.xAxisLabel"
+                                                   [yAxisLabel]="transactionDepositBreakDownGraphWidget.yAxisLabel"
+                                                   [autoScale]="true"
+                                                   [customColors]="transactionDepositBreakDownGraphWidget.customColors"
+                                                   [timeline]="true">
+                                <!--<ng-template #tooltipTemplate let-model="model">
+                        {{ getTooltip(model) }}
+                    </ng-template>-->
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+                </fuse-widget>
+
+            </div>
+        </div>
+    </div>
+</div>

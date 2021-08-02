@@ -1,0 +1,87 @@
+<div  class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <!-- HEADER -->
+        <div fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" class="list-max-height h-160">
+            <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start" fxLayout.gt-xs="row"
+                 fxLayoutAlign.gt-xs="start center" style="min-height:100%;">
+                <div class="logo mb-24 mb-sm-0 filter-padding"
+                     fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                        add_to_queue
+                    </mat-icon>
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'TRANSACTION.GENERAL.TRANSACTIONS' | translate}}</span>
+                </div>
+                <!-- / APP TITLE -->
+                <!-- SEARCH -->
+                <div class="logo my-4 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                    <button class="mr-0 mr-sm-16" mat-icon-button (click)="refresh()" title="{{'TRANSACTION.GENERAL.REFRESH' | translate }}">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <mat-select #transactionStatusSelected (selectionChange)="refresh()" [(ngModel)]="args.statuses" placeholder="{{'TRANSACTION.STATUS.PLACE_HOLDER' | translate}}" multiple>
+                            <mat-select-trigger>
+                                <span *ngIf="args.statuses?.length > 0" class="example-additional-selection">
+                                    ({{args.statuses.length }} {{'GENERAL.CRITERIA_SELECTED' | translate}})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option [value]="'1'">{{'TRANSACTION.STATUS.STARTED' | translate}}</mat-option>
+                            <mat-option [value]="'2'">{{'TRANSACTION.STATUS.TOKEN_VALIDATED' | translate}}</mat-option>
+                            <mat-option [value]="'3'">{{'TRANSACTION.STATUS.WAITING_CONFIRMATION' | translate}}</mat-option>
+                            <mat-option [value]="'4'">{{'TRANSACTION.STATUS.COMPLETED' | translate}}</mat-option>
+                            <mat-option [value]="'5'">{{'TRANSACTION.STATUS.EXPIRED' | translate}}</mat-option>
+                            <mat-option [value]="'6'">{{'TRANSACTION.STATUS.CANCELLED' | translate}}</mat-option>
+                            <mat-option [value]="'7'">{{'TRANSACTION.STATUS.FRAUD' | translate}}</mat-option>
+                            <mat-option [value]="'8'">{{'TRANSACTION.STATUS.REVERSED' | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <mat-select #transactionStatusSelected (selectionChange)="refresh()" [(ngModel)]="args.paymentType" placeholder="{{'TRANSACTION.PAYMENT-TYPES.PLACE-HOLDER' | translate}}">
+                            <mat-option [value]="0">{{'DATERANGE.ALL' | translate}}</mat-option>
+                            <mat-option *ngFor="let type of paymentTypes" [value]="type.value">{{type.key | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <input matInput [(ngModel)]="args.token" placeholder="{{ 'TRANSACTION.LIST-COLUMNS.TOKEN' | translate}}" />
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <mat-select #transactionDateRangeSelected (selectionChange)="setTimeZone()" [(ngModel)]="selectedZoneId" placeholder="{{'TIMEZONE.PLACE_HOLDER' | translate}}">
+                            <mat-option *ngFor="let zone of zones" [value]="zone.timeZoneId">{{zone.translate | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT -->
+        <div class="content-card mat-white-bg" fxFlex>
+
+            <ag-grid-angular #agGrid
+                             style="width: 100%; height: 100%;"
+                             id="myGrid"
+                             class="ag-theme-balham"
+                             [columnDefs]="columnDefs"
+                             [defaultColDef]="defaultColumnDefs"
+                             [pagination]="true"
+                             [paginationPageSize]="args.pageSize"
+                             [cacheBlockSize]="args.pageSize"
+                             [cacheOverflowSize]="2"
+                             [maxBlocksInCache]="1"
+                             [rowModelType]="'infinite'"
+                             [enableRtl]="enableRtl"
+                             [rowClassRules]="rowClassRules"
+                             [frameworkComponents]="frameworkComponents"
+                             (columnMoved) = "onColumnMoved($event)"
+                             (gridReady)="onGridReady($event)"></ag-grid-angular>
+        </div>
+    </div>
+</div>

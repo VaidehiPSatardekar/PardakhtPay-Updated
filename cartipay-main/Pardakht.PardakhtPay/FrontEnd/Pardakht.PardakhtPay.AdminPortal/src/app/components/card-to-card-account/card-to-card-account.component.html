@@ -1,0 +1,130 @@
+<div id="cardToCardAccount" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/cardtocardaccounts'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="cardToCardAccountForm">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance_wallet</mat-icon>
+                        {{cardToCardAccountForm.get('cardHolderName').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'CARD-TO-CARD.GENERAL.NEW-CARD-TO-CARD' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'CARD-TO-CARD.GENERAL.EDIT-CARD-TO-CARD' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && cardToCardAccountForm && allowAddBankLogin" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="cardToCardAccountForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'CARD-TO-CARD.GENERAL.ADD-CARD-TO-CARD' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && cardToCardAccountForm && allowAddBankLogin" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="cardToCardAccountForm.invalid || isLoading()"
+                    (click)="onUpdateSubmit()">
+                <span>{{'CARD-TO-CARD.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading()" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="cardToCardAccountForm" [formGroup]="cardToCardAccountForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <!--<mat-form-field *ngIf="isProviderAdmin && pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+        <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.TENANT' | translate}}</mat-label>
+        <mat-select name="tenantGuid" formControlName="tenantGuid" required>
+            <mat-option *ngFor="let tenant of tenants$ | async" [value]="tenant.tenantGuid">{{tenant.name}} </mat-option>
+        </mat-select>
+    </mat-form-field>-->
+                        <mat-form-field *ngIf="(isProviderAdmin || isTenantAdmin) && pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                            <mat-select name="ownerGuid" formControlName="ownerGuid" required>
+                                <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.LOGIN-NAME' | translate}}</mat-label>
+                            <mat-select name="loginGuid" formControlName="loginGuid" (selectionChange)="onLoginChanged()" required>
+                                <mat-option *ngFor="let login of getLogins()" [value]="login.loginGuid">{{login.friendlyName}}({{login.bankName}}) </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.ACCOUNT-NUMBER' | translate}}</mat-label>
+                            <mat-select name="accountGuid" formControlName="accountGuid" required>
+                                <mat-option *ngFor="let account of getAccounts()" [value]="account.accountGuid">{{account.accountNo}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}"
+                                   name="cardNumber"
+                                   formControlName="cardNumber" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.CARD-HOLDER-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.CARD-HOLDER-NAME' | translate}}" formControlName="cardHolderName" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.SAFE-ACCOUNT-NUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.SAFE-ACCOUNT-NUMBER' | translate}}" formControlName="safeAccountNumber">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER-THRESHOLD-AMOUNT' | translate}}</mat-label>
+                            <input type="number" matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER-THRESHOLD-AMOUNT' | translate}}" formControlName="transferThreshold">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER_THRESHOLD_LIMIT' | translate}}</mat-label>
+                            <input type="number" matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.TRANSFER_THRESHOLD_LIMIT' | translate}}" formControlName="transferThresholdLimit">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.SWITCH-LIMIT' | translate}}</mat-label>
+                            <input type="number" matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.SWITCH-LIMIT' | translate}}" formControlName="switchLimitAmount">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.SWITCH-DAILY-CREDIT-LIMIT' | translate}}</mat-label>
+                            <input type="number" matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.SWITCH-DAILY-CREDIT-LIMIT' | translate}}" formControlName="switchCreditDailyLimit">
+                        </mat-form-field>
+                        <mat-checkbox class="w-100-p" name="isActive"
+                                      formControlName="isActive">
+                            {{'CARD-TO-CARD.LIST-COLUMNS.IS-ACTIVE' | translate}}
+                        </mat-checkbox>
+                        <mat-checkbox class="w-100-p" name="isTransferThresholdActive"
+                                      formControlName="isTransferThresholdActive">
+                            {{'CARD-TO-CARD.LIST-COLUMNS.IS_TRANSFER_THRESHOLD_ACTIVE' | translate}}
+                        </mat-checkbox>
+                        <mat-checkbox class="w-100-p" name="switchOnLimit"
+                                      formControlName="switchOnLimit">
+                            {{'CARD-TO-CARD.LIST-COLUMNS.SWITCH-ON-LIMIT' | translate}}
+                        </mat-checkbox>
+                        <!-- <mat-checkbox class="w-100-p" name="switchIfHasReserveAccount"
+                                      formControlName="switchIfHasReserveAccount">
+                            {{'CARD-TO-CARD.LIST-COLUMNS.SWITCH-IF-RESERVE-ACCOUNT' | translate}}
+                        </mat-checkbox> -->
+                        <div fxFlex fxLayout="row">
+                            <span *ngIf="error" class="mat-body danger">{{ error}}</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

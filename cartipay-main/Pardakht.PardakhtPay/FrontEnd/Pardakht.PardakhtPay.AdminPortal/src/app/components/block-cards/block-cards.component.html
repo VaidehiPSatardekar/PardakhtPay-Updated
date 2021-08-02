@@ -1,0 +1,57 @@
+<div class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <!-- HEADER -->
+        <div fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" class="list-max-height h-160">
+            <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start" fxLayout.gt-xs="row"
+                 fxLayoutAlign.gt-xs="space-between center" style="min-height:100%;">
+                <div fxLayout="column" fxLayoutAlign="space-around start" fxLayout.gt-xs="row"
+                     fxLayoutAlign.gt-xs="start center" style="min-height:100%;">
+                    <div class="logo mb-24 mb-sm-0 filter-padding"
+                         fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                            money
+                        </mat-icon>
+                        <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'BANK-LOGIN.GENERAL.BLOCKED-CARDS' | translate}}</span>
+                    </div>
+                    <div class="logo my-4 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                        <button class="mr-0 mr-sm-16" mat-icon-button (click)="refresh()" title="{{'BANK-LOGIN.GENERAL.REFRESH' | translate }}">
+                            <mat-icon>refresh</mat-icon>
+                        </button>
+                    </div>
+                    <div class="filter-padding">
+                        <mat-form-field floatPlaceholder="never">
+                            <mat-select [(ngModel)]="currentAccountGuid" placeholder="{{'MANUAL-TRANSFER.GENERAL.ACCOUNT-PLACE-HOLDER' | translate}}"
+                                        [compareWith]="equals" #accountsSelect="ngModel">
+                                <mat-option>
+                                    <ngx-mat-select-search ngModel (ngModelChange)="filterBankAccounts($event)" [placeholderLabel]="translateService.instant('GENERAL.FILTER')"></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option [value]="'all'"></mat-option>
+                                <mat-option *ngFor="let account of getAccounts()" [value]="account.accountGuid">{{ getLoginName(account.loginGuid) + '-' + account.accountNo }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <mat-progress-bar *ngIf="(loading$ | async) || (bankLoginLoading$ | async) || (bankAccountLoading$ | async)" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT -->
+        <div class="content-card mat-white-bg " fxFlex>
+            <ag-grid-angular #agGrid
+                             style="width: 100%; height: 100%;"
+                             id="myGrid"
+                             class="ag-theme-balham"
+                             [pagination]="true"
+                             [paginationPageSize]="30"
+                             [columnDefs]="columnDefs"
+                             [enableRtl]="enableRtl"
+                             [rowSelection]="'single'"
+                             [rowData]="items"
+                             [rowClassRules]="rowClassRules"
+                             [frameworkComponents]="frameworkComponents"
+                             (gridReady)="onGridReady($event)"></ag-grid-angular>
+        </div>
+    </div>
+</div>
+<!--</div>-->

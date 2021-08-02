@@ -1,0 +1,13 @@
+﻿CREATE TABLE [UnsupportedBins] (
+    [Id] int NOT NULL IDENTITY,
+    [ApiType] int NOT NULL,
+    [Bin] nvarchar(max) NULL,
+    CONSTRAINT [PK_UnsupportedBins] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190918125412_20190918_1354_UnsupportedBins', N'2.2.6-servicing-10079');
+
+GO

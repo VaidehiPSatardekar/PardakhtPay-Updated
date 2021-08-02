@@ -1,0 +1,24 @@
+﻿ALTER TABLE [MerchantCustomers] ADD [ConfirmCode] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [ConfirmCodeValidationEndDate] datetime2 NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [ConfirmDate] datetime2 NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [IsConfirmed] bit NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [PhoneNumber] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190409145718_20190409_1556_SmsConfirmation', N'2.1.4-rtm-31024');
+
+GO

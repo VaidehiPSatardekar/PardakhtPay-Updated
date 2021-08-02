@@ -1,0 +1,65 @@
+<div id="bankLogin" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start">
+            <!-- APP TITLE -->
+            <div fxLayout="column" fxFill fxLayoutAlign="space-evenly stretch">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/merchantcustomers'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <div fxLayout="column" fxLayoutAlign="start start"
+                             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            <div *ngIf="removeRegisteredPhoneForm" class="h2">
+                                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance_wallet</mat-icon>
+                                Remove Registered Phone Number
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-raised-button
+                                class="save-product-button"                               
+                                (click)="onSubmit()">
+                            <span>{{'MERCHANT-CUSTOMER.LIST-COLUMNS.REMOVE-REGISTERED-PHONE' | translate}}</span>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!--<mat-progress-bar color="primary" mode="query"></mat-progress-bar>-->
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+         <!--   <mat-progress-bar  color="primary" mode="query"></mat-progress-bar>-->
+            <!-- CONTENT -->
+            <div class="content">
+                <form  [formGroup]="removeRegisteredPhoneForm"  class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <!--<mat-form-field  appearance="outline" floatLabel="always" class="w-100-p">
+        <mat-label>{{'MERCHANT-CUSTOMER.LIST-COLUMNS.PHONENUMBERS' | translate}}</mat-label>
+        <mat-select name="phoneNumber" formControlName="phoneNumber" required>
+            <mat-option *ngFor="let type of registeredPhoneNumbers" [value]="type.phoneNumber">{{type.translate | translate}} </mat-option>
+        </mat-select>
+    </mat-form-field>-->
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MERCHANT-CUSTOMER.LIST-COLUMNS.PHONENUMBERS' | translate}}</mat-label>
+                            <mat-select name="phoneNumber" formControlName="phoneNumber" required multiple #multiSelect>
+                                <mat-option *ngFor="let type of getRegisteredPhoneNumbers()" [value]="type.phoneNumber">{{type.phoneNumber}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

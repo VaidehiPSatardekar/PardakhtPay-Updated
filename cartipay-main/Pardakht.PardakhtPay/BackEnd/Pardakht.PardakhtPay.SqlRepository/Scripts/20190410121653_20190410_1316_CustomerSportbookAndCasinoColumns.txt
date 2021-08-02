@@ -1,0 +1,20 @@
+﻿ALTER TABLE [MerchantCustomers] ADD [UserCasinoNumber] int NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [UserSportbookNumber] int NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [UserTotalCasino] decimal(18, 2) NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [UserTotalSportbook] decimal(18, 2) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190410121653_20190410_1316_CustomerSportbookAndCasinoColumns', N'2.1.4-rtm-31024');
+
+GO

@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+    <AssemblyName>Pardakht.PardakhtPay.RestApi</AssemblyName>
+    <RootNamespace>Pardakht.PardakhtPay.RestApi</RootNamespace>
+    <UserSecretsId>730c5e34-9582-4f58-8372-9c8d56e144fd</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\ManualTransferController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Application\Pardakht.PardakhtPay.Application.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Domain\Pardakht.PardakhtPay.Domain.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Infrastructure\Pardakht.PardakhtPay.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Shared.Models\Pardakht.PardakhtPay.Shared.Models.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Shared\Pardakht.PardakhtPay.Shared.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.SqlRepository\Pardakht.PardakhtPay.SqlRepository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BotDetect">
+      <HintPath>..\..\packages\BotDetect\BotDetect.dll</HintPath>
+    </Reference>
+    <Reference Include="BotDetect.Web.Mvc">
+      <HintPath>..\..\packages\BotDetect\BotDetect.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Invoice\Complete.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Invoice\Pay.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Invoice\NovinPay.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+</Project>

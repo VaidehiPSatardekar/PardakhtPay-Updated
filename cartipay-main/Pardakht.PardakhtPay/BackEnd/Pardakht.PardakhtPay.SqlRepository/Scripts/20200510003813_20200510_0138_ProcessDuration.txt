@@ -1,0 +1,9 @@
+﻿ALTER TABLE [Transactions] ADD [ProcessDurationInMiliseconds] int NOT NULL DEFAULT 0;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20200510003813_20200510_0138_ProcessDuration', N'2.2.6-servicing-10079');
+
+GO
+

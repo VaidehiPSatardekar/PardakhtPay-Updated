@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sendgrid" Version="9.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pardakht.UserManagement.Infrastructure\Pardakht.UserManagement.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pardakht.UserManagement.Shared.Models\Pardakht.UserManagement.Shared.Models.csproj" />
+  </ItemGroup>
+
+</Project>

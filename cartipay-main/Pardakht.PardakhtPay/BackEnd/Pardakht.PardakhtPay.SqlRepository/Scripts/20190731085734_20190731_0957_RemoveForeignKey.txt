@@ -1,0 +1,12 @@
+﻿ALTER TABLE [Transactions] DROP CONSTRAINT [FK_Transactions_Merchants_MerchantId];
+
+GO
+
+DROP INDEX [IX_Transactions_MerchantId] ON [Transactions];
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190731085734_20190731_0957_RemoveForeignKey', N'2.1.4-rtm-31024');
+
+GO

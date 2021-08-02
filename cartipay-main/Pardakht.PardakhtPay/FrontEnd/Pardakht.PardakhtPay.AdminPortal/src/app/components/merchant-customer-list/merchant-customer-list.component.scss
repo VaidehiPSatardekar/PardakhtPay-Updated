@@ -1,0 +1,27 @@
+.filter-padding {
+    padding-right: 25px;
+}
+
+.list-max-height {
+    /*max-height:160px;*/
+    padding: 24px;
+    overflow: scroll;
+}
+
+.header {
+    overflow: auto !important;
+}
+
+.table-min-width {
+    min-width: 1300px
+}
+
+/*/deep/ content {
+    max-height: calc(100% - 64px) !important;
+}
+
+.content-card {
+    max-height: calc(100% - 160px);
+}*/
+
+[hidden] { display: none !important;}

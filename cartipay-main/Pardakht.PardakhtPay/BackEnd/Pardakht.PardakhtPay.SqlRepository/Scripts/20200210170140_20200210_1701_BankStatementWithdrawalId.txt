@@ -1,0 +1,9 @@
+﻿ALTER TABLE [BankStatementItems] ADD [WithdrawalId] int NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20200210170140_20200210_1701_BankStatementWithdrawalId', N'2.2.6-servicing-10079');
+
+GO
+

@@ -1,0 +1,12 @@
+﻿CREATE TABLE [RiskyKeyword] (
+    [Id] int NOT NULL IDENTITY,
+    [Keyword] nvarchar(max) NULL,
+    CONSTRAINT [PK_RiskyKeyword] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190503143930_20190503_1539_RiskyKeywords', N'2.1.4-rtm-31024');
+
+GO

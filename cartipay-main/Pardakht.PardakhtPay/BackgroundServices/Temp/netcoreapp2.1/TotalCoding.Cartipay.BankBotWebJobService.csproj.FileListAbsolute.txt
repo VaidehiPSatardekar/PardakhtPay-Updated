@@ -1,0 +1,39 @@
+C:\t1\netcoreapp2.1\appsettings.Development.json
+C:\t1\netcoreapp2.1\appsettings.json
+C:\t1\netcoreapp2.1\appsettings.USERCUS-JH6V74G.json
+C:\t1\netcoreapp2.1\Settings.job
+C:\t1\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.deps.json
+C:\t1\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.runtimeconfig.json
+C:\t1\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.runtimeconfig.dev.json
+C:\t1\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.dll
+C:\t1\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\Temp\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.csproj.CoreCompileInputs.cache
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\Temp\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.AssemblyInfoInputs.cache
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\Temp\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.AssemblyInfo.cs
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\Temp\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.csproj.CopyComplete
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\Temp\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\Temp\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\Temp\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.csprojAssemblyReference.cache
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\appsettings.Development.json
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\appsettings.json
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\appsettings.USERCUS-JH6V74G.json
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\Settings.job
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.deps.json
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.runtimeconfig.json
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.runtimeconfig.dev.json
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.BankBotWebJobService.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Application.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Domain.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.ExternalServices.Queue.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Infrastructure.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Shared.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Shared.Models.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.SqlRepository.dll
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Application.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Domain.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Infrastructure.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Shared.Models.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.Shared.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.SqlRepository.pdb
+C:\Users\Timur\source\repos\CartiPay Payments\TotalCoding.Cartipay\BackgroundServices\TotalCoding.Cartipay.BankBotService\bin\Release\netcoreapp2.1\TotalCoding.Cartipay.ExternalServices.Queue.pdb

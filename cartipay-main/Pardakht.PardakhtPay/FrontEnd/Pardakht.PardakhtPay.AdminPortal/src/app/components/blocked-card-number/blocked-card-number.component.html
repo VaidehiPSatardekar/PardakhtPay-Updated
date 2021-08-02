@@ -1,0 +1,55 @@
+<div id="cardToCardAccount" class="page-layout carded fullwidth inner-scroll">
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+  <!-- CENTER -->
+  <div class="center">
+      <!-- HEADER -->
+      <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+          <!-- APP TITLE -->
+          <div fxLayout="row" fxLayoutAlign="start center">
+              <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/blockedcardnumbers'">
+                  <mat-icon>arrow_back</mat-icon>
+              </button>
+              <div fxLayout="column" fxLayoutAlign="start start"
+                   [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                  <div class="h2" *ngIf="blockedCardNumberForm">
+                      <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">sim_card</mat-icon>
+                      {{blockedCardNumberForm.get('cardNumber').value}}
+                  </div>
+              </div>
+          </div>
+          <button *ngIf="pageType == 'new' && blockedCardNumberForm && allowAddBlockedCardNumber" mat-raised-button
+                  class="save-product-button"
+                  [disabled]="blockedCardNumberForm.invalid"
+                  (click)="onSubmit()">
+              <span>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.SAVE' | translate}}</span>
+          </button>
+          <button *ngIf="pageType == 'edit' && blockedCardNumberForm && allowAddBlockedCardNumber" mat-raised-button
+                  class="save-product-button"
+                  [disabled]="blockedCardNumberForm.invalid || isLoading()"
+                  (click)="onUpdateSubmit()">
+              <span>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.SAVE' | translate}}</span>
+          </button>
+          <!-- / APP TITLE -->
+      </div>
+      <mat-progress-bar *ngIf="isLoading()" color="primary" mode="query"></mat-progress-bar>
+      <!-- / HEADER -->
+      <!-- CONTENT CARD -->
+      <div class="content-card">
+          <!-- CONTENT -->
+          <div class="content">
+              <form *ngIf="blockedCardNumberForm" [formGroup]="blockedCardNumberForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                  <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                          <mat-label>{{'BLOCKED-CARD-NUMBER.LIST-COLUMNS.CARD-NUMBER' | translate}}</mat-label>
+                          <input matInput placeholder="{{'BLOCKED-CARD-NUMBER.LIST-COLUMNS.CARD-NUMBER' | translate}}"
+                                 name="cardNumber"
+                                 formControlName="cardNumber" required>
+                      </mat-form-field>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>

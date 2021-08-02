@@ -1,0 +1,76 @@
+<div id="tenantUrlConfig" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/tenanturlconfiglist'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div *ngIf="tenantUrlConfigForm" fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">domain</mat-icon>
+                        {{tenantUrlConfigForm.get('apiUrl').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'TENANT-URL-CONFIG.GENERAL.NEW_TENANT-URL-CONFIG' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'TENANT-URL-CONFIG.GENERAL.EDIT_TENANT-URL-CONFIG' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && tenantUrlConfigForm" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="tenantUrlConfigForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'TENANT-URL-CONFIG.GENERAL.ADD-TENANT-URL-CONFIG' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && tenantUrlConfigForm" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="tenantUrlConfigForm.invalid || (isLoading() == true)"
+                    (click)="onUpdateSubmit()">
+                <span>{{'TENANT-URL-CONFIG.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="tenantUrlConfigForm" [formGroup]="tenantUrlConfigForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT-URL-CONFIG.LIST-COLUMNS.MERCHANT' | translate}}</mat-label>
+                            <mat-select name="merchantId" formControlName="merchantId" required>
+                                <mat-option [value]="0">{{'TENANT-URL-CONFIG.GENERAL.ALL' | translate}} </mat-option>
+                                <mat-option *ngFor="let merchant of merchants" [value]="merchant.id">{{merchant.title}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT-URL-CONFIG.LIST-COLUMNS.URL' | translate}}</mat-label>
+                            <input matInput placeholder="{{'TENANT-URL-CONFIG.LIST-COLUMNS.URL' | translate}}"
+                                   name="apiUrl"
+                                   formControlName="apiUrl">
+                        </mat-form-field>
+                        <mat-checkbox class="w-100-p" name="isPaymentUrl"
+                                      formControlName="isPaymentUrl">
+                            {{'TENANT-URL-CONFIG.LIST-COLUMNS.IS-PAYMENT-URL' | translate}}
+                        </mat-checkbox>
+                        <mat-checkbox class="w-100-p" name="isServiceUrl"
+                                      formControlName="isServiceUrl">
+                            {{'TENANT-URL-CONFIG.LIST-COLUMNS.IS-SERVICE-URL' | translate}}
+                        </mat-checkbox>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

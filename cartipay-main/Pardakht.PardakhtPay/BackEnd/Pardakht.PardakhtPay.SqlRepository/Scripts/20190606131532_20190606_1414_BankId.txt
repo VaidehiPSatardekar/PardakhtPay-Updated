@@ -1,0 +1,10 @@
+﻿ALTER TABLE [OwnerBankLogins] ADD [BankId] int NOT NULL DEFAULT 0;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190606131532_20190606_1414_BankId', N'2.1.4-rtm-31024');
+
+UPDATE OwnerBankLogins SET BankId = 1 WHERE BankId = 0;
+
+GO

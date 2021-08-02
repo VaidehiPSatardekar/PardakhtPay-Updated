@@ -1,0 +1,34 @@
+<div id="cardtocardaccounts" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">sim_card</mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'BLOCKED-PHONE-NUMBER.GENERAL.BLOCKED-PHONE-NUMBERS' | translate }}</span>
+            </div>
+
+            <button *ngIf="allowAddBlockedPhoneNumber" mat-raised-button [routerLink]="'/blockedphonenumber'" class="mat-white-bg my-12 mt-sm-0">
+                <span>{{ 'BLOCKED-PHONE-NUMBER.GENERAL.ADD'  | translate}}</span>
+            </button>
+
+        </div>
+        <mat-progress-bar *ngIf="itemsLoading" color="primary" mode="query"></mat-progress-bar>
+        <div *ngIf="items" class="content-card mat-white-bg">
+            <ag-grid-angular #agGrid
+                             style="width: 100%; height: 100%; min-height:150px;"
+                             id="myGrid"
+                             class="ag-theme-balham"
+                             [columnDefs]="columnDefs"
+                             [pagination]="true"
+                             [paginationPageSize]="30"
+                             [rowData]="items"
+                             [rowSelection]="'single'"
+                             (cellClicked)="onCellClicked($event)"
+                             [enableRtl]="enableRtl"
+                             (gridReady)="onGridReady($event)"
+                             [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+        </div>
+    </div>
+</div>

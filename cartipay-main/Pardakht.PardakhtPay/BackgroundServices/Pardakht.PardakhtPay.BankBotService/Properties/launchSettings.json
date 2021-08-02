@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Pardakht.PardakhtPay.BankBotWebJobService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Pardakht.PardakhtPay.BankBotWebJobService.Prod": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    }
+  }
+}

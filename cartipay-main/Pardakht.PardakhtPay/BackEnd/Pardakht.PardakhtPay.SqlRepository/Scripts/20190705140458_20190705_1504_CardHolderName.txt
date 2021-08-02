@@ -1,0 +1,35 @@
+﻿CREATE TABLE [CardHolderNames] (
+    [Id] int NOT NULL IDENTITY,
+    [RecordId] int NOT NULL,
+    [CardNumber] nvarchar(200) NULL,
+    [Name] nvarchar(500) NULL,
+    CONSTRAINT [PK_CardHolderNames] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE INDEX [IX_CardHolderName_CardNumber] ON [CardHolderNames] ([CardNumber]);
+
+GO
+
+CREATE UNIQUE INDEX [UIX_CardHolderName_RecordId] ON [CardHolderNames] ([RecordId]);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190705140458_20190705_1504_CardHolderName', N'2.1.4-rtm-31024');
+
+GO
+
+ALTER TABLE [CardHolderNames] ADD [CreateDate] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+
+GO
+
+ALTER TABLE [CardHolderNames] ADD [UpdateDate] datetime2 NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190705141929_20190705_1519_CardHolderNameDates', N'2.1.4-rtm-31024');
+
+GO

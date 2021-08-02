@@ -1,0 +1,53 @@
+/deep/ .lbg-color-1 {
+    background-color: yellow;
+    color: darkblue;
+    font-weight: bold;
+}
+
+/deep/ .lbg-color-2 {
+    background-color: green;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .lbg-color-3 {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .lbg-color-4 {
+    background-color: deepskyblue;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .password-changed{
+    background-color: chocolate !important;
+    color:white;
+    font-weight: bold;
+}
+
+.blocked{
+    background-color:red;
+    color:white;
+    font-weight:bold;
+}
+
+.unblocked{
+    background-color:green;
+    color:white;
+    font-weight:bold;
+}
+
+.danger{
+    color:red;
+}
+
+.success{
+    color:green;
+}
+
+.table-min-width {
+    min-width: 1330px
+}

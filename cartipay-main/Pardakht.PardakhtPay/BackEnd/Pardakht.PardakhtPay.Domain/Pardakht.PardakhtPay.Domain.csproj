@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Pardakht.PardakhtPay.Domain</AssemblyName>
+    <RootNamespace>Pardakht.PardakhtPay.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interfaces\IManualTransferSourceCardDetailsManager.cs" />
+    <Compile Remove="Managers\ManualTransferDetailManager.cs" />
+    <Compile Remove="Managers\ManualTransferManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Pardakht.PardakhtPay.ExternalServices.Queue\Pardakht.PardakhtPay.ExternalServices.Queue.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Infrastructure\Pardakht.PardakhtPay.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Shared.Models\Pardakht.PardakhtPay.Shared.Models.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Shared\Pardakht.PardakhtPay.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

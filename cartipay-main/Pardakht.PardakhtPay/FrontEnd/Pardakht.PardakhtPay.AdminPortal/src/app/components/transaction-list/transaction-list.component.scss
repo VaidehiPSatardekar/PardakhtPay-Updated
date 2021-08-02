@@ -1,0 +1,103 @@
+@import "src/@fuse/scss/fuse";
+
+
+.tranasction-table {
+    flex: 1 1 auto;
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+
+    .quantity-indicator {
+        display: inline-block;
+        vertical-align: middle;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        margin-right: 8px;
+
+        & + span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    .active-icon {
+        border-radius: 50%;
+    }
+}
+
+/deep/ .bg-color-1 {
+    background-color: deepskyblue;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .bg-color-2 {
+    background-color: coral;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .bg-color-3 {
+    background-color: gold;
+    color: blue;
+    font-weight: bold;
+}
+
+/deep/ .bg-color-4 {
+    background-color: darkcyan;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .bg-color-5 {
+    background-color: brown;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .bg-color-6 {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .bg-color-7 {
+    background-color: darkorchid;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .bg-color-8 {
+    background-color: chocolate;
+    color: white;
+    font-weight: bold;
+}
+
+.filter-padding {
+    padding-right: 25px;
+}
+
+.list-max-height {
+    /*max-height:160px;*/
+    padding: 24px;
+    overflow: scroll;
+}
+
+.header {
+    overflow: auto !important;
+}
+
+.table-min-width {
+    min-width: 1950px
+}
+
+/*.content-card {
+    max-height: calc(100% - 160px);
+}
+
+
+/deep/ content {
+    max-height: calc(100% - 64px) !important;
+}*/

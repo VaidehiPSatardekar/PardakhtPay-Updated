@@ -1,0 +1,87 @@
+.states-page header {
+    padding-bottom: 30px;
+}
+
+.states-page .boxer {
+    padding: 12px 48px 28px;
+    border-radius: 82px;
+}
+
+.states-page .boxer p {
+    margin-top: 14px;
+    font-size: 30px;
+}
+
+/* *** MEDIA QUERIES *** */
+@media (max-width: 1199.98px) {
+    .states-page .boxer {
+        padding: 8px 34px 20px;
+        border-radius: 65px;
+    }
+
+    .states-page .boxer p {
+        margin-top: 10px;
+        font-size: 24px;
+    }
+
+    .states-page .boxer img {
+        width: 120px;
+    }
+
+    .states-page .secondary-logo img {
+        width: 70px;
+    }
+
+    .states-page .main-logo img {
+        width: 267px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .states-page .boxer p {
+        font-size: 20px;
+    }
+
+    .states-page .main-logo img {
+        width: 200px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .states-page .secondary-logo img {
+        width: 46px;
+    }
+
+    .states-page .main-logo img {
+        width: 130px;
+    }
+
+    .states-page header {
+        padding-bottom: 20px;
+    }
+
+    .states-page .boxer p {
+        margin-top: 6px;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+    .states-page .boxer img {
+        width: 100px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .states-page .boxer p {
+        font-size: 15px;
+    }
+
+    .states-page .boxer {
+        padding: 6px 23px 12px;
+        border-radius: 55px;
+    }
+
+    .states-page .boxer img {
+        width: 71px;
+    }
+}

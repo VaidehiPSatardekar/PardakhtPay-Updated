@@ -1,0 +1,8 @@
+﻿ALTER TABLE [Transactions] ADD [Reference] nvarchar(100) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190327155447_20190327_1551_TransactionReference', N'2.1.4-rtm-31024');
+
+GO

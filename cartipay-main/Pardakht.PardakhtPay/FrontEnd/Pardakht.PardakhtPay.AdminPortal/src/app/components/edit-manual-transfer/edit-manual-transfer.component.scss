@@ -1,0 +1,59 @@
+#manualTransfers {
+    height: 100%;
+
+    .header {
+
+        .subtitle {
+            margin: 6px 0 0 0;
+        }
+    }
+
+    .content {
+
+        .mat-tab-group,
+        .mat-tab-body-wrapper,
+        .tab-content {
+            flex: 1 1;
+            max-width: 100%;
+            /*height: 100% !important;*/
+        }
+
+        .mat-tab-group {
+            max-height: 100%;
+            height: 100%;
+        }
+
+        .tab-content {
+            max-height: 100%;
+            height: 100%;
+        }
+
+        .mat-tab-body-content {
+            display: flex;
+            max-height: 100%;
+            /*height: 100% !important;*/
+        }
+
+        .mat-tab-label {
+            height: 64px;
+        }
+        // Temporary prefix alignment fix
+        .mat-form-field-appearance-outline .mat-form-field-prefix,
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: 0;
+        }
+    }
+}
+
+.content {
+    max-height: 100%;
+    height: 100%;
+}
+
+.cc-80 {
+    max-height: calc(100% - 90px) !important;
+}
+
+/deep/ .mat-tab-body-wrapper {
+    height: 100%;
+}

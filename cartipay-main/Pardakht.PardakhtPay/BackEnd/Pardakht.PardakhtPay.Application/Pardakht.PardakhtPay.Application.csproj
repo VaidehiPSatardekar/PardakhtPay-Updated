@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Pardakht.PardakhtPay.Application</AssemblyName>
+    <RootNamespace>Pardakht.PardakhtPay.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interfaces\IManualTransferService.cs" />
+    <Compile Remove="Services\ManualTransferService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Pardakht.PardakhtPay.ExternalServices.Queue\Pardakht.PardakhtPay.ExternalServices.Queue.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Domain\Pardakht.PardakhtPay.Domain.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Infrastructure\Pardakht.PardakhtPay.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Shared.Models\Pardakht.PardakhtPay.Shared.Models.csproj" />
+  </ItemGroup>
+
+</Project>

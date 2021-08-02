@@ -1,0 +1,48 @@
+<div id="merchant" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">business</mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'MERCHANT.GENERAL.MERCHANT-MANAGEMENT' | translate }}</span>
+            </div>
+
+            <button *ngIf="allowAddMerchant" mat-raised-button  [routerLink]="'/merchant'"  class="mat-white-bg my-12 mt-sm-0">
+                <span>{{ 'MERCHANT.GENERAL.CREATE-MERCHANT'  | translate}}</span>
+            </button>
+
+        </div>
+        <mat-progress-bar *ngIf="loading$ | async" color="primary" mode="query"></mat-progress-bar>
+        <div *ngIf="merchants" class="content-card mat-white-bg table-scroll">
+            <!--<ngx-datatable *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',x:'-300px'}}" class="material h-100-p table-min-width" [rows]="merchants$ | async"
+                   [loadingIndicator]="(loading$ | async)" [columnMode]="'force'" [headerHeight]="48" [rowHeight]="'auto'"
+                   [scrollbarH]="false" [externalPaging]="false" [selected]="selected" [selectionType]="'single'" (select)='onSelect($event)'
+                   [messages]="{'emptyMessage': ((loading$ | async) ? ('MERCHANT.LIST.LOADING-DATA' | translate) : ('MERCHANT.LIST.NO-DATA' | translate)),'totalMessage': 'MERCHANT.LIST.TOTAL'|translate}">
+
+
+        <ngx-datatable-column [width]="200" name="{{ 'MERCHANT.LIST-COLUMNS.TITLE' | translate}}" prop="title">
+        </ngx-datatable-column>
+
+        <ngx-datatable-column [width]="150" name="{{ 'MERCHANT.LIST-COLUMNS.PRIMARY-DOMAIN' | translate}}" prop="domainAddress"  [cellClass]="'url content-right'">
+        </ngx-datatable-column>
+
+    </ngx-datatable>-->
+            <ag-grid-angular #agGrid
+                             style="width: 100%; height: 100%; min-height:150px;"
+                             id="myGrid"
+                             class="ag-theme-balham"
+                             [columnDefs]="columnDefs"
+                             [pagination]="true"
+                             [paginationPageSize]="20"
+                             [rowData]="merchants"
+                             [rowSelection]="'single'"
+                             (cellClicked)="onCellClicked($event)"
+                             [enableRtl]="enableRtl"
+                             (gridReady)="onGridReady($event)"
+                             [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+
+        </div>
+    </div>
+</div>

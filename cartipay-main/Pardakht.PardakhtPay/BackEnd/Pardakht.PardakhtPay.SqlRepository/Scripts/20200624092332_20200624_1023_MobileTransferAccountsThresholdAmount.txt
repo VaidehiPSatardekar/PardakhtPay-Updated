@@ -1,0 +1,13 @@
+﻿ALTER TABLE [MobileTransferCardAccounts] ADD [CardToCardAccountGuid] nvarchar(100) NULL;
+
+GO
+
+ALTER TABLE [MobileTransferCardAccounts] ADD [ThresholdAmount] bigint NOT NULL DEFAULT CAST(0 AS bigint);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20200624092332_20200624_1023_MobileTransferAccountsThresholdAmount', N'2.2.6-servicing-10079');
+
+GO
+

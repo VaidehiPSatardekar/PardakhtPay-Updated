@@ -1,0 +1,24 @@
+<div *ngIf="!isCreating" id="merchant" class="page-layout carded fullwidth  inner-scroll">
+
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">home</mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'MERCHANT.GENERAL.MERCHANT-MANAGEMENT' | translate }}</span>
+            </div>
+
+            <button mat-raised-button [routerLink]="'/merchant'" class="mat-white-bg my-12 mt-sm-0">
+                <span>{{ (isCreating ? 'MERCHANT.GENERAL.CANCEL-CREATE-MERCHANT' : 'MERCHANT.GENERAL.CREATE-MERCHANT')  | translate}}</span>
+            </button>
+
+        </div>
+        <app-merchant-list *ngIf="!selectedMerchant && !isCreating" (merchantSelected)="onMerchantSelected($event)"></app-merchant-list>
+    </div>
+</div>
+
+
+<!--<app-merchant-create *ngIf="isCreating" [loading]="loading$ | async" [error]="createError$ | async" (save)="onCreateMerchant($event)"
+                     (cancel)="onCreateCancel()" (formChanges)="onFormChange($event)">
+</app-merchant-create>-->

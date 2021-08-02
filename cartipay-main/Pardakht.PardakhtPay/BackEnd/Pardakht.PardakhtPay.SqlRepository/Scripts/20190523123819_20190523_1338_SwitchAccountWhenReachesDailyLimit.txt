@@ -1,0 +1,24 @@
+﻿ALTER TABLE [CardToCardAccounts] ADD [SwitchIfHasReserveAccount] bit NOT NULL DEFAULT 0;
+
+GO
+
+ALTER TABLE [CardToCardAccounts] ADD [SwitchLimitAmount] decimal(18, 2) NULL;
+
+GO
+
+ALTER TABLE [CardToCardAccounts] ADD [SwitchOnLimit] bit NOT NULL DEFAULT 0;
+
+GO
+
+ALTER TABLE [CardToCardAccountGroupItems] ADD [PausedDate] datetime2 NULL;
+
+GO
+
+ALTER TABLE [CardToCardAccountGroupItems] ADD [TempGroupItemId] int NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190523123819_20190523_1338_SwitchAccountWhenReachesDailyLimit', N'2.1.4-rtm-31024');
+
+GO

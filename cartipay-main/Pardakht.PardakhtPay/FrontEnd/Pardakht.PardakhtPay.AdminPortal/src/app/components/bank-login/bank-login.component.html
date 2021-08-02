@@ -1,0 +1,104 @@
+<div id="bankLogin" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/banklogins'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div *ngIf="bankLoginForm" class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance</mat-icon>
+                        {{bankLoginForm.get('friendlyName').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'BANK-LOGIN.GENERAL.NEW-BANK-LOGIN' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'BANK-LOGIN.GENERAL.EDIT-BANK-LOGIN' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && bankLoginForm && allowAddBankLogin" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="bankLoginForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'BANK-LOGIN.GENERAL.ADD-BANK-LOGIN' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && bankLoginForm && allowAddBankLogin" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="bankLoginForm.invalid || isLoading()"
+                    (click)="onUpdateSubmit()">
+                <span>{{'BANK-LOGIN.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="bankLoginForm" [formGroup]="bankLoginForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field *ngIf="isProviderAdmin || isTenantAdmin" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                            <mat-select name="ownerGuid" formControlName="ownerGuid" required>
+                                <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.BANK' | translate}}</mat-label>
+                            <mat-select name="bankId" formControlName="bankId" required>
+                                <mat-option *ngFor="let bank of banks$ | async" [value]="bank.id">{{bank.bankName}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.FRIENDLY-NAME' | translate}}" formControlName="friendlyName" autocomplete="new-password" required>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.USERNAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.USERNAME' | translate}}"
+                                   autocomplete="new-password"
+                                   name="username"
+                                   formControlName="username">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.PASSWORD' | translate}}</mat-label>
+                            <input matInput type="password" placeholder="{{'BANK-LOGIN.LIST-COLUMNS.PASSWORD' | translate}}" formControlName="password" autocomplete="new-password">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.MOBILEUSERNAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.MOBILEUSERNAME' | translate}}"
+                                   autocomplete="new-password"
+                                   name="mobileusername"
+                                   formControlName="mobileusername">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.MOBILEPASSWORD' | translate}}</mat-label>
+                            <input matInput type="password" placeholder="{{'BANK-LOGIN.LIST-COLUMNS.MOBILEPASSWORD' | translate}}" formControlName="mobilepassword" autocomplete="new-password">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.MOBILENUMBER' | translate}}</mat-label>
+                            <input matInput type="number" placeholder="{{'BANK-LOGIN.LIST-COLUMNS.MOBILENUMBER' | translate}}" formControlName="mobilenumber">
+                        </mat-form-field>
+                        <!--<mat-checkbox *ngIf="pageType == 'new'" class="w-100-p" name="isMobileLogin"
+                                      formControlName="isMobileLogin">
+                            {{'BANK-LOGIN.LIST-COLUMNS.ISMOBILELOGIN' | translate}}
+                        </mat-checkbox>-->
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

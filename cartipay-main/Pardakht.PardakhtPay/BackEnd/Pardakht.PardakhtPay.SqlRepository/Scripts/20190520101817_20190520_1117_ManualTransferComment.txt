@@ -1,0 +1,20 @@
+﻿ALTER TABLE [ManualTransfers] ADD [CancellerId] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [ManualTransfers] ADD [Comment] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [ManualTransfers] ADD [CreatorId] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [ManualTransfers] ADD [UpdaterId] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190520101817_20190520_1117_ManualTransferComment', N'2.1.4-rtm-31024');
+
+GO

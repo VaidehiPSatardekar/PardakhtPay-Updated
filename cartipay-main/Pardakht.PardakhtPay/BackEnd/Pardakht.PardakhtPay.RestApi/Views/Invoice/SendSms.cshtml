@@ -1,0 +1,134 @@
+﻿@model Pardakht.PardakhtPay.Shared.Models.WebService.Sms.SmsPhoneNumberModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>درگاه پرداخت پی</title>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.png" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
+    <!-- Bootstrap, styles -->
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap-rtl.min.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/common.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/result.css" rel="stylesheet" media="screen">
+    <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
+    <style>
+        div#alertbox {
+            background: none !important;
+            border: 0;
+            color: red;
+        }
+    </style>
+</head>
+<body class="bg-img result-page">
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center align-items-start">
+                    <a href="index.html" class="main-logo d-flex align-items-center justify-content-center">
+                        <img src="/img/logo.png" alt="PardakhtPay logo" width="212">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid wrapper">
+            <div class="row">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="boxer bigger d-flex flex-column justify-content-center align-items-center">
+                        <p class="f_bold text-center">
+                            لطفا برای پرداخت ابتدا شماره موبایل خود را در کادر زیر وارد کنید.
+                        </p>
+                        <p class="f_bold text-center">
+                            با انتخاب کلید ارسال کد، پیامکی حاوی یک کد عددی برای شما ارسال خواهد شد.
+                        </p>
+                        <p class="f_bold text-center">
+                            کد دریافتی را در صفحه بعد وارد کنید تا شماره موبایل شما تایید شود.
+                        </p>
+                        <p class="f_bold text-center">
+                            شماره موبایل و کارتی که برای خرید استفاده میکنید باید به نام خود شما باشد در غیر اینصورت طبق دستورالعمل بانک مرکزی، خرید شما تائید نخواهد شد.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-8 col-10 mx-auto">
+                    <div class="boxer smaller mx-auto">
+                        <form action="/invoice/sendsms" method="post" id="mobileForm" class="d-flex flex-column justify-content-center align-items-center">
+                            <input type="hidden" id="InvoiceKey" name="InvoiceKey" value="@Model.InvoiceKey" />
+                            <div class="form-group">
+                                <input type="text" class="form-control text-center ltr" name="PhoneNumber" id="phoneNumber" value="@(Model.PhoneNumber)" placeholder="شماره موبایل ایران" />
+                            </div>
+                            <div class="form_buttons d-flex align-items-center justify-content-center mt-3">
+                                <button type="submit" class="btn-success" id="btnSubmit">ارسال کد</button>
+                                <button type="button" class="btn-white" onclick="cancel();" id="btnCancel">انصراف</button>
+                            </div>
+                        </form>
+                        <form action="/invoice/cancel" method="post" id="cancelForm">
+                            <input type="hidden" name="token" value="@Model.InvoiceKey" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 hidden-sm text-center"></div>
+                <div id="alertbox" class="col-12 alert alert-danger alert-dismissible text-center" role="alert" style="display: none;"></div>
+                <div class="col-md-3 hidden-sm text-center"></div>
+            </div>
+        </div>
+    </main>
+    <script src="~/components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            @if(TempData["Error"] != null)
+            {
+                @:$('#alertbox').text('@(Html.Raw(TempData["Error"]))');
+                @:$('#alertbox').show();
+            }
+        });
+
+        $('#mobileForm').submit(function () {
+            $('#alertbox').hide();
+
+            var regex = '^[0][9][0-9]{9,9}$';
+
+            var phoneNumber = $('#phoneNumber').val();
+
+            if (phoneNumber == undefined || phoneNumber == null || !(new RegExp(regex).test(phoneNumber))) {
+                $('#alertbox').text('شماره موبایل معتبر نیست.');
+                $('#alertbox').show();
+
+                return false;
+            }
+
+            $('#btnSubmit').attr('disabled', 'true');
+            $('#btnCancel').attr('disabled', 'true');
+
+            return true;
+        });
+
+        function cancel() {
+            $('#cancelForm').submit();
+        }
+    </script>
+</body>
+</html>
+
+
+
+

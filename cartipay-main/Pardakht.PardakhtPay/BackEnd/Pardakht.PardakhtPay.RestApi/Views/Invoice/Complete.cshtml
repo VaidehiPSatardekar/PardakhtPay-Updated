@@ -1,0 +1,42 @@
+﻿@model Pardakht.PardakhtPay.Shared.Models.WebService.CompletePaymentResponse
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Complete</title>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <form method="post" action="@Model.ReturnUrl" id="cpform">
+        <input type="hidden" id="invoice_key" name="invoice_key" value="@Model.Token" />
+        <input type="hidden" name="bank_code" value="@Model.BankNumber" />
+        <input type="hidden" name="card_number" value="@Model.CardNumber" />
+        <input type="hidden" name="amount" value="@Model.Amount" />
+        <input type="hidden" name="payment_type" value="@Model.PaymentType" />
+        <input type="hidden" name="inProcess" value="@Model.InProcess" />
+        @*<input type="hidden" name="customerCardNumber" value="@Model.CustomerCardNumber" />
+        <input type="hidden" name="tenantAccountNumber" value="@Model.MerchantAccountNumber" />
+        <input type="hidden" name="tenantCardNumber" value="@Model.MerchantCardNumber" />*@
+        <input type="hidden" name="status" value="@(Model.ResultCode == Pardakht.PardakhtPay.Shared.Models.WebService.TransactionResultEnum.Success ? 1 : 0)" />
+        @if (Model.ResultCode != Pardakht.PardakhtPay.Shared.Models.WebService.TransactionResultEnum.Success)
+        {
+            <input type="hidden" name="errorCode" value="@((int)Model.ResultCode)" />
+            <input type="hidden" name="errorDescription" value="@Model.ResultDescription" />
+        }
+    </form>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var form = $('#cpform');
+            form.submit();
+        });
+    </script>
+</body>
+</html>

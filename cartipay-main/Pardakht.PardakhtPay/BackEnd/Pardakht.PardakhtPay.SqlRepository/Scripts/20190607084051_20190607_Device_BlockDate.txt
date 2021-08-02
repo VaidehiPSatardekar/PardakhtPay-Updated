@@ -1,0 +1,8 @@
+﻿ALTER TABLE [MobileTransferDevices] ADD [LastBlockDate] datetime2 NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190607084051_20190607_Device_BlockDate', N'2.1.4-rtm-31024');
+
+GO

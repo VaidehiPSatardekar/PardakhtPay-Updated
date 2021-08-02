@@ -1,0 +1,152 @@
+﻿@model Pardakht.PardakhtPay.Shared.Models.WebService.TransactionPaymentInformationResponse
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>درگاه پرداخت پی</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>PardakhtPay</title>
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.png" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
+    <!-- Bootstrap, styles -->
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap-rtl.min.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/common.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/result.css" rel="stylesheet" media="screen">
+    <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
+</head>
+<body class="bg-img result-page">
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center align-items-start">
+                    <a href="index.html" class="main-logo d-flex align-items-center justify-content-center">
+                        <img src="/img/logo.png" alt="PardakhtPay logo" width="212">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid wrapper">
+            <div class="row">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                    <div class="boxer bigger d-flex flex-column justify-content-center align-items-center">
+                        <h2 class="f_bold">پرداخت الکترونیک<span class="f_extrabold"> پرداخت پی</span></h2>
+                        <div class="emboss number">@Model.BeautiyCardNumber</div><br>
+                        <div class="emboss name">@Model.CardHolderName</div>
+                        <div class="emboss emboss2 code">@Model.TransactionId</div>
+                        <p class="f_bold text-center">
+                            لطفا مبلغ @Model.Amount.ToString("N0") ریال را به کارت بالا واریز کنید و سپس فرم زیر را
+                            تکمیل کنید .
+                        </p>
+                        <p class="f_bold text-center">
+                            در صورت ارسال پول به کارت های قبلی مسئولیت شارژ نشدن حساب با خود شماست
+                            .
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-8 col-10 mx-auto">
+                    <div class="boxer smaller mx-auto">
+                        <form action="/invoice/complete" method="post" id="paymentForm" class="d-flex flex-column justify-content-center align-items-center">
+                            <input type="hidden" id="token" name="token" value="@Model.Token" />
+                            <input type="hidden" name="cardNumber" id="cardNumber" value="@(Model.CardNumber)" />
+
+                            <input class="form-control text-center ltr" type="text" placeholder="@Model.CustomerCardNumber"
+                                   aria-label="@Model.CustomerCardNumber">
+                            <div class="form_buttons d-flex align-items-center justify-content-center mt-3">
+                                <button type="submit" class="btn-success">ثبت پرداخت</button>
+                                <button type="submit" class="btn-white" onclick="cancel();">انصراف</button>
+                            </div>
+                        </form>
+                        <form action="/invoice/cancel" method="post" id="cancelForm">
+                            <input type="hidden" name="token" value="@Model.Token" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 hidden-sm text-center"></div>
+                <div id="alertbox" @( TempData["Error"] == null ? "hidden" : "") class="alert alert-danger alert-dismissible col-sm-6 text-center" role="alert">
+                    @TempData["Error"]
+                </div>
+                <div class="col-md-3 hidden-sm text-center"></div>
+            </div>
+        </div>
+    </main>
+    <script src="~/components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/components/blockui/jquery.blockUI.js"></script>
+    <script type="text/javascript">
+        $('#paymentForm').submit(function () {
+            $('#alertbox').hide();
+            var cardNumber = '@(Model.CardNumber)';
+
+            var customerCardNumber = $('#customerCardNumber').val();
+
+            if (cardNumber == customerCardNumber) {
+                //alert('Please enter a valid card number');
+                $('#alertbox').text('لطفا یک شماره کارت معتبر که از شماره کارت ما متفاوت است وارد کنید');
+                $('#alertbox').show();
+                //$('#modal-danger').modal('show');
+
+                return false;
+            }
+
+            if (validateCardNumber(customerCardNumber) != true) {
+                //alert('Please enter a valid card number');
+                $('#alertbox').text('لطفا یک شماره کارت معتبر وارد کنید');
+                $('#alertbox').show();
+
+                return false;
+            }
+
+            $.blockUI({
+                message: 'Please wait while payment is being processed'
+            });
+            return true;
+        });
+
+        function validateCardNumber(cardNumber) {
+            if (cardNumber == undefined || cardNumber == null || cardNumber == '' || cardNumber.length != 16 || !(new RegExp('(\\d){16}').test(cardNumber))) {
+                return false;
+            }
+
+            var sum = 0;
+
+            for (var i = 0; i < cardNumber.length; i++) {
+                var c = cardNumber[i];
+                var d = parseInt(c) * (i % 2 == 0 ? 2 : 1);
+                sum += d > 9 ? d - 9 : d;
+            }
+
+            if (sum % 10 == 0) {
+                return true;
+            }
+
+            if (cardNumber.startsWith("505801")) {
+                return true;
+            }
+
+            return false;
+        }
+
+        function cancel() {
+            $('#cancelForm').submit();
+        }
+    </script>
+</body>
+</html>

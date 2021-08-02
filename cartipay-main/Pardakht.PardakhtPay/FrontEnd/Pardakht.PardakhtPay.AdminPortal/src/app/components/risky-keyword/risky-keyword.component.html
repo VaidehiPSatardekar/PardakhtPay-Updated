@@ -1,0 +1,45 @@
+<mat-progress-bar *ngIf="getDetailLoading" color="primary" mode="query"></mat-progress-bar>
+<div id="merchantcustomers" class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <!-- / APP TITLE -->
+        </div>
+        <!--<app-transaction-list [merchantCustomer]="merchantCustomer"></app-transaction-list>-->
+        <div class="content-card cc-80">
+            <!-- CONTENT -->
+            <div class="content">
+                <div class="product w-100-p" novalidate>
+                    <mat-card-content>
+                        <div class="w-100-p" style="padding:5px;" fxLayout="row" fxLayoutAlign="end center">
+                            <button mat-raised-button
+                                    class="accent"
+                                    (click)="onSubmit()">
+                                <span>{{'APPLICATION-SETTINGS.GENERAL.SAVE' | translate}}</span>
+                            </button>
+                        </div>
+                        <mat-form-field class="example-chip-list" style="padding:5px;">
+                            <mat-chip-list #chipList>
+                                <mat-chip *ngFor="let keyword of keywords" [selectable]="selectable"
+                                          [removable]="removable" (removed)="remove(keyword)">
+                                    {{keyword}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                </mat-chip>
+                                <input placeholder="{{'RISKY-KEYWORDS.ADD-NEW-KEYWORD' | translate}}"
+                                       [matChipInputFor]="chipList"
+                                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                       [matChipInputAddOnBlur]="addOnBlur"
+                                       (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                        </mat-form-field>
+                    </mat-card-content>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

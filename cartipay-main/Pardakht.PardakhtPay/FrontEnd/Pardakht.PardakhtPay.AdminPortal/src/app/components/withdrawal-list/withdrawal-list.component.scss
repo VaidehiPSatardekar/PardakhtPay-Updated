@@ -1,0 +1,35 @@
+@import "src/@fuse/scss/fuse";
+
+.bg-color-0 {
+    background-color: deepskyblue;
+    color: white;
+    font-weight: bold;
+}
+
+.bg-color-1 {
+    background-color: darkcyan;
+    color: white;
+    font-weight: bold;
+}
+
+.filter-padding {
+    /*padding-right: 25px;*/
+}
+
+.list-max-height {
+    /*max-height:160px;*/
+    padding: 10px;
+    overflow: scroll;
+}
+
+.header {
+    overflow: auto !important;
+}
+
+/deep/ .confirmed-row {
+    background-color: lightcyan !important;
+}
+
+[hidden] {
+    display: none !important;
+}

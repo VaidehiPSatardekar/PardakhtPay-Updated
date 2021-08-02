@@ -1,0 +1,13 @@
+﻿CREATE TABLE [MobileCardAccountUserSegmentRelations] (
+    [Id] int NOT NULL IDENTITY,
+    [MobileTransferCardAccountGroupItemId] int NOT NULL,
+    [UserSegmentGroupId] int NOT NULL,
+    CONSTRAINT [PK_MobileCardAccountUserSegmentRelations] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190607144433_20190607_1541_MobileTransferUserSegmentation', N'2.1.4-rtm-31024');
+
+GO

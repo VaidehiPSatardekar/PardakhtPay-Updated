@@ -1,0 +1,20 @@
+﻿ALTER TABLE [MerchantCustomers] ADD [PardakhtPayDepositAmount] decimal(18,2) NOT NULL DEFAULT 0.0;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [PardakhtPayDepositCount] int NOT NULL DEFAULT 0;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [PardakhtPayWithdrawalAmount] decimal(18,2) NOT NULL DEFAULT 0.0;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [PardakhtPayWithdrawalCount] int NOT NULL DEFAULT 0;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190903080511_20190903_0905_CustomerAmounts', N'2.2.6-servicing-10079');
+
+GO

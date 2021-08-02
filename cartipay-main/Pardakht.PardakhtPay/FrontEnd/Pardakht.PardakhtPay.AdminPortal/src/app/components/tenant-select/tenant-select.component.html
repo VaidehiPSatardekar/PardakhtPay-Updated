@@ -1,0 +1,14 @@
+<mat-form-field fxFlex="100%" floatPlaceholder="never">
+    <mat-select (selectionChange)="changed($event.value)" #singleSelect
+        placeholder="{{ 'TENANTS.SELECTED_TENANT' | translate }}" [(ngModel)]="selectedTenant" [disabled]="disabled">
+        <mat-option>
+            <ngx-mat-select-search (ngModelChange)="filterTenant($event)" ngModel
+                [noEntriesFoundLabel]="translateService.instant('TRANSACTIONS.ACTIONS.NO_RESULTS')"
+                [placeholderLabel]="translateService.instant('TRANSACTIONS.ACTIONS.SEARCH')"></ngx-mat-select-search>
+        </mat-option>
+
+        <mat-option *ngFor="let tenantPlamfromMap of getTenants()" [value]="tenantPlamfromMap">
+            {{ (tenantPlamfromMap.tenant.tenancyName || '') || (tenantPlamfromMap.tenant.businessName || '') }}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

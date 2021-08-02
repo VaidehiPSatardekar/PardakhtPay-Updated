@@ -1,0 +1,8 @@
+﻿ALTER TABLE [CardHolderNames] ADD [Status] int NOT NULL DEFAULT 0;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190711082731_20190711_0927_CardHolderNameStatus', N'2.1.4-rtm-31024');
+
+GO

@@ -1,0 +1,78 @@
+<div class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <!-- HEADER -->
+        <div fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" class="list-max-height h-160">
+            <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start" fxLayout.gt-xs="row"
+                 fxLayoutAlign.gt-xs="start center" style="min-height:100%;">
+                <div class="logo mb-24 mb-sm-0 filter-padding"
+                     fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                        receipt
+                    </mat-icon>
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'ACCOUNTING.GENERAL.ACCOUNTING' | translate}}</span>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="args.startDate" [matDatepicker]="picker" placeholder="{{'DATERANGE.FROM-DATE' | translate}}">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="args.endDate" [matDatepicker]="toPicker" placeholder="{{'DATERANGE.TO-DATE' | translate}}">
+                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <mat-select (selectionChange)="setTimeZone()" [(ngModel)]="selectedZoneId" placeholder="{{'TIMEZONE.PLACE_HOLDER' | translate}}">
+                            <mat-option *ngFor="let zone of zones" [value]="zone.timeZoneId">{{zone.translate | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <mat-select (selectionChange)="refresh()" [(ngModel)]="args.groupType" placeholder="{{'ACCOUNTING.GENERAL.GROUP-TYPE' | translate}}">
+                            <mat-option *ngFor="let type of groupTypes" [value]="type.value">{{type.key | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="logo my-4 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                    <button class="mr-0 mr-sm-16" mat-icon-button (click)="refresh()" title="{{'ACCOUNTING.GENERAL.REFRESH' | translate }}">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT -->
+        <div class="content-card mat-white-bg" fxFlex>
+
+            <!--<div class="mat-elevation-z8">-->
+            <!--<div *ngIf="(loading$ | async)" class="p-24" fxLayout="column" fxLayoutAlign="space-between center">
+            <mat-spinner></mat-spinner>
+        </div>-->
+
+            <ag-grid-angular #agGrid
+                             style="width: 100%; height: 100%;"
+                             id="myGrid"
+                             class="ag-theme-balham"
+                             [columnDefs]="columnDefs"
+                             [pagination]="true"
+                             [paginationPageSize]="args.pageSize"
+                             [cacheBlockSize]="args.pageSize"
+                             [cacheOverflowSize]="2"
+                             [maxBlocksInCache]="1"
+                             [enableRtl]="enableRtl"
+                             [rowData]="searchItems"
+                             [rowClassRules]="rowClassRules"
+                             [frameworkComponents]="frameworkComponents"
+                             (gridReady)="onGridReady($event)"></ag-grid-angular>
+        </div>
+    </div>
+</div>
+<!--</div>-->

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BackEnd\Pardakht.PardakhtPay.Application\Pardakht.PardakhtPay.Application.csproj" />
+    <ProjectReference Include="..\..\BackEnd\Pardakht.PardakhtPay.Domain\Pardakht.PardakhtPay.Domain.csproj" />
+    <ProjectReference Include="..\..\BackEnd\Pardakht.PardakhtPay.Infrastructure\Pardakht.PardakhtPay.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\BackEnd\Pardakht.PardakhtPay.Shared.Models\Pardakht.PardakhtPay.Shared.Models.csproj" />
+    <ProjectReference Include="..\..\BackEnd\Pardakht.PardakhtPay.Shared\Pardakht.PardakhtPay.Shared.csproj" />
+    <ProjectReference Include="..\..\BackEnd\Pardakht.PardakhtPay.SqlRepository\Pardakht.PardakhtPay.SqlRepository.csproj" />
+    <ProjectReference Include="..\..\Pardakht.PardakhtPay.ExternalServices.Queue\Pardakht.PardakhtPay.ExternalServices.Queue.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+﻿ALTER TABLE [Withdrawals] ADD [TrackingNumber] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [BankStatementItems] ADD [Notes] nvarchar(100) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190322165046_20190322_1648_WithdrawalTrackingNumber', N'2.1.4-rtm-31024');
+
+GO

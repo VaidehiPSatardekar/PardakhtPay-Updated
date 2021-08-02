@@ -1,0 +1,30 @@
+﻿ALTER TABLE [sadadPspDevices] DROP CONSTRAINT [PK_sadadPspDevices];
+
+GO
+
+EXEC sp_rename N'[sadadPspDevices]', N'SadadPspDevices';
+
+GO
+
+ALTER TABLE [SadadPspDevices] ADD CONSTRAINT [PK_SadadPspDevices] PRIMARY KEY ([Id]);
+
+GO
+
+CREATE TABLE [MydigiDevices] (
+    [Id] int NOT NULL IDENTITY,
+    [MerchantCustomerId] int NOT NULL,
+    [ExternalId] int NOT NULL,
+    [PhoneNumber] nvarchar(max) NULL,
+    [IsRegistered] bit NOT NULL,
+    [TryCount] int NOT NULL,
+    [RegistrationDate] datetime2 NULL,
+    CONSTRAINT [PK_MydigiDevices] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20200406084137_20200416_0941_MyDigiDevices', N'2.2.6-servicing-10079');
+
+GO
+

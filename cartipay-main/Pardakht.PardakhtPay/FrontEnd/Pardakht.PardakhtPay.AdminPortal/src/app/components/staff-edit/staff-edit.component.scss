@@ -1,0 +1,31 @@
+:host {
+  //padding: 24px;
+  width: 100%;
+}
+
+mat-form-field {
+  min-width: 100%;
+  margin: 0;
+}
+
+form fieldset {
+  border: none;
+}
+
+.form-field-container {
+  margin: 8px;
+}
+
+.danger {
+  color: red;
+}
+
+.reset-password {
+  padding: 8px;
+  font-size: 1.3em;
+  font-weight: bold;
+  width: 200px;
+  background-color: blue;
+  color: white;
+  text-align: center;
+}

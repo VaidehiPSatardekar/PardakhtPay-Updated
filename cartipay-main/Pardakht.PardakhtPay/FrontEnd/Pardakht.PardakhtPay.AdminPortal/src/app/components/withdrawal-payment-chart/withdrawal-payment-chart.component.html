@@ -1,0 +1,102 @@
+<div class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <!-- HEADER -->
+        <div fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" class="list-max-height h-160">
+            <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start" fxLayout.gt-xs="row"
+                 fxLayoutAlign.gt-xs="start center" style="min-height:100%;">
+                <div class="logo mb-24 mb-sm-0 filter-padding"
+                     fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/reports'">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                        money
+                    </mat-icon>
+                    <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'REPORTS.WITHDRAWAL-PAYMENT-BREAKDOWN' | translate}}</span>
+                </div>
+                <div class="logo my-4 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                    <button class="mr-0 mr-sm-16" mat-icon-button (click)="refresh()" title="{{'BANK-STATEMENT.GENERAL.REFRESH' | translate }}">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="args.startDate" [matDatepicker]="picker" placeholder="{{'DATERANGE.FROM-DATE' | translate}}">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="args.endDate" [matDatepicker]="toPicker" placeholder="{{'DATERANGE.TO-DATE' | translate}}">
+                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="filter-padding">
+                    <mat-form-field floatPlaceholder="never">
+                        <mat-select #transactionDateRangeSelected (selectionChange)="setTimeZone()" [(ngModel)]="selectedZoneId" placeholder="{{'TIMEZONE.PLACE_HOLDER' | translate}}">
+                            <mat-option *ngFor="let zone of zones" [value]="zone.timeZoneId">{{zone.translate | translate}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT -->
+        <div class="content-card mat-white-bg ">
+            <div *ngIf="!widget" class="p-24 fuse-widget-front mat-white-bg mat-elevation-z2" fxLayout="column"
+                 fxLayoutAlign="space-between center">
+                <div class="h-420">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </div>
+            <!-- Front -->
+            <div *ngIf="widget" class="fuse-widget-front mat-white-bg mat-elevation-z2">
+                <div class="px-16 border-bottom" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap>
+                    <div fxFlex class="py-8 h3">{{widget.title | translate}} {{ 'APPLICATION-SETTINGS.GENERAL.PARDAKHTPAL' | translate}} {{ '%' + cartipalRate }} {{ 'WITHDRAWAL.PROCESS_TYPES.TRANSFER' | translate}}  {{ '%' + transferRate }}</div>
+                    <div fxFlex="0 1 auto" class="py-8" fxLayout="row">
+                    </div>
+                </div>
+                <div class="h-420">
+                    <ngx-charts-line-chart [scheme]="widget.scheme"
+                                           [results]="widget.mainChart['data']"
+                                           [gradient]="widget.gradient"
+                                           [xAxis]="widget.xAxis"
+                                           [yAxis]="widget.yAxis"
+                                           [legend]="widget.legend"
+                                           [showXAxisLabel]="widget.showXAxisLabel"
+                                           [showYAxisLabel]="widget.showYAxisLabel"
+                                           [xAxisLabel]="widget.xAxisLabel"
+                                           [yAxisLabel]="widget.yAxisLabel"
+                                           [autoScale]="true"
+                                           [customColors]="widget.customColors"
+                                           [timeline]="true">
+                                           
+                                        <!-- <ng-template #tooltipTemplate let-model="model">
+                                            This is the single point tooltip template
+                                            <pre>{{model|json}}</pre>
+                                        </ng-template> -->
+
+                                        <ng-template #seriesTooltipTemplate let-model="model">
+                                            <!-- This is vertical line tooltip template
+                                            <pre></pre>  
+                                            <pre>{{model | json}}</pre>   -->
+                                            <pre><div fxLayout="column">
+                                                <div *ngFor="let item of model" fxLayout="row">
+                                                    <div class="box" [style.background-color]="item.color"></div>
+                                                    <div class="text-left" fxFlex>{{item.series}} : {{item.value | number : '1.0'}} : {{getPercentage(item.value, model[0].value + model[1].value)}}</div>
+                                                    <!-- <div fxFlex="20"></div>
+                                                    <div fxFlex="5"></div> -->
+                                                </div>
+                                            </div></pre>      
+                                        </ng-template>
+                    </ngx-charts-line-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->

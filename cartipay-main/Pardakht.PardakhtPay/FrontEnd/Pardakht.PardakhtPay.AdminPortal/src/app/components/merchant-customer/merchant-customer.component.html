@@ -1,0 +1,104 @@
+<mat-progress-bar *ngIf="detailLoading" color="primary" mode="query"></mat-progress-bar>
+<div *ngIf="merchantCustomer" id="merchantcustomers" class="page-layout carded fullwidth" fusePerfectScrollbar>
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="logo-icon mr-0 mr-sm-16" (click)="onBack();">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <span class="logo-text h1">{{merchantCustomer.websiteName + ' - ' + merchantCustomer.userId}}</span>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!--<app-transaction-list [merchantCustomer]="merchantCustomer"></app-transaction-list>-->
+        <div class="content-card cc-80">
+            <!-- CONTENT -->
+            <div class="content">
+                <mat-tab-group class="fullwidth">
+                    <mat-tab label="{{'MERCHANT-CUSTOMER.GENERAL.BASIC-INFORMATION' | translate}}">
+                        <ag-grid-angular #customerdetail
+                                         style="width: 100%; height: 100%; min-height:150px;"
+                                         id="myGrid"
+                                         class="ag-theme-balham"
+                                         [columnDefs]="columnDefs"
+                                         [pagination]="true"
+                                         [paginationPageSize]="25"
+                                         [rowData]="customerDetails"
+                                         [rowSelection]="'single'"
+                                         [enableRtl]="enableRtl"
+                                         (gridReady)="onGridReady($event)"
+                                         [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+                    </mat-tab>
+                    <mat-tab label="{{'TRANSACTION.GENERAL.TRANSACTIONS' | translate}}">
+                        <div class="tab-content p-24" style="display:flex" fusePerfectScrollbar>
+                            <app-transaction-list [merchantCustomer]="merchantCustomer" class="tran"></app-transaction-list>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'WITHDRAWAL.GENERAL.WITHDRAWALS' | translate}}">
+                        <div class="tab-content p-24" style="display:flex" fusePerfectScrollbar>
+                            <app-withdrawal-list [merchantCustomer]="merchantCustomer" class="tran"></app-withdrawal-list>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="{{'USER-SEGMENT.LIST-COLUMNS.GROUP' | translate}}">
+                        <form *ngIf="customerForm" [formGroup]="customerForm" class="product w-100-p" novalidate>
+                            <div class="tab-content p-24" style="display:flex" fusePerfectScrollbar fxLayout="column">
+                                <div class="w-100-p" style="padding-bottom:5px;" fxLayout="row" fxLayoutAlign="end center">
+                                    <button *ngIf="customerForm" mat-raised-button
+                                            class="accent"
+                                            [disabled]="customerForm.invalid"
+                                            (click)="onSubmit()">
+                                        <span>{{'MERCHANT-CUSTOMER.GENERAL.SAVE' | translate}}</span>
+                                    </button>
+                                </div>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'USER-SEGMENT.LIST-COLUMNS.GROUP' | translate}}</mat-label>
+                                    <mat-select name="userSegmentGroupId" formControlName="userSegmentGroupId">
+                                        <mat-option value=""></mat-option>
+                                        <mat-option *ngFor="let group of getUserSegmentGroups()" [value]="group.id">{{group.name}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </form>
+                    </mat-tab>
+                    <mat-tab label="{{'MERCHANT-CUSTOMER.LIST-COLUMNS.RELATED-CUSTOMERS' | translate}}">
+                        <ag-grid-angular #phoneNumberRelatedGrids *ngIf="phoneNumberRelateds != undefined"
+                                         style="width: 100%; height: 100%; min-height:150px;"
+                                         id="phoneNumbers"
+                                         class="ag-theme-balham"
+                                         [columnDefs]="phoneNumberColumnDefs"
+                                         [pagination]="true"
+                                         [paginationPageSize]="25"
+                                         [rowData]="phoneNumberRelateds"
+                                         [rowSelection]="'single'"
+                                         [enableRtl]="enableRtl"
+                                         (gridReady)="onPhoneNumberGridReady($event)"
+                                         [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+                    </mat-tab>
+                <mat-tab label="{{'MERCHANT-CUSTOMER.LIST-COLUMNS.USED-CARDS' | translate}}">
+                    <ag-grid-angular #cards *ngIf="cardNumbers != undefined"
+                                     style="width: 100%; height: 100%; min-height:150px;"
+                                     id="cards"
+                                     class="ag-theme-balham"
+                                     [columnDefs]="cardColumnDefs"
+                                     [pagination]="true"
+                                     [paginationPageSize]="25"
+                                     [rowData]="cardNumbers"
+                                     [rowSelection]="'single'"
+                                     [enableRtl]="enableRtl"
+                                     (gridReady)="onCardGridReady($event)"
+                                     [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+                </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>

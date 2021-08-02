@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Pardakht.PardakhtPay.Infrastructure</AssemblyName>
+    <RootNamespace>Pardakht.PardakhtPay.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Shared.Models\Pardakht.PardakhtPay.Shared.Models.csproj" />
+    <ProjectReference Include="..\Pardakht.PardakhtPay.Shared\Pardakht.PardakhtPay.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

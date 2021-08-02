@@ -1,0 +1,56 @@
+﻿CREATE TABLE [InvoiceDetails] (
+    [Id] int NOT NULL IDENTITY,
+    [CreateDate] datetime2 NOT NULL,
+    [InvoiceId] int NOT NULL,
+    [MerchantId] int NOT NULL,
+    [ItemTypeId] int NOT NULL,
+    [StartDate] datetime2 NOT NULL,
+    [EndDate] datetime2 NOT NULL,
+    [TotalCount] int NOT NULL,
+    [TotalAmount] decimal(18,2) NOT NULL,
+    [Rate] decimal(18,2) NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    CONSTRAINT [PK_InvoiceDetails] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [InvoiceOwnerSettings] (
+    [Id] int NOT NULL IDENTITY,
+    [IsActive] bit NOT NULL,
+    [OwnerGuid] nvarchar(70) NULL,
+    [StartDate] datetime2 NOT NULL,
+    [InvoicePeriod] int NOT NULL,
+    [PardakhtPayDepositRate] decimal(18,2) NOT NULL,
+    [PardakhtPalDepositRate] decimal(18,2) NOT NULL,
+    [PardakhtPalWithdrawalRate] decimal(18,2) NOT NULL,
+    [WithdrawalRate] decimal(18,2) NOT NULL,
+    [TenantGuid] nvarchar(70) NULL,
+    [CreateDate] datetime2 NOT NULL,
+    [UpdateDate] datetime2 NULL,
+    [CreateUserId] nvarchar(max) NULL,
+    [UpdateUserId] nvarchar(max) NULL,
+    [IsDeleted] bit NOT NULL,
+    CONSTRAINT [PK_InvoiceOwnerSettings] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [Invoices] (
+    [Id] int NOT NULL IDENTITY,
+    [CreateDate] datetime2 NOT NULL,
+    [DueDate] datetime2 NOT NULL,
+    [OwnerGuid] nvarchar(70) NULL,
+    [StartDate] datetime2 NOT NULL,
+    [EndDate] datetime2 NOT NULL,
+    [Amount] decimal(18,2) NOT NULL,
+    [TenantGuid] nvarchar(70) NULL,
+    CONSTRAINT [PK_Invoices] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190926142030_20190926_1520_Invoice', N'2.2.6-servicing-10079');
+
+GO

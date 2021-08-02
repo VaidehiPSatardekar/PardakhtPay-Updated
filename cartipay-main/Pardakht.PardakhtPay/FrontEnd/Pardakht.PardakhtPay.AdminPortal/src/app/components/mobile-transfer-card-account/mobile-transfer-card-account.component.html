@@ -1,0 +1,122 @@
+<div id="mobileTransferCardAccount" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/mobiletransfercardaccounts'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div *ngIf="mobileTransferCardAccountForm" fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">subtitles</mat-icon>
+                        {{mobileTransferCardAccountForm.get('cardNumber').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.SAVE' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.SAVE' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && mobileTransferCardAccountForm && allowAddMobileTransferCardAccount" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="mobileTransferCardAccountForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && mobileTransferCardAccountForm && allowAddMobileTransferCardAccount" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="mobileTransferCardAccountForm.invalid || (isLoading() == true)"
+                    (click)="onUpdateSubmit()">
+                <span>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="mobileTransferCardAccountForm" [formGroup]="mobileTransferCardAccountForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field *ngIf="(isProviderAdmin || isTenantAdmin)  && pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                            <mat-select name="ownerGuid" formControlName="ownerGuid" required>
+                                <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.PAYMENT-PROVIDER' | translate}}</mat-label>
+                            <mat-select name="paymentProviderType" formControlName="paymentProviderType" required>
+                                <mat-option *ngFor="let provider of providers" [value]="provider.value">{{provider.key | translate}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p"  *ngIf="checkCardNumberIsAllowed()">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}</mat-label>
+                            <mat-select name="cardToCardAccountGuid" formControlName="cardToCardAccountGuid" (selectionChange)="setCardInformationNumber($event)" >
+                                <mat-option *ngFor="let account of getCardToCardAccounts()" [value]="account.accountGuid"> {{ account.cardNumber  + '-' + account.accountNo }} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="checkCardNumberIsAllowed()">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.CARD-NUMBER' | translate}}"
+                                   name="cardNumber"
+                                   formControlName="cardNumber">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="checkCardHolderNameIsAllowed()">
+                            <mat-label>{{'CARD-TO-CARD.LIST-COLUMNS.CARD-HOLDER-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'CARD-TO-CARD.LIST-COLUMNS.CARD-HOLDER-NAME' | translate}}"
+                                   name="cardHolderName"
+                                   formControlName="cardHolderName">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="checkMerchantIdIsAllowed()">
+                            <mat-label>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.MERCHANT-ID' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.MERCHANT-ID' | translate}}"
+                                   name="merchantId"
+                                   formControlName="merchantId">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="checkMerchantPasswordIsAllowed()">
+                            <mat-label>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.MERCHANT-PASSWORD' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.MERCHANT-PASSWORD' | translate}}"
+                                   type="password"
+                                   autocomplete="new-password"
+                                   name="merchantPassword"
+                                   formControlName="merchantPassword">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="checkTerminalIdIsAllowed()">
+                            <mat-label>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.TERMINAL-ID' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.TERMINAL-ID' | translate}}"
+                                   name="terminalId"
+                                   formControlName="terminalId">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="checkTitleIsAllowed()">
+                            <mat-label>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.TITLE' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.TITLE' | translate}}"
+                                   name="title"
+                                   formControlName="title">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always"  *ngIf="checkTitleIsAllowed()" class="w-100-p">
+                            <mat-label>{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.THRESHOLD-AMOUNT' | translate}}</mat-label>
+                            <input
+                            type="text"
+                            [options]="{ prefix: ' ', thousands: '.', decimal: ',', precision: 0, align:'left' }"
+                            currencyMask min="1" matInput placeholder="{{'MOBILE-TRANSFER-CARD-ACCOUNT.GENERAL.THRESHOLD-AMOUNT' | translate}}" formControlName="thresholdAmount">
+                        </mat-form-field>
+                        <mat-checkbox class="w-100-p" name="isActive"
+                                      formControlName="isActive">
+                            {{'MERCHANT.BANK_ACCOUNT.IS_ACTIVE' | translate}}
+                        </mat-checkbox>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

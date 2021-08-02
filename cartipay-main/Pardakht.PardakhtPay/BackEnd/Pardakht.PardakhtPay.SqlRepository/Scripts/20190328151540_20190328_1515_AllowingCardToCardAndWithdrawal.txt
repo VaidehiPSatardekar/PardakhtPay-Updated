@@ -1,0 +1,12 @@
+﻿ALTER TABLE [CardToCardAccountGroupItems] ADD [AllowCardToCard] bit NOT NULL DEFAULT 1;
+
+GO
+
+ALTER TABLE [CardToCardAccountGroupItems] ADD [AllowWithdrawal] bit NOT NULL DEFAULT 0;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190328151540_20190328_1515_AllowingCardToCardAndWithdrawal', N'2.1.4-rtm-31024');
+
+GO

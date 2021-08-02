@@ -1,0 +1,89 @@
+<div id="transferAccount" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/transferaccounts'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div *ngIf="transferAccountForm" fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance_wallet</mat-icon>
+                        {{transferAccountForm.get('accountHolderFirstName').value}} {{transferAccountForm.get('accountHolderLastName').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'TRANSFER-ACCOUNT.GENERAL.NEW-TRANSFER-ACCOUNT' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'TRANSFER-ACCOUNT.GENERAL.EDIT-TRANSFER-ACCOUNT' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && transferAccountForm && allowAddTransferAccount" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="transferAccountForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'TRANSFER-ACCOUNT.GENERAL.ADD-TRANSFER-ACCOUNT' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && transferAccountForm && allowAddTransferAccount" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="transferAccountForm.invalid || isLoading()"
+                    (click)="onUpdateSubmit()">
+                <span>{{'TRANSFER-ACCOUNT.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="transferAccountForm" [formGroup]="transferAccountForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field *ngIf="(isProviderAdmin || isTenantAdmin)  && pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                            <mat-select name="ownerGuid" formControlName="ownerGuid" required>
+                                <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.FRIENDLY-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'TRANSFER-ACCOUNT.LIST-COLUMNS.FRIENDLY-NAME' | translate}}" formControlName="friendlyName" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.ACCOUNT-NO' | translate}}</mat-label>
+                            <input matInput placeholder="{{'TRANSFER-ACCOUNT.LIST-COLUMNS.ACCOUNT-NO' | translate}}"
+                                   name="accountNo"
+                                   formControlName="accountNo" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.IBAN' | translate}}</mat-label>
+                            <input matInput placeholder="{{'TRANSFER-ACCOUNT.LIST-COLUMNS.IBAN' | translate}}" formControlName="iban" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.ACCOUNT-HOLDER-FIRST-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'TRANSFER-ACCOUNT.LIST-COLUMNS.ACCOUNT-HOLDER-FIRST-NAME' | translate}}" formControlName="accountHolderFirstName" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.ACCOUNT-HOLDER-LAST-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'TRANSFER-ACCOUNT.LIST-COLUMNS.ACCOUNT-HOLDER-LAST-NAME' | translate}}" formControlName="accountHolderLastName" required>
+                        </mat-form-field>
+                        <mat-checkbox class="w-100-p" name="isActive"
+                                      formControlName="isActive">
+                            {{'TRANSFER-ACCOUNT.LIST-COLUMNS.IS-ACTIVE' | translate}}
+                        </mat-checkbox>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

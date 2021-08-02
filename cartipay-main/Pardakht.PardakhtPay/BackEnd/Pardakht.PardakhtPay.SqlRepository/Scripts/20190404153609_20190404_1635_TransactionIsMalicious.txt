@@ -1,0 +1,12 @@
+﻿ALTER TABLE [Transactions] ADD [IsMaliciousCustomer] bit NOT NULL DEFAULT 0;
+
+GO
+
+ALTER TABLE [Transactions] ADD [UserSegmentGroupId] int NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190404153609_20190404_1635_TransactionIsMalicious', N'2.1.4-rtm-31024');
+
+GO

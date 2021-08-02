@@ -1,0 +1,12 @@
+﻿ALTER TABLE [MerchantCustomers] ADD [CardNumberRelatedCustomers] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [MerchantCustomers] ADD [DeviceRelatedCustomers] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190513153225_20190513_1632_RelatedColumns', N'2.1.4-rtm-31024');
+
+GO

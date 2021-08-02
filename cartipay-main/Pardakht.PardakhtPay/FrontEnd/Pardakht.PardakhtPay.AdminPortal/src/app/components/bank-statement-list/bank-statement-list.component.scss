@@ -1,0 +1,67 @@
+.filter-padding {
+    padding-right: 25px;
+}
+
+/deep/ .credit {
+    /*background-color: lightgreen !important;*/
+    color: green !important;
+}
+
+/deep/ .debit {
+    /*background-color: tomato !important;
+        color:white !important;*/
+    color: red !important;
+}
+
+.list-max-height{
+    /*max-height:160px;*/
+    padding:24px;
+    overflow:scroll;
+}
+
+.header{
+    overflow:auto !important;
+}
+
+.table-min-width {
+    min-width: 1440px;
+}
+
+.used {
+    background-color: darkcyan;
+    color: white;
+    font-weight: bold;
+}
+
+/deep/ .used-row{
+    background-color:lightcyan !important;
+}
+
+/deep/ .risky-row {
+    background-color: #ffd4d4 !important;
+}
+
+/deep/ .withdrawal-row {
+    background-color: #fdffe0 !important;
+}
+
+/*/deep/ content {
+    max-height: calc(100% - 64px) !important;
+}
+
+.content-card {
+    max-height: calc(100% - 160px);
+}*/
+
+/deep/ .filter-option > .mat-pseudo-checkbox {
+    display: none !important;
+}
+
+.filter-sidenav .mat-list-item-content {
+    padding: 0 10px !important;
+    font-size: 0.875rem !important;
+}
+
+.filter-sidenav .mat-select-trigger {
+    font-size: 1rem !important;
+}

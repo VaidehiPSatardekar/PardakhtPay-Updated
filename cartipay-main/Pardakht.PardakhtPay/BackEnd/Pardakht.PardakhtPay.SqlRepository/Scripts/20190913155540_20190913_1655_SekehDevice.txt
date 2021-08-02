@@ -1,0 +1,17 @@
+﻿CREATE TABLE [SekehDevices] (
+    [Id] int NOT NULL IDENTITY,
+    [MerchantCustomerId] int NOT NULL,
+    [ExternalId] int NOT NULL,
+    [PhoneNumber] nvarchar(max) NULL,
+    [IsRegistered] bit NOT NULL,
+    [TryCount] int NOT NULL,
+    [RegistrationDate] datetime2 NULL,
+    CONSTRAINT [PK_SekehDevices] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190913155540_20190913_1655_SekehDevice', N'2.2.6-servicing-10079');
+
+GO

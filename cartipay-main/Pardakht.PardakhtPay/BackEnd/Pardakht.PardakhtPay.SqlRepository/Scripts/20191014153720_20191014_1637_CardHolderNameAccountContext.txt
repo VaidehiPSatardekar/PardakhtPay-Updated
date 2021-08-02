@@ -1,0 +1,8 @@
+﻿ALTER TABLE [CardHolderNames] ADD [AccountContext] nvarchar(500) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20191014153720_20191014_1637_CardHolderNameAccountContext', N'2.2.6-servicing-10079');
+
+GO

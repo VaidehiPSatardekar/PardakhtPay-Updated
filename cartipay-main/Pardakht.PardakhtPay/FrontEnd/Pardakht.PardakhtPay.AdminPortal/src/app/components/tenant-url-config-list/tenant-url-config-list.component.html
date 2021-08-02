@@ -1,0 +1,47 @@
+<div id="tenantUrlConfig" class="page-layout carded fullwidth" fusePerfectScrollbar>
+
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">domain</mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'TENANT-URL-CONFIG.GENERAL.TENANT-URL-CONFIG-MANAGEMENT' | translate }}</span>
+            </div>
+
+            <button mat-raised-button [routerLink]="'/tenanturlconfig'" class="mat-white-bg my-12 mt-sm-0">
+                <span>{{ 'TENANT-URL-CONFIG.GENERAL.CREATE-TENANT-URL-CONFIG'  | translate}}</span>
+            </button>
+
+        </div>
+        <mat-progress-bar *ngIf="loading$ | async" color="primary" mode="query"></mat-progress-bar>
+        <div class="content-card mat-white-bg table-scroll">
+            <ngx-datatable *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',x:'-300px'}}" class="material h-100-p table-min-width" [rows]="tenantUrlConfigs$ | async"
+                           [loadingIndicator]="(loading$ | async)" [columnMode]="'force'" [headerHeight]="48" [rowHeight]="'auto'"
+                           [scrollbarH]="false" [externalPaging]="false" [selected]="selected" [selectionType]="'single'" (select)='onSelect($event)'
+                           [messages]="{'emptyMessage': ((loading$ | async) ? ('TENANT-URL-CONFIG.LIST.LOADING-DATA' | translate) : ('TENANT-URL-CONFIG.LIST.NO-DATA' | translate)),'totalMessage': 'TENANT-URL-CONFIG.LIST.TOTAL'|translate}">
+
+
+                <!--<ngx-datatable-column [width]="200" name="{{ 'TENANT-URL-CONFIG.LIST-COLUMNS.TENANT' | translate}}" prop="tenantGuid">
+                </ngx-datatable-column>-->
+
+                <ngx-datatable-column [width]="150" name="{{ 'TENANT-URL-CONFIG.LIST-COLUMNS.MERCHANT' | translate}}" prop="merchantId">
+                    <ng-template ngx-datatable-cell-template let-value="value">
+                        <span>{{getMerchantName(value)}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'TENANT-URL-CONFIG.LIST-COLUMNS.URL' | translate}}" prop="apiUrl" [cellClass]="'url content-right'">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'TENANT-URL-CONFIG.LIST-COLUMNS.IS-PAYMENT-URL' | translate}}" prop="isPaymentUrl">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'TENANT-URL-CONFIG.LIST-COLUMNS.IS-SERVICE-URL' | translate}}" prop="isServiceUrl">
+                </ngx-datatable-column>
+
+            </ngx-datatable>
+
+        </div>
+    </div>
+</div>

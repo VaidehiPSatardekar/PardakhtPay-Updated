@@ -1,0 +1,8 @@
+﻿ALTER TABLE [StaffUsers] ADD [ParentAccountId] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190501140316_ParentAccountIdField', N'2.1.0-rtm-30799');
+
+GO

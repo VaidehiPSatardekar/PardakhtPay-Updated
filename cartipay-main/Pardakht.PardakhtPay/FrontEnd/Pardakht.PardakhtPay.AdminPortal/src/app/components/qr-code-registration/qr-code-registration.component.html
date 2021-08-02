@@ -1,0 +1,78 @@
+<div id="bankLogin" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="space-around start">
+            <!-- APP TITLE -->
+            <div fxLayout="column" fxFill fxLayoutAlign="space-evenly stretch">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/banklogins'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                        <div fxLayout="column" fxLayoutAlign="start start"
+                             [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                            <div *ngIf="qrCodeRegisterForm" class="h2">
+                                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance_wallet</mat-icon>
+                                {{qrCodeRegisterForm.get('friendlyName').value}}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button *ngIf="qrCodeRegisterForm && waitingSms() && !bankAccountsLoading && allowAddBankLogin" mat-raised-button
+                                class="save-product-button"
+                                [disabled]="qrCodeRegisterForm.invalid"
+                                (click)="onSubmit()">
+                            <span>{{'BANK-LOGIN.GENERAL.CREATE-REGISTRATION' | translate}}</span>
+                        </button>
+                        <button *ngIf="qrCodeRegisterForm && (hasError() || isNotRequested() || isSesssionOut() || waitingSms()) && !bankAccountsLoading && allowAddBankLogin" mat-raised-button
+                                class="save-product-button"
+                                (click)="onQRCodeRegisterFormSubmit()">
+                            <span>{{'BANK-LOGIN.GENERAL.GET-SMS' | translate}}</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- / APP TITLE -->
+                <div *ngIf="resolvingQr()">
+                    {{'BANK-LOGIN.STATUS.QR-CODE-RESOLVING' | translate}}
+                </div>
+                <div *ngIf="waitingSms()">
+                    {{'BANK-LOGIN.STATUS.SMS-WAITING' | translate}}
+                </div>
+                <div *ngIf="hasError()" class="login-error">
+                    {{'BANK-LOGIN.STATUS.QR-REGISTRATION-FAILED' | translate}}
+                </div>
+                <div *ngIf="success()">
+                    {{'BANK-LOGIN.STATUS.QR-REGISTRATION-COMPLETED' | translate}}
+                </div>
+                <div *ngIf="isNotRequested()">
+                    {{'BANK-LOGIN.STATUS.PLEASE-REQUEST-REGISTRATION' | translate}}
+                </div>
+            </div>
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true || resolvingQr()" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-progress-bar *ngIf="waitingSms()" color="primary" mode="query"></mat-progress-bar>
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="qrCodeRegisterForm && waitingSms()" [formGroup]="qrCodeRegisterForm"  class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BANK-LOGIN.LIST-COLUMNS.QRCODEOTP' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BANK-LOGIN.LIST-COLUMNS.QRCODEOTP' | translate}}" formControlName="qrCodeQTP" autocomplete="off" required>
+                        </mat-form-field>
+                       
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

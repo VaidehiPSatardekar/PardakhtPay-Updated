@@ -1,0 +1,478 @@
+﻿@model Pardakht.PardakhtPay.Shared.Models.WebService.TransactionPaymentInformationResponse
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>پرداخت الکترونیک البرز پرداخت</title>
+    <link rel="icon" href="/img/favicon.png" />
+    <link rel="shortcut icon" href="/img/favicion.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
+    <!-- Bootstrap, styles -->
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link href="~/components/css/Bootstrap-v4.6.0/bootstrap-rtl.min.css" rel="stylesheet" media="screen" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
+    @*new style*@
+    <link href="~/components/css/common.css" rel="stylesheet" media="screen">
+    <link href="~/components/css/style.css" rel="stylesheet" media="screen">
+    <style>
+        @@media(min-width:768px) {
+            img#MobileCaptcha_CaptchaImage {
+                max-width: 140px;
+            }
+
+            captcha {
+                display: inline-block;
+                margin-right: -40px;
+            }
+        }
+
+        @@media(max-width: 768px) {
+            img#MobileCaptcha_CaptchaImage {
+                display: block;
+                margin: 0 auto;
+                vertical-align: bottom;
+                margin-top: 5px;
+            }
+
+            .captcha div#MobileCaptcha_CaptchaDiv {
+                max-width: 123px !important;
+            }
+
+            div#MobileCaptcha_CaptchaImageDiv {
+                max-width: 100px;
+                max-height: 20px;
+                vertical-align: middle !important;
+                display: inline-block !important;
+            }
+
+            captcha {
+                display: inline-block;
+            }
+
+            .dark-box {
+                border: 0;
+                background-color: transparent;
+            }
+        }
+
+        @@media(max-width:400px) {
+            .dark-box.captcha {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-img">
+    @using (Html.BeginForm("completemobile", "Invoice", FormMethod.Post, new { id = "novinpayForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <header>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <a href="#" class="main-logo d-flex align-items-center justify-content-center" title="">
+                            <img src="/img/logo.png" alt="PardakhtPay logo" width="322">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+
+            <div class="row">
+                <div class="col-md-3 hidden-sm text-center"></div>
+                <div id="alertbox" style="display:none" class="alert alert-danger alert-dismissible col-sm-6 text-center" role="alert">
+                </div>
+                <div class="col-md-3 hidden-sm text-center"></div>
+            </div>
+            <div class="main-date position-relative w-100 d-flex align-items-center justify-content-center">
+                <div class="main-date_inner f_bold position-relative d-flex justify-content-between align-items-center">
+                    <span>زمان باقیمانده : </span>
+                    <span class="time" id="timer"></span>
+                </div>
+            </div>
+            <div class="container-fluid wrapper">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="boxer left-card">
+                            <form action="#" method="post">
+                                <ul class="list-unstyled left-card_list">
+                                    <li class="left-card_list_item">
+                                        <p>شماره کارت</p>
+                                        @*<input class="form-control w-100 input-img card-input ltr text-center" type="text" aria-label="شماره کارت">*@
+                                        @if (string.IsNullOrEmpty(Model.CustomerCardNumber))
+                                        {
+                                            <input type="text" name="CustomerCardNumber" id="CardNo" class="form-control w-100 input-img card-input ltr text-center" autocomplete="off" />
+
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="CustomerCardNumber" id="CardNo" class="form-control w-100 input-img card-input ltr text-center" autocomplete="off" readonly value="@Model.CustomerCardNumber" />
+
+                                        }
+                                    </li>
+                                    <li class="left-card_list_item">
+                                        <p>رمز دوم کارت</p>
+                                        <div class="wb-50 d-flex justify-content-between align-items-center">
+                                            <input type="password" name="Pin" id="Password" class="form-control input-img repeat-input ltr text-center" aria-label="رمز دوم کارت" autocomplete="off">
+                                            @*<button class="btn-success">درخواست رمز پویا</button>*@
+                                            <div id="button-container">
+                                                <button id="imgkey" type="button" onclick="sendOtp()" class="btn-success" value="درخواست رمز پویا">درخواست رمز پویا</button>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-4" id="loader" hidden>
+                                                <img src="/img/loader.gif" style="height:32px;" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="left-card_list_item">
+                                        <p>کد cvv2</p>
+                                        <input name="Cvv2" id="CVV" class="form-control text-center ltr full-size" type="text" aria-label="کد cvv2" autocomplete="off" />
+                                    </li>
+                                    <li class="left-card_list_item">
+                                        <p>تاریخ انقضا</p>
+                                        <div class="wb-50 d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <label for="month" class="ml-1">ماه</label>
+                                                <input type="text" name="Month" id="EX_Month" class="form-control ltr text-center w-100" autocomplete="off" />
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <label for="year" class="ml-1">سال</label>
+                                                <input type="text" name="Year" id="EX_Year" class="form-control ltr text-center w-100" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="left-card_list_item">
+                                        <p>تصویر امنیتی</p>
+                                        <div class="wb-50 d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                @Html.EditorFor(model => model.CaptchaCode, new { htmlAttributes = new { @class = "form-control ltr text-center w-100", autocomplete = "off", dir = "ltr" } })
+                                            </div>
+                                            <div class="d-flex align-items-end">
+                                                <div class="dark-box captcha">
+                                                    @*<p class="captcha-txt text-white text-center">3N4K</p>*@
+                                                    @if (string.IsNullOrEmpty(Model.CaptchaImageData))
+                                                    {
+                                                        <captcha id="MobileCaptcha" user-input-id="CaptchaCode" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-xs-5 nosidepadding"><img width="165" height="35" src="@($"data:image/JPEG;base64,{Model.CaptchaImageData}")" /></div>
+                                                    }
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="left-card_buttons d-flex justify-content-between align-items-center">
+                                    <button class="btn-success" id="paymentButton" type="button">پرداخت</button>
+                                    <button class="btn-danger" onclick="cancel()" type="button">انصراف</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="boxer right-card">
+                            <div class="dark-box">
+                                <p class="text-white text-center fs-24"> پرداخت الکترونیک البرز پرداخت</p>
+                            </div>
+                            <ul class="right-card_list f_medium">
+                                <li>
+                                    <strong>نام فروشگاه : </strong>
+                                    <span>  پرداخت پی</span>
+                                </li>
+                                <li>
+                                    <strong>کد پذیرنده : </strong>
+                                    <span>@Model.TransactionId</span>
+                                </li>
+                            </ul>
+                            <div class="green-box d-flex align-items-center justify-content-between">
+                                <p class="text-white fs-24">مبلغ قابل پرداخت (ریال :(</p>
+                                <p class="text-white fs-24">@String.Format("{0:n0}", Model.Amount)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bottom-card boxer">
+                            <h5>لطفا قبل از فرایند خرید به نکات زیر توجه فرمایید</h5>
+                            <ul class="right-card_list f_medium">
+                                <li>
+                                    از صحت نام فروشنده و مبلغ نمایش داده شده اطمینان حاصل نمایید.
+                                </li>
+                                <li>
+                                    حداقل خرید مجاز با هر کارت بانکی از درگاه البرز پرداخت 30.000.000 ریال است.
+                                </li>
+                                <li>
+                                    پرداخت از طریق کارت بانک های ملی ، سامان ، کشاورزی ، سپه ، شهر ، انصار ، اقتصاد نوین ، حکمت
+                                    ایرانیان ، دی ، سرمایه ، ایران زمین ، توسعه تعاون ، آینده ، پست بانک ،گردشگری ، صنعت و معدن
+                                    ، رسالت ، کوثر ، خاورمیانه ، مهر اقتصاد ، قوامین ، پارسیان ، تجارت و پاسارگاد میسر است.
+                                </li>
+                            </ul>
+                            <h5>راهنمای خرید</h5>
+                            <ul class="right-card_list f_medium">
+                                <li>
+                                    برای انجام تراکنش های اینترنتی باید ، رمز دوم یا رمز اینترنتی برای کارت خود دریافت نموده
+                                    باشید این رمز با رمز اول که در خرید از پایانه های فروش یا دریافت وجه از خودپردازاستفاده می
+                                    شود متفاوت است.
+                                </li>
+                                <li>کد CVV2 بر روی کارت یا پشت کارت شما درج شده است و متشکل از سه یا چهار رقم است.</li>
+                                <li>
+                                    تاریخ انقضاء روی کارت شما درج شده است ، در هنگام وارد کردن سال انقضاء صرفا باید آن را به
+                                    صورت دو رقمی وارد نمایید.
+                                </li>
+                            </ul>
+                            <h5>
+                                شماره موبایل و کارتی که برای خرید استفاده میکنید باید به نام خود شما باشد در غیر اینصورت طبق
+                                دستورالعمل بانک مرکزی ، خرید شما تائید نخواهد شد.
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.TransactionId)
+            @Html.HiddenFor(model => model.Token)
+        </main>
+    }
+
+    <form action="/invoice/cancel" method="post" id="cancelForm">
+        <input type="hidden" name="token" value="@Model.Token" />
+    </form>
+    <input type="hidden" id="timersec" name="timersec" value="@ViewBag.timer" />
+    <input type="hidden" id="timer2sec" name="timer2sec" value="0" />
+
+    <script src="~/components/jquery/dist/jquery.min.js"></script>
+    <script src="~/components/blockui/jquery.blockUI.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+
+    <script type="text/javascript">
+        $('#payForm').submit(function () {
+            $.blockUI({
+                message: 'Please wait while payment is being processed'
+            });
+            $('#paymentButton').attr('disabled', true);
+        });
+
+        $(function () {
+            $("#CardNo").mask('ABBB-BBBB-BBBB-BBBB', {
+                'translation': {
+                    A: { pattern: /[1-9]/ },
+                    B: { pattern: /[0-9]/ }
+                }
+            });
+            $("#Password").mask("000000099999");
+            $("#CVV").mask("0999");
+            $("#EX_Month").mask('AB', {
+                'translation': {
+                    A: { pattern: /[0-1]/ },
+                    B: { pattern: /[0-9]/ }
+                }
+            });
+            $("#EX_Year").mask('99');
+
+            function IsKeyNumber(keycode) {
+                return (keycode > 95 && keycode < 108) || (keycode > 47 && keycode < 58) || keycode == 229;
+            }
+            $('#CardNo').on('keyup', function (e) {
+                checkCardValidation();
+                if ($(this).val().length == 19 && IsKeyNumber(e.keyCode)) {
+                    $("#Password").focus();
+                }
+            });
+
+            $('#Password').on('keyup', function (e) {
+                if ($(this).val().length == 12 && IsKeyNumber(e.keyCode)) {
+                    $("#CVV").focus();
+                }
+            });
+            $('#CVV').on('keyup', function (e) {
+                if ($(this).val().length == 4 && IsKeyNumber(e.keyCode)) {
+                    $("#EX_Month").focus();
+                }
+            });
+
+            $('#EX_Month').on('keyup', function (e) {
+                if ($(this).val().length == 2 && IsKeyNumber(e.keyCode)) {
+                    $("#EX_Year").focus();
+                }
+            });
+
+            $('#EX_Year').on('keyup', function (e) {
+                if ($(this).val().length == 2 && IsKeyNumber(e.keyCode)) {
+                    $("#CaptchaCode").focus();
+                }
+            });
+
+            $("#paymentButton").click(function () {
+                allowAutoSubmit = false;
+                $('#alertbox').hide();
+                if (!checkCardNumberIsValid()) {
+                    $('#alertbox').text('Please enter a valid card number');
+                    $('#alertbox').show();
+                    return;
+                }
+                $('#paymentButton').prop('disabled', true);
+                setTimeout(function () {
+                    $("#payForm").submit();
+                }, 100);
+            });
+
+            document.onkeydown = function (event) {
+                switch (event.keyCode) {
+                    case 116: //F5 button
+                        event.returnValue = false;
+                        event.keyCode = 0;
+                        return false;
+                    case 82: //R button
+                        if (event.ctrlKey) {
+                            event.returnValue = false;
+                            event.keyCode = 0;
+                            return false;
+                        }
+                }
+            }
+
+            if ($('#expired').length <= 0) {
+                var x = setInterval(function () {
+                    var totalSeconds = parseInt($('#timersec').val());
+                    if (totalSeconds <= 0) {
+                        clearInterval(x);
+                        location.reload();
+                    }
+                    var minutes = Math.floor(totalSeconds / 60);
+                    var seconds = Math.floor(totalSeconds % 60);
+                    $('#timer').text(pad(minutes, 2) + ":" + pad(seconds, 2));
+                    $('#timersec').val(parseInt($('#timersec').val()) - 1);
+
+                    var totalSeconds2 = parseInt($('#timer2sec').val());
+
+                    if (totalSeconds2 <= 0) {
+                        //$('#imgkey').prop('disabled', false);
+                        $('#imgkey').val('درخواست رمز پویا');
+                        checkCardValidation();
+                        //$('#timer2container').hide();
+                    }
+                    else {
+                        var minutes2 = Math.floor(totalSeconds2 / 60);
+                        var seconds2 = Math.floor(totalSeconds2 % 60);
+                        $('#imgkey').val(pad(minutes2, 2) + ":" + pad(seconds2, 2));
+                        $('#timer2sec').val(parseInt($('#timer2sec').val()) - 1);
+                        $('#imgkey').prop('disabled', true);
+                    }
+                }, 1000);
+                function pad(num, size) {
+                    var s = "000000000" + num;
+                    return s.substr(s.length - size);
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            checkCardValidation();
+        });
+        function cancel() {
+            $('#cancelForm').submit();
+        }
+        function sendOtp() {
+            console.log('test');
+            var c = $("#CaptchaCode").val();
+            if (c == null || c == '' || c == undefined) {
+                $('#alertbox').text('Please enter captcha');
+                $('#alertbox').show();
+                return;
+            }
+            else {
+                $('#alertbox').hide();
+                $('#imgkey').prop('disabled', true);
+                $('#button-container').hide();
+                $('#loader').show();
+                $.ajax({
+                    url: '/invoice/sendotp',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        token: '@(Model.Token)',
+                        cardNo: $('#CardNo').val(),
+                        captcha: $("#CaptchaCode").val()
+                    }),
+                    success: function (response) {
+                        $('#button-container').show();
+                        $('#loader').hide();
+                        if (response.success == 0) {
+                            $('#alertbox').text('خطای سیستم');
+                            $('#alertbox').show();
+                            $('#imgkey').prop('disabled', false);
+                        }
+                        else {
+                            $('#imgkey').prop('disabled', true);
+                            //$('#timer2container').show();
+                            $('#timer2sec').val(120);
+                            //location.reload();
+                        }
+                    },
+                    error: function () {
+                        $('#button-container').show();
+                        $('#loader').hide();
+                        $('#alertbox').text('خطای سیستم');
+                        $('#alertbox').show();
+                        $('#imgkey').prop('disabled', false);
+                    }
+                });
+            }
+        }
+
+        function checkCardValidation() {
+            var value = $('#CardNo').val();
+            if (value != null && value != undefined) {
+                value = value.replace(/\-/g, '');
+            }
+
+            if (validateCardNumber(value) == true) {
+                $('#imgkey').prop('disabled', false);
+            }
+            else {
+                $('#imgkey').prop('disabled', true);
+            }
+        }
+
+        function checkCardNumberIsValid() {
+            var value = $('#CardNo').val();
+            if (value != null && value != undefined) {
+                value = value.replace(/\-/g, '');
+            }
+            return validateCardNumber(value);
+        }
+
+        function validateCardNumber(cardNumber) {
+            if (cardNumber == undefined || cardNumber == null || cardNumber == '' || cardNumber.length != 16 || !(new RegExp('(\\d){16}').test(cardNumber))) {
+                return false;
+            }
+
+            var sum = 0;
+            for (var i = 0; i < cardNumber.length; i++) {
+                var c = cardNumber[i];
+                var d = parseInt(c) * (i % 2 == 0 ? 2 : 1);
+                sum += d > 9 ? d - 9 : d;
+            }
+            if (sum % 10 == 0) {
+                return true;
+            }
+            if (cardNumber.startsWith("505801")) {
+                return true;
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+﻿ALTER TABLE [Withdrawals] ADD [CardToCardTryCount] int NOT NULL DEFAULT 0;
+
+GO
+
+CREATE TABLE [TransactionWithdrawalHistories] (
+    [Id] int NOT NULL IDENTITY,
+    [TransactionId] int NOT NULL,
+    [WithdrawalId] int NOT NULL,
+    [Date] datetime2 NOT NULL,
+    [IsCompleted] bit NOT NULL,
+    [Message] nvarchar(max) NULL,
+    CONSTRAINT [PK_TransactionWithdrawalHistories] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190619084501_20190619_0944_TransactionWithdrawalHistory', N'2.1.4-rtm-31024');
+
+GO

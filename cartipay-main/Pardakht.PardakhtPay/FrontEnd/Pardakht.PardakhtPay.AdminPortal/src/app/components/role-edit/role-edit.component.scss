@@ -1,0 +1,61 @@
+
+::ng-deep .mat-list-text {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+.mat-selection-list {
+  /* height: 400px; */
+  overflow: auto;
+}
+
+@media (max-height: 640px) {
+  .mat-selection-list {
+    /* height: 200px; */
+  }
+  .mat-list-item {
+    font-size: .9em !important;
+  }
+}
+
+.mat-line {
+  white-space: normal !important;
+}
+
+::ng-deep .mat-tab-body {
+  padding: 10px;
+}
+
+.danger {
+  color: red;
+}
+
+fieldset {
+  border: 0;
+}
+
+.control-wrapper {
+  margin: 20px 10px;
+}
+
+.mat-tab-group {
+  border: 1px solid #cecece;
+}
+
+// hack for overriding checkbox colour when hosted in a tab - should really look to see where mat-primary is being set
+::ng-deep .mat-primary .mat-pseudo-checkbox-checked, body.theme-default .mat-primary .mat-pseudo-checkbox-indeterminate {
+  background: #039be5 !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 24px 16px;
+  // padding-bottom: 0!important;
+  background-color: #f1f1f1;
+  margin-bottom: 12px;
+  margin-left: 12px;
+  margin-right: 12px;
+  border-width: 1px;
+  border-color: #d2d1d1;
+  border-style: solid;
+  border-radius: 10px;
+}

@@ -1,0 +1,52 @@
+<div class="page-layout carded fullwidth inner-scroll">
+
+  <!-- TOP BACKGROUND -->
+  <div class="top-bg accent"></div>
+  <!-- / TOP BACKGROUND -->
+
+  <!-- CENTER -->
+  <div class="center tenant-edit-container">
+    <div class="list-max-height h-160">
+
+      <!-- HEADER -->
+      <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="space-between center">
+
+        <!-- APP TITLE -->
+        <div class="logo mb-16 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+          <button *ngIf="isarrowBack" class="mr-0 mr-sm-16" mat-icon-button (click)="onCancel()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            assessment
+          </mat-icon>
+          <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            {{title}}
+          </span>
+        </div>
+        <!-- / APP TITLE -->
+
+      </div>
+      <!-- / HEADER -->
+    </div>
+    <!-- CONTENT CARD -->
+    <div *ngIf="isCreate" class="fuse-card auto-width tenant-edit-container p8" style="height: 95%;">
+      <tcam-staff-list [roleFilter]="'P'" (isCreatingInfo)="isCreating(true)" (cancel)="onCancel()"
+        (onarrowback)="onArrowBack()"></tcam-staff-list>
+    </div>
+    <div *ngIf="!isCreate" class="fuse-card auto-width tenant-edit-container p8" style="height: 95%;">
+      <tcam-staff-list [roleFilter]="'P'" (isCreatingInfo)="isCreating(true)" (cancel)="onCancel()"
+        (onarrowback)="onArrowBack()"></tcam-staff-list>
+    </div>
+    <!-- / CONTENT CARD -->
+  </div>
+  <!-- / CENTER -->
+</div>
+
+
+
+<!-- <div class="fuse-card auto-width">
+
+  <tcam-staff-list [roleFilter]="'P'"></tcam-staff-list>
+
+</div> -->

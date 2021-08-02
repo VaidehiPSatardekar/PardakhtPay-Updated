@@ -1,0 +1,59 @@
+<div class="page-layout carded fullwidth  inner-scroll">
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="start center" fxLayout.gt-xs="row"
+             fxLayoutAlign.gt-xs="start center">
+            <div class=" filter-padding"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    home
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{'TENANT.GENERAL.TENANTS' | translate}}</span>
+            </div>
+            <!-- / APP TITLE -->
+            <!-- SEARCH -->
+            <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxLayout="row">
+                    <div class="logo my-4 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                        <button class="mr-0 mr-sm-16" mat-icon-button (click)="refresh()" title="{{'TENANT.GENERAL.REFRESH' | translate }}">
+                            <mat-icon>refresh</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <button mat-raised-button [routerLink]="'/tenant'" class="mat-white-bg my-12 mt-sm-0">
+                    <span>{{ 'TENANT.GENERAL.ADD_TENANT'   | translate}}</span>
+                </button>
+            </div>
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT -->
+        <div class="content-card mat-white-bg">
+
+            <!--<div class="mat-elevation-z8">-->
+            <div *ngIf="(loading$ | async)" class="p-24" fxLayout="column" fxLayoutAlign="space-between center">
+                <mat-spinner></mat-spinner>
+            </div>
+            <ngx-datatable *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',x:'-300px'}}" class="material h-100-p" [rows]="items$ | async"
+                           [sorts]="[{prop: sortColumn, dir: sortOrder}]"
+                           [reorderable]="reorderable"
+                           [loadingIndicator]="(loading$ | async)" [columnMode]="'force'" [headerHeight]="48" [rowHeight]="'auto'"
+                           [count]="(items$.length | async)"
+                           [footerHeight]="50"
+                           [scrollbarH]="true" [externalPaging]="false" [selectionType]="'none'"
+                           [messages]="{'emptyMessage': ((loading$ | async) ? ('TENANT.LIST.LOADING-DATA' | translate) : ('TENANT.LIST.NO-DATA' | translate)),'totalMessage': 'TENANT.LIST.TOTAL'|translate}">
+
+
+                <ngx-datatable-column [width]="200" name="{{ 'TENANT.LIST-COLUMNS.NAME' | translate}}" prop="name">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'TENANT.LIST-COLUMNS.TENANT_GUID' | translate}}" prop="tenantGuid">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'TENANT.LIST-COLUMNS.DOMAIN_NAME' | translate}}" prop="domainName">
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+    </div>
+</div>
+<!--</div>-->

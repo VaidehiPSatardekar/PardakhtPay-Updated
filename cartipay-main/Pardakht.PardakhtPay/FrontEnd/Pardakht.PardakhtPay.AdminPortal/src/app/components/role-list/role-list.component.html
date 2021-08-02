@@ -1,0 +1,24 @@
+<ng-container *ngIf="selectedRole !== undefined">
+  <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+  <tcam-role-edit [role]="selectedRole" [heading]="'Update Role'" [loading]="loading$ | async"
+    [errors]="errors$ | async" (save)="onEditRole($event)" (cancel)="onCloseRole()"
+    [showRestrictedPermissions]="showRestrictedPermissions" [readOnly]="!canEditRole(selectedRole)"
+    [scopeRestricted]="true" [permissionGroups]="permissionGroups$ | async">
+  </tcam-role-edit>
+</ng-container>
+
+<ng-container *ngIf="isCreating">
+  <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+  <!-- <tcam-tenant-create></tcam-tenant-create> -->
+</ng-container>
+
+<ng-container *ngIf="selectedRole === undefined && !isCreating">
+  <mat-progress-bar *ngIf="(loading$ | async)" color="primary" mode="query"></mat-progress-bar>
+  <div *ngIf="isActive" style="overflow: hidden">
+    <ag-grid-angular style="width: 100%; height: 800px;" class="ag-theme-balham" [rowData]="roles"
+      [columnDefs]="columnDefs" [rowSelection]="rowSelection" [frameworkComponents]="frameworkComponents"
+      [enableRtl]="enableRtl" [suppressScrollOnNewData]="true" (gridReady)="onGridReady($event)"
+      (rowSelected)="onRowSelected($event)" [localeText]="localeText">
+    </ag-grid-angular>
+  </div>
+</ng-container>

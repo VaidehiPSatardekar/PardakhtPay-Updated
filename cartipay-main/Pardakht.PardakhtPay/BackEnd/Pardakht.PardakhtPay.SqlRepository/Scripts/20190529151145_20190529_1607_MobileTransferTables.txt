@@ -1,0 +1,57 @@
+﻿CREATE TABLE [MobileTransferCardAccountGroupItems] (
+    [Id] int NOT NULL IDENTITY,
+    [TenantGuid] nvarchar(max) NULL,
+    [OwnerGuid] nvarchar(max) NULL,
+    [GroupId] int NOT NULL,
+    [ItemId] int NOT NULL,
+    [Status] int NOT NULL,
+    CONSTRAINT [PK_MobileTransferCardAccountGroupItems] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [MobileTransferCardAccountGroups] (
+    [Id] int NOT NULL IDENTITY,
+    [TenantGuid] nvarchar(max) NULL,
+    [OwnerGuid] nvarchar(max) NULL,
+    [IsDeleted] bit NOT NULL,
+    [Name] nvarchar(max) NULL,
+    [IsActive] bit NOT NULL,
+    CONSTRAINT [PK_MobileTransferCardAccountGroups] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [MobileTransferCardAccounts] (
+    [Id] int NOT NULL IDENTITY,
+    [CardNumber] nvarchar(max) NULL,
+    [CardHolderName] nvarchar(max) NULL,
+    [TenantGuid] nvarchar(max) NULL,
+    [OwnerGuid] nvarchar(max) NULL,
+    [IsDeleted] bit NOT NULL,
+    [IsActive] bit NOT NULL,
+    CONSTRAINT [PK_MobileTransferCardAccounts] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [MobileTransferDevices] (
+    [Id] int NOT NULL IDENTITY,
+    [PhoneNumber] nvarchar(max) NULL,
+    [VerificationCode] nvarchar(max) NULL,
+    [Status] int NOT NULL,
+    [VerifyCodeSendDate] datetime2 NULL,
+    [VerifiedDate] datetime2 NULL,
+    [ExternalId] int NOT NULL,
+    [ExternalStatus] nvarchar(max) NULL,
+    [TenantGuid] nvarchar(max) NULL,
+    [IsActive] bit NOT NULL,
+    CONSTRAINT [PK_MobileTransferDevices] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190529151145_20190529_1607_MobileTransferTables', N'2.1.4-rtm-31024');
+
+GO

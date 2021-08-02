@@ -1,0 +1,55 @@
+<div id="cardToCardAccount" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/blockedphonenumbers'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="blockedPhoneNumberForm">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">sim_card</mat-icon>
+                        {{blockedPhoneNumberForm.get('phoneNumber').value}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && blockedPhoneNumberForm && allowAddBlockedPhoneNumber" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="blockedPhoneNumberForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && blockedPhoneNumberForm && allowAddBlockedPhoneNumber" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="blockedPhoneNumberForm.invalid || isLoading()"
+                    (click)="onUpdateSubmit()">
+                <span>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading()" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="blockedPhoneNumberForm" [formGroup]="blockedPhoneNumberForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'BLOCKED-PHONE-NUMBER.LIST-COLUMNS.PHONE-NUMBER' | translate}}</mat-label>
+                            <input matInput placeholder="{{'BLOCKED-PHONE-NUMBER.LIST-COLUMNS.PHONE-NUMBER' | translate}}"
+                                   name="phoneNumber"
+                                   formControlName="phoneNumber" required>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

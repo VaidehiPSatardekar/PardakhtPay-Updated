@@ -1,0 +1,46 @@
+<div id="bankLogins" class="page-layout carded fullwidth  inner-scroll">
+
+    <div class="top-bg accent"></div>
+    <div class="center">
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div class="logo my-12 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box</mat-icon>
+                <span class="logo-text h1" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">{{ 'USER.GENERAL.USERS' | translate }}</span>
+            </div>
+
+            <button mat-raised-button [routerLink]="'/user'" class="mat-white-bg my-12 mt-sm-0">
+                <span>{{ 'USER.GENERAL.CREATE-USER'  | translate}}</span>
+            </button>
+
+        </div>
+        <mat-progress-bar *ngIf="ownersLoading$ | async" color="primary" mode="query"></mat-progress-bar>
+        <div class="content-card mat-white-bg table-scroll">
+            <ngx-datatable *fuseIfOnDom [@animate]="{value:'*',params:{duration:'300ms',x:'-300px'}}" class="material h-100-p table-min-width" [rows]="owners$ | async" (select)='onSelect($event)'
+                           [loadingIndicator]="(ownersLoading$ | async)" [columnMode]="'force'" [headerHeight]="48" [rowHeight]="'auto'"
+                           [scrollbarH]="false" [externalPaging]="false" [selected]="selected"  [selectionType]="'none'"
+                           [messages]="{'emptyMessage': ((loading$ | async) ? ('USER.LIST.LOADING-DATA' | translate) : ('USER.LIST.NO-DATA' | translate)),'totalMessage': 'USER.LIST.TOTAL'|translate}">
+
+                <ngx-datatable-column *ngIf="isProviderAdmin" [width]="200" name="{{ 'USER.LIST-COLUMNS.TENANT' | translate}}" prop="tenantGuid">
+                    <ng-template ngx-datatable-cell-template let-value="value">
+                        <span>{{getTenantName(value)}}</span>
+                    </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="200" name="{{ 'USER.LIST-COLUMNS.USERNAME' | translate}}" prop="username">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'USER.LIST-COLUMNS.FIRST-NAME' | translate}}" prop="firstName">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'USER.LIST-COLUMNS.LAST-NAME' | translate}}" prop="lastName">
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [width]="150" name="{{ 'USER.LIST-COLUMNS.EMAIL' | translate}}" prop="email">
+                </ngx-datatable-column>
+
+            </ngx-datatable>
+
+        </div>
+    </div>
+</div>

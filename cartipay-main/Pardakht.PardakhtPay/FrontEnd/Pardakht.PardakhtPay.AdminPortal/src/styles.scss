@@ -1,0 +1,176 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+
+@import "~ag-grid-community/dist/styles/ag-grid.css";
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+@import 'flatpickr/dist/flatpickr.css';
+/*@import "~ag-grid-community/dist/styles/ag-theme-material.css";
+@import "~ag-grid-community/dist/styles/ag-theme-bootstrap.css";
+@import "~ag-grid-community/dist/styles/ag-theme-fresh.css";
+@import "~ag-grid-community/dist/styles/ag-theme-blue.css";*/
+
+[dir="rtl"] {
+    /*.nav .nav-group > .group-title {
+        padding-right: 24px;
+        padding-left: unset;
+    }
+
+    .nav .nav-item .nav-link .nav-link-icon {
+        margin-left: 16px;
+        margin-right: unset;
+    }
+
+    navbar navbar-vertical-style-1 .navbar-top .logo .logo-text {
+        margin-right: 12px;
+        margin-left: unset;
+    }
+
+    navbar navbar-vertical-style-1 .navbar-top {
+        padding: 12px 20px 12px 12px
+    }
+
+    .mr-12 {
+        margin-right: unset !important;
+        margin-left: 12px !important
+    }
+
+    .mr-16 {
+        margin-right: unset !important;
+        margin-left: 16px !important
+    }
+
+    .mr-sm-16 {
+        @media screen and (min-width: 600px) {
+            margin-left: 16px !important;
+        }
+    }*/
+    .nav .nav-group > .group-title {
+        padding-right: 24px;
+        padding-left: unset;
+    }
+
+    .nav .nav-item .nav-link .nav-link-icon {
+        margin-left: 16px;
+        margin-right: unset;
+    }
+
+    .navbar navbar-vertical-style-1 .navbar-top .logo .logo-text {
+        margin-right: 12px;
+        margin-left: unset;
+    }
+
+    .navbar navbar-vertical-style-1 .navbar-top {
+        padding: 12px 20px 12px 12px
+    }
+
+    .mr-8 {
+        margin-right: 8px !important;
+        margin-left: 8px !important
+    }
+
+    .mr-12 {
+        margin-right: 12px !important;
+        margin-left: 12px !important
+    }
+
+    .mr-16 {
+        /*margin-right: unset !important;*/
+        margin-left: 16px !important
+    }
+
+    .mr-sm-16 {
+        @media screen and (min-width: 600px) {
+            margin-left: 16px !important;
+        }
+    }
+
+    #dashboard-project[_ngcontent-c26] > .center[_ngcontent-c26] > .header[_ngcontent-c26] .project-selector[_ngcontent-c26] {
+        border-radius: 8px 0 0 0;
+        margin-right: 1px;
+        margin-left: unset;
+    }
+
+    #dashboard-project[_ngcontent-c26] > .center[_ngcontent-c26] > .header[_ngcontent-c26] .selected-project[_ngcontent-c26] {
+        border-radius: 0 8px 0 0;
+    }
+
+    fuse-sidebar.folded {
+        position: relative !important;
+    }
+
+    #container-2 {
+        padding-left: 0px !important;
+    }
+
+    .url {
+        direction: ltr !important;
+        justify-content: flex-end !important;
+    }
+
+    .content-right {
+        display: flex !important;
+    }
+
+    /*.content-card {
+        display: block !important;
+    }*/
+
+    /*.cdk-overlay-connected-position-bounding-box {
+        left: 0px !important;
+        height: 100% !important;
+        width: 100% !important;
+        right: 0px !important;
+    }*/
+}
+
+[lang="fa"] {
+    body {
+        font-family: IRANSans !important;
+    }
+
+    .mat-select {
+        font-family: IRANSans !important;
+    }
+
+    .mat-display-1, .mat-typography .mat-display-1 {
+        font-family: IRANSans !important;
+    }
+
+    .mat-menu-item {
+        font-family: IRANSans !important;
+    }
+}
+
+.table-scroll {
+    overflow: auto !important;
+}
+
+div.ag-root {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+.page-layout {
+    height: 100%;
+}
+
+.success {
+    color: green;
+}
+
+.danger {
+    color: red;
+}
+
+.warning {
+    color: yellow !important;
+}
+
+.ag-root-wrapper-body.ag-layout-normal {
+    height: 100% !important;
+}

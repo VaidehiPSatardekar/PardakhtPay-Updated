@@ -1,0 +1,113 @@
+<div id="merchant" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/merchants'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div *ngIf="merchantForm" fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">business</mat-icon>
+                        {{merchantForm.get('title').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'MERCHANT.GENERAL.NEW_MERCHANT' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'MERCHANT.GENERAL.EDIT_MERCHANT' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && merchantForm && allowAddMerchant" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="merchantForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'MERCHANT.GENERAL.ADD_MERCHANT' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && merchantForm && allowAddMerchant" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="merchantForm.invalid || (isLoading() == true)"
+                    (click)="onUpdateSubmit()">
+                <span>{{'MERCHANT.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="merchantForm" [formGroup]="merchantForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field *ngIf="(isProviderAdmin || isTenantAdmin)  && pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TRANSFER-ACCOUNT.LIST-COLUMNS.OWNER' | translate}}</mat-label>
+                            <mat-select name="ownerGuid" formControlName="ownerGuid" required>
+                                <mat-option *ngFor="let owner of getOwners()" [value]="owner.accountId">{{owner.username}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MERCHANT.LIST-COLUMNS.TITLE' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MERCHANT.LIST-COLUMNS.TITLE' | translate}}"
+                                   name="title"
+                                   formControlName="title">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MERCHANT.LIST-COLUMNS.PRIMARY-DOMAIN' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MERCHANT.LIST-COLUMNS.PRIMARY-DOMAIN' | translate}}"
+                                   name="domainAddress"
+                                   formControlName="domainAddress" required>
+                        </mat-form-field>
+                        <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'CARD-TO-CARD-ACCOUNT-GROUP.GENERAL.CARD-TO-CARD-ACCOUNT-GROUPS' | translate}}</mat-label>
+                            <mat-select name="cardToCardAccountGroupId" formControlName="cardToCardAccountGroupId" required>
+                                <mat-option *ngFor="let group of getGroups()" [value]="group.id">{{group.name}} </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MOBILE-TRANSFER-CARD-ACCOUNT-GROUP.GENERAL.GROUPS' | translate}}</mat-label>
+                            <mat-select name="mobileTransferAccountGroupId" formControlName="mobileTransferAccountGroupId">
+                                <mat-option [value]=""></mat-option>
+                                <mat-option *ngFor="let group of getMobileTransferGroups()" [value]="group.id">{{group.name}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MERCHANT.LIST-COLUMNS.MINIMUM-AMOUNT' | translate}}</mat-label>
+                            <input type="number" matInput placeholder="{{'MERCHANT.LIST-COLUMNS.MINIMUM-AMOUNT' | translate}}" formControlName="minimumTransactionAmount">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'MERCHANT.BANK_ACCOUNT.API_KEY' | translate}}</mat-label>
+                            <input matInput placeholder="{{'MERCHANT.BANK_ACCOUNT.API_KEY' | translate}}"
+                                   [name]="apiKey"
+                                   formControlName="apiKey"
+                                   required readonly>
+                            <mat-icon matSuffix (click)="generateApiKey()" class="generate-api-key">vpn_key</mat-icon>
+                        </mat-form-field>
+                        <mat-checkbox class="w-100-p" name="isActive"
+                                      formControlName="isActive">
+                            {{'MERCHANT.BANK_ACCOUNT.IS_ACTIVE' | translate}}
+                        </mat-checkbox>
+                        <mat-checkbox class="w-100-p" name="useCardtoCardPaymentForWithdrawal"
+                                      formControlName="useCardtoCardPaymentForWithdrawal">
+                            {{'MERCHANT.BANK_ACCOUNT.USE-CARD-TO-CARD-PAYMENT-FOR-WITHDRAWAL' | translate}}
+                        </mat-checkbox>
+                        <mat-checkbox class="w-100-p" name="allowPartialPaymentForWithdrawals"
+                                      formControlName="allowPartialPaymentForWithdrawals">
+                            {{'MERCHANT.LIST-COLUMNS.USE-PARTIAL-PAYMENT-FOR-WITHDRAWAL' | translate}}
+                        </mat-checkbox>
+                        <div fxFlex fxLayout="row">
+                            <span *ngIf="error" class="mat-body danger">{{ error}}</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

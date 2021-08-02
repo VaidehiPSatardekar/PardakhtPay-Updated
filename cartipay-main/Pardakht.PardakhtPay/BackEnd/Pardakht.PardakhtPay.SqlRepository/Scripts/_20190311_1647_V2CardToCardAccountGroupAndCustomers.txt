@@ -1,0 +1,100 @@
+﻿DECLARE @var0 sysname;
+SELECT @var0 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Transactions]') AND [c].[name] = N'Token');
+IF @var0 IS NOT NULL EXEC(N'ALTER TABLE [Transactions] DROP CONSTRAINT [' + @var0 + '];');
+ALTER TABLE [Transactions] ALTER COLUMN [Token] nvarchar(200) NOT NULL;
+
+GO
+
+ALTER TABLE [Transactions] ADD [MerchantCustomerId] int NULL;
+
+GO
+
+ALTER TABLE [Transactions] ADD [RequestContent] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [Merchants] ADD [CardToCardAccountGroupId] int NULL;
+
+GO
+
+CREATE TABLE [CardToCardAccountGroupItems] (
+    [Id] int NOT NULL IDENTITY,
+    [CardToCardAccountGroupId] int NOT NULL,
+    [CardToCardAccountId] int NOT NULL,
+    [Status] int NOT NULL,
+    CONSTRAINT [PK_CardToCardAccountGroupItems] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [CardToCardAccountGroups] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NULL,
+    [TenantGuid] nvarchar(max) NULL,
+    [OwnerGuid] nvarchar(max) NULL,
+    CONSTRAINT [PK_CardToCardAccountGroups] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [MerchantCustomers] (
+    [Id] int NOT NULL IDENTITY,
+    [TenantGuid] nvarchar(max) NULL,
+    [OwnerGuid] nvarchar(max) NULL,
+    [MerchantId] int NOT NULL,
+    [WebsiteName] nvarchar(max) NULL,
+    [UserId] nvarchar(max) NULL,
+    [RegisterDate] datetime2 NULL,
+    [TotalDeposit] decimal(18, 2) NULL,
+    [TotalWithdraw] decimal(18, 2) NULL,
+    [DepositNumber] nvarchar(max) NULL,
+    [WithdrawNumber] nvarchar(max) NULL,
+    [ActivityScore] int NULL,
+    [GroupName] nvarchar(max) NULL,
+    [LastActivity] datetime2 NULL,
+    [CardToCardAccountId] int NULL,
+    CONSTRAINT [PK_MerchantCustomers] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [dbo].[CardToCardAccountGroups]
+           ([Name]
+           ,[TenantGuid]
+           ,[OwnerGuid])
+SELECT Title + ' Group ' + cast(Id as nvarchar) ,
+TenantGuid,
+OwnerGuid From Merchants WHERE CardToCardAccountId IS NOT NULL
+
+GO
+
+INSERT INTO [dbo].[CardToCardAccountGroupItems]
+           ([CardToCardAccountGroupId]
+           ,[CardToCardAccountId]
+           ,[Status])
+Select g.Id,
+m.CardToCardAccountId,
+1
+FROM [dbo].[CardToCardAccountGroups] g INNER JOIN Merchants m on g.TenantGuid = m.TenantGuid AND g.OwnerGuid = m.OwnerGuid AND g.Name = (m.Title + ' Group ' + cast(m.Id as nvarchar))
+
+GO
+
+UPDATE m SET m.CardToCardAccountGroupId = g.Id FROM [dbo].[CardToCardAccountGroups] g INNER JOIN Merchants m on g.TenantGuid = m.TenantGuid AND g.OwnerGuid = m.OwnerGuid AND g.Name = (m.Title + ' Group ' + cast(m.Id as nvarchar))
+
+GO
+
+CREATE UNIQUE INDEX [UIX_Transaction_Token] ON [Transactions] ([Token]);
+
+GO
+
+CREATE INDEX [IX_BankStatement_AccountGuidTransactionDate] ON [BankStatementItems] ([AccountGuid], [TransactionDateTime]);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190314134201_20190314_1335_V2CardToCardAccountGroupAndCustomers', N'2.1.4-rtm-31024');
+
+GO

@@ -1,0 +1,42 @@
+﻿DECLARE @var0 sysname;
+SELECT @var0 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Withdrawals]') AND [c].[name] = N'RequestContent');
+IF @var0 IS NOT NULL EXEC(N'ALTER TABLE [Withdrawals] DROP CONSTRAINT [' + @var0 + '];');
+ALTER TABLE [Withdrawals] DROP COLUMN [RequestContent];
+
+GO
+
+DECLARE @var1 sysname;
+SELECT @var1 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Transactions]') AND [c].[name] = N'RequestContent');
+IF @var1 IS NOT NULL EXEC(N'ALTER TABLE [Transactions] DROP CONSTRAINT [' + @var1 + '];');
+ALTER TABLE [Transactions] DROP COLUMN [RequestContent];
+
+GO
+
+CREATE TABLE [TransactionRequestContents] (
+    [Id] int NOT NULL IDENTITY,
+    [TransactionId] int NOT NULL,
+    [RequestContent] nvarchar(4000) NULL,
+    CONSTRAINT [PK_TransactionRequestContents] PRIMARY KEY ([Id])
+);
+
+GO
+
+CREATE TABLE [WithdrawalRequestContents] (
+    [Id] int NOT NULL IDENTITY,
+    [WithdrawalId] int NOT NULL,
+    [RequestContent] nvarchar(2000) NULL,
+    CONSTRAINT [PK_WithdrawalRequestContents] PRIMARY KEY ([Id])
+);
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20191121115715_20191121_1157_ContentRepositories', N'2.2.6-servicing-10079');
+
+GO

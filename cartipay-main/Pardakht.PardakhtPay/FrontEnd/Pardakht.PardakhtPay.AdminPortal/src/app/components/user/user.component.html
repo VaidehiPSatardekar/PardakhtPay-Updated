@@ -1,0 +1,86 @@
+<div id="bankLogin" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/users'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div *ngIf="userForm" class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_box</mat-icon>
+                        {{userForm.get('username').value}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'USER.GENERAL.NEW-USER' | translate}}
+                    </div>
+                    <div class="h2" *ngIf="pageType =='edit'">
+                        {{'USER.GENERAL.EDIT-USER' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new' && userForm" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="userForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'USER.GENERAL.ADD-USER' | translate}}</span>
+            </button>
+            <button *ngIf="pageType == 'edit' && userForm" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="userForm.invalid || isLoading()"
+                    (click)="onUpdateSubmit()">
+                <span>{{'USER.GENERAL.SAVE' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="userForm" [formGroup]="userForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <!--<mat-form-field *ngIf="isProviderAdmin" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER.LIST-COLUMNS.TENANT' | translate}}</mat-label>
+                            <mat-select name="tenantDomainPlatformMapGuid" formControlName="tenantDomainPlatformMapGuid" required>
+                                <mat-option *ngFor="let tenant of tenants$ | async" [value]="tenant.tenantDomainPlatformMapGuid">{{tenant.tenantName}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>-->
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER.LIST-COLUMNS.FIRST-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'USER.LIST-COLUMNS.FIRST-NAME' | translate}}" formControlName="firstName" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER.LIST-COLUMNS.LAST-NAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'USER.LIST-COLUMNS.LAST-NAME' | translate}}" formControlName="lastName" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER.LIST-COLUMNS.EMAIL' | translate}}</mat-label>
+                            <input matInput placeholder="{{'USER.LIST-COLUMNS.EMAIL' | translate}}" formControlName="email" autocomplete="off" required>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER.LIST-COLUMNS.USERNAME' | translate}}</mat-label>
+                            <input matInput placeholder="{{'USER.LIST-COLUMNS.USERNAME' | translate}}"
+                                   autocomplete="off"
+                                   name="username"
+                                   formControlName="username" required>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="pageType == 'new'" appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'USER.LIST-COLUMNS.PASSWORD' | translate}}</mat-label>
+                            <input matInput type="password" placeholder="{{'USER.LIST-COLUMNS.PASSWORD' | translate}}" formControlName="password" autocomplete="off" required>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

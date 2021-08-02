@@ -1,0 +1,165 @@
+﻿* {
+    font-family: IRANSans;
+    font-weight: 300;
+}
+body {
+    direction:rtl
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+.comments p {
+    padding-top: 20px;
+    margin-bottom: 0;
+    font-weight: bold
+}
+.ltr-input{
+    direction:ltr
+}
+.well {
+    background-color: #06121e;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
+    border-radius: 20px;
+    border-color: #06121e
+}
+
+.modal-header-logos-001 {
+    height: 60px;
+    margin-right: 15px;
+}
+
+.modal-header-logos-002 {
+    height: 60px;
+    margin-left: 15px;
+}
+
+.timer {
+    background: url(../../img/timer.png);
+    height: 30px;
+    background-repeat: no-repeat;
+    width: 250px;
+    margin: 0 auto;
+    position: relative;
+    top: -20px;
+}
+
+.timer p {
+    text-align: center;
+    line-height: 30px;
+}
+
+.timer2{
+    background-color:royalblue;
+    color:white;
+}
+
+.well2 {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+
+.well2 .row {
+    margin-top: 3px;
+}
+
+.margintop5 {
+    margin-top: 5px;
+}
+
+.nosidepadding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.minsidepadding {
+    padding-left: 0;
+    padding-right: 5px;
+}
+
+.lineheight34 {
+    line-height: 34px;
+}
+
+.lineheight45 {
+    line-height: 45px;
+}
+
+.captcha {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 34px;
+}
+
+.ltr {
+    direction: ltr
+}
+
+.rtl {
+    direction: rtl
+}
+
+.margintop20 {
+    margin-top: 20px !important;
+}
+
+.full-size {
+    width: 100%;
+    max-width: none
+}
+
+.margintop-20 {
+    margin-top: -20px !important
+}
+
+.bottom_border {
+    border-bottom: 1px solid #e3e3e3
+}
+
+.top_border {
+    border-top: 1px solid #e3e3e3
+}
+
+.fill-bottom {
+    margin-left: -19px;
+    margin-right: -19px;
+    margin-bottom: -19px;
+}
+
+.fill-top {
+    margin-left: -19px;
+    margin-right: -19px;
+    margin-top: -19px;
+}
+
+.row2 {
+    margin-left: 14px;
+    margin-right: 14px;
+    margin-top: 0 !important;
+}
+
+.bold {
+    font-weight: bold
+}

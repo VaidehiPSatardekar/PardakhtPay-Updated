@@ -1,0 +1,12 @@
+﻿ALTER TABLE [Withdrawals] ADD [Description] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [Withdrawals] ADD [RequestContent] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20190416082504_20190416_0924_WithdrawalDescription', N'2.1.4-rtm-31024');
+
+GO

@@ -1,0 +1,73 @@
+<div id="tenant" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/tenants'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+
+                    <div class="h2" *ngIf="pageType =='new'">
+                        {{'TENANT.GENERAL.TENANTS' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="pageType == 'new'" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="tenantForm.invalid"
+                    (click)="onSubmit()">
+                <span>{{'TENANT.GENERAL.ADD_TENANT' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <!-- CONTENT -->
+            <div class="content">
+                <form *ngIf="tenantForm" [formGroup]="tenantForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+
+                    <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT.LIST-COLUMNS.NAME' | translate}}</mat-label>
+                            <input type="text" matInput placeholder="{{'TENANT.LIST-COLUMNS.NAME' | translate}}" formControlName="name" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT.FIELDS.USERNAME' | translate}}</mat-label>
+                            <input type="text" matInput placeholder="{{'TENANT.FIELDS.USERNAME' | translate}}" formControlName="tenantAdminUsername" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT.FIELDS.PASSWORD' | translate}}</mat-label>
+                            <input type="password" matInput placeholder="{{'TENANT.FIELDS.PASSWORD' | translate}}" formControlName="tenantAdminPassword" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT.FIELDS.FIRST-NAME' | translate}}</mat-label>
+                            <input type="text" matInput placeholder="{{'TENANT.FIELDS.FIRST-NAME' | translate}}" formControlName="tenantAdminFirstName" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT.FIELDS.LAST-NAME' | translate}}</mat-label>
+                            <input type="text" matInput placeholder="{{'TENANT.FIELDS.LAST-NAME' | translate}}" formControlName="tenantAdminLastName" required>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>{{'TENANT.FIELDS.EMAIL' | translate}}</mat-label>
+                            <input type="email" matInput placeholder="{{'TENANT.FIELDS.EMAIL' | translate}}" formControlName="tenantAdminEmail" required>
+                        </mat-form-field>
+                        <div fxFlex fxLayout="row">
+                            <span *ngIf="error" class="mat-body danger">{{ error}}</span>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

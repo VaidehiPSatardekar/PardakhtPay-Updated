@@ -1,0 +1,21 @@
+﻿ALTER TABLE [Transactions] ADD [ExternalReference] nvarchar(100) NULL;
+
+GO
+
+ALTER TABLE [MobileTransferCardAccounts] ADD [MerchantId] nvarchar(max) NULL;
+
+GO
+
+ALTER TABLE [MobileTransferCardAccounts] ADD [PaymentProviderType] int NOT NULL DEFAULT 2;
+
+GO
+
+ALTER TABLE [MobileTransferCardAccounts] ADD [Title] nvarchar(max) NULL;
+
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20200417222815_20200417_2328_ProxyPayment', N'2.2.6-servicing-10079');
+
+GO
+

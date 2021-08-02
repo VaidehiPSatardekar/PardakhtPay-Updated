@@ -1,0 +1,148 @@
+<div id="manualTransfers" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/manualtransfers'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div *ngIf="manualTransferForm" fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        <mat-icon class="logo-icon mr-16" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">account_balance_wallet</mat-icon>
+                    </div>
+                    <div class="h2">
+                        {{'MANUAL-TRANSFER.GENERAL.EDIT-MANUAL-TRANSFER' | translate}}
+                    </div>
+                </div>
+            </div>
+            <button *ngIf="manualTransferForm && manualTransferForm.get('status').value == 1 && allowAddManualTransfer" mat-raised-button
+                    class="save-product-button"
+                    [disabled]="manualTransferForm.invalid || isCreating"
+                    (click)="onSubmit()">
+                <span>{{'MANUAL-TRANSFER.GENERAL.SAVE-MANUAL-TRANSFER' | translate}}</span>
+            </button>
+            <!-- / APP TITLE -->
+        </div>
+        <mat-progress-bar *ngIf="isLoading() == true" color="primary" mode="query"></mat-progress-bar>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card cc-80">
+            <!-- CONTENT -->
+            <div class="content">
+                <mat-tab-group class="fullwidth">
+                    <mat-tab label="{{'MANUAL-TRANSFER.GENERAL.EDIT-MANUAL-TRANSFER' | translate}}">
+                        <form *ngIf="manualTransferForm" [formGroup]="manualTransferForm" class="product w-100-p" fxLayout="column" fxFlex novalidate>
+                            <div class="tab-content p-24" fusePerfectScrollbar fxLayout="column">
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'MANUAL-TRANSFER.LIST-COLUMNS.FROM-ACCOUNT-NO' | translate}}</mat-label>
+                                   <!--<mat-select name="cardToCardAccountIds" formControlName="cardToCardAccountIds" (selectionChange)="checkTransferType()" required>
+                                        <mat-option *ngFor="let account of getCardToCardAccounts()" [value]="account.id"> {{account.friendlyName  + ' ' + account.accountNo}} </mat-option>
+                                    </mat-select>-->
+
+
+                                    <mat-select name="cardToCardAccountIds" formControlName="cardToCardAccountIds" multiple #multiSelect>
+
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="cardToCardAccountMultiFilterCtrl"
+                                                                   [noEntriesFoundLabel]="translateService.instant('TRANSACTIONS.ACTIONS.NO_RESULTS')"
+                                                                   [placeholderLabel]="translateService.instant('TRANSACTIONS.ACTIONS.SEARCH')">
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+
+
+                                        <div class="padding">
+                                            <button mat-raised-button type="button" class="mr-16" color="primary"
+                                                    (click)="selectCardToCardAccounts('all')">
+                                                Select All
+                                            </button>
+                                            <button mat-raised-button type="button" class="mr-16"
+                                                    (click)="selectCardToCardAccounts('none')">
+                                                Deselect All
+                                            </button>
+                                        </div>
+
+                                        <mat-option *ngFor="let account of getCardToCardAccounts()" [value]="account.id">
+                                            {{ account.friendlyName  + ' ' + account.accountNo }}
+                                        </mat-option>
+                                    </mat-select>
+
+
+
+
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'WITHDRAWAL.LIST-COLUMNS.TRANSFER_ACCOUNT' | translate}}</mat-label>
+                                    <mat-select name="transferAccountId" formControlName="transferAccountId" (selectionChange)="checkTransferType()" required>
+                                        <mat-option *ngFor="let account of getTransferAccounts()" [value]="account.id"> {{account.friendlyName  + ' ' + account.accountNo}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always"   *ngIf="manualTransferForm.get('transferWholeAmount').value === false" class="w-100-p">
+                                    <mat-label>{{'MANUAL-TRANSFER.LIST-COLUMNS.AMOUNT' | translate}}</mat-label>
+                                    <input type="number" min="1" matInput placeholder="{{'MANUAL-TRANSFER.LIST-COLUMNS.AMOUNT' | translate}}" (change)="checkTransferType()" formControlName="amount" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'WITHDRAWAL.LIST-COLUMNS.TRANSFER_TYPE' | translate}}</mat-label>
+                                    <mat-select name="transferType" formControlName="transferType" required>
+                                        <mat-option *ngFor="let type of transferTypes" [value]="type.value" [disabled]="!checkIfTransferTypeAvailable(type.value)"> {{type.key | translate}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'WITHDRAWAL.LIST-COLUMNS.PRIORITY' | translate}}</mat-label>
+                                    <mat-select name="priority" formControlName="priority" required>
+                                        <mat-option *ngFor="let priority of priorities" [value]="priority.value"> {{priority.key | translate}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>{{'MANUAL-TRANSFER.LIST-COLUMNS.COMMENT' | translate}}</mat-label>
+                                    <textarea matInput placeholder="{{'MANUAL-TRANSFER.LIST-COLUMNS.COMMENT' | translate}}" formControlName="comment" rows="3"></textarea>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="manualTransferForm.get('immediateTransfer').value === false" appearance="outline" floatLabel="always" class="w-100-p">
+                                    <input mwlFlatpickr
+                                           matInput
+                                           [enableTime]="true"
+                                           [convertModelValue]="true"
+                                           [dateFormat]="'d.m.Y H:i'"
+                                           ariaDateFormat="d.m.Y H:i"
+                                           placeholder="{{'DATERANGE.FROM-DATE' | translate}}" formControlName="expectedTransferDate">
+                                </mat-form-field>
+                                <mat-checkbox class="w-100-p" name="immediateTransfer"
+                                              formControlName="immediateTransfer">
+                                    {{'MANUAL-TRANSFER.LIST-COLUMNS.IMMEDIATE-TRANSFER' | translate}}
+                                </mat-checkbox>
+                                <mat-checkbox class="w-100-p" name="transferWholeAmount"
+                                              (change)="checkValidation()"
+                                              formControlName="transferWholeAmount">
+                                    {{'MANUAL-TRANSFER.LIST-COLUMNS.TRANSFER-WHOLE-AMOUNT' | translate}}
+                                </mat-checkbox>
+                            </div>
+                        </form>
+                    </mat-tab>
+                    <mat-tab label="{{'MANUAL-TRANSFER.GENERAL.DETAILS' | translate}}">
+                        <div class="content-card mat-white-bg " style="height:100%;">
+                            <ag-grid-angular *ngIf="details && transferStatuses" #transferDetails
+                                             style="width: 100%; height: 100%; min-height:150px;"
+                                             id="myGrid"
+                                             class="ag-theme-balham"
+                                             [columnDefs]="columnDefs"
+                                             [pagination]="true"
+                                             [paginationPageSize]="25"
+                                             [rowData]="details"
+                                             [rowSelection]="'single'"
+                                             [enableRtl]="enableRtl"
+                                             (gridReady)="onGridReady($event)"
+                                             [frameworkComponents]="frameworkComponents"></ag-grid-angular>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>
+</div>-->

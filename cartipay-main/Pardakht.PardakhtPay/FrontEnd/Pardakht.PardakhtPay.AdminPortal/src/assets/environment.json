@@ -1,0 +1,25 @@
+{
+    "serviceUrl": "http://localhost:61064/",
+    "serviceUrlHelpDesk": "http://localhost:63055/",
+    "imageUrlPrefix": "https://vouchershop.blob.core.windows.net/images/",
+    "agGridLicense": "",
+    "testUsername": "test2",
+    "testPassword": "P@ssword123",
+    "testEmail": "test@test.com",
+    "testTenantName": "new tenant",
+    "testTenantBrandName": "brandName",
+    "testTenantDescription": "description",
+    "testTenantBusinessName": "businessName",
+    "flagImageUrl": "http://assets.ipstack.com/flags/",
+    "userServiceUrl": "",
+    "tenantServiceUrl": "",
+    "platformGuid": "PardakhtPayGuid",
+    "allowAllTenants": true,
+    "platformConfig": {
+        "platformGuid": "PardakhtPayGuid",
+        "parentAccountEnabled": true
+    },
+    "roleGuid": [
+        ""
+    ]
+}
